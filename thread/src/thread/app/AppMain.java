@@ -23,6 +23,5 @@ public class AppMain {
 
         thread1.start();
         thread2.start();
-
     }
 }
