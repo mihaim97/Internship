@@ -1,5 +1,6 @@
 package com.mihai.servlet;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +18,8 @@ public class FirstServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("intern", "Internship 2020");
+
         RequestDispatcher dispatcher = req.getRequestDispatcher("home.jsp");
         dispatcher.forward(req, resp);
     }
