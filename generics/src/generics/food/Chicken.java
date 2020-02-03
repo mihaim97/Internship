@@ -1,39 +1,40 @@
-package generics.model;
+package generics.food;
+
+import generics.ingredient.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Food {
+public class Chicken implements Food {
 
     private String name;
 
     private List<Ingredient> ingredients;
 
-    public Food(){}
+    public Chicken(){this.name = "chicken";}
 
-    public Food(String name){this.name=name;}
+    public Chicken(String name){this.name=name;}
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Override
+    public List<Ingredient> getIngredients() { return ingredients; }
 
+    @Override
     public void setIngredients(List<Ingredient> ingredients) {
+        checkIngredients();
         this.ingredients = ingredients;
     }
 
+    @Override
     public void addIngredient(Ingredient ing){
-        if(ingredients == null) this.ingredients = new ArrayList<>();
+        checkIngredients();
         this.ingredients.add(ing);
     }
 
+    @Override
     public void showIngredients(){
         if(ingredients == null) return;
         ingredients.stream().forEach((ing) -> {System.out.print(ing);});
@@ -45,4 +46,9 @@ public class Food {
                 "name='" + name + '\'' +
                 '}';
     }
+
+    private void checkIngredients(){
+        if(ingredients == null) this.ingredients = new ArrayList<>();
+    }
+
 }

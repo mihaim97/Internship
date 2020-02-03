@@ -1,5 +1,7 @@
 package generics.model;
 
+import generics.shop.Shop;
+
 import java.util.List;
 
 public interface Hall {

@@ -1,11 +1,12 @@
 package generics.shop;
 
 import generics.food.Food;
+import generics.food.HealthyFood;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KFC implements Shop<Food> {
+public class SaladBox implements Shop<Food> {
 
     private List<Food> foods;
 
@@ -17,8 +18,7 @@ public class KFC implements Shop<Food> {
 
     @Override
     public void showProducts() {
-        for(Food food: foods){System.out.println(food);}
+        foods.stream().forEach((food)->{System.out.println(food);});
     }
-
 
 }

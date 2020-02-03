@@ -1,4 +1,4 @@
-package generics.model;
+package generics.shop;
 
 import java.util.List;
 
