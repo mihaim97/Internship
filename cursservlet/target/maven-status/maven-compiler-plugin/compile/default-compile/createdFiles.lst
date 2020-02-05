@@ -1,2 +1,7 @@
+com\mihai\servlet\LogInServlet.class
+com\mihai\filter\LogInFilter.class
+com\mihai\db\UserDB.class
 com\mihai\servlet\ApiServlet.class
 com\mihai\servlet\ShopServlet.class
+com\mihai\loginstate\LogInUser.class
+com\mihai\model\UserInfo.class
