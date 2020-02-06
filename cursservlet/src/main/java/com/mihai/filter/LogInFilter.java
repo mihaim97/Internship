@@ -15,7 +15,7 @@ public class LogInFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
         HttpSession session = ((HttpServletRequest)servletRequest).getSession(true);
-
+        RequestDispatcher disp = servletRequest.getRequestDispatcher("login.jsp");
         /*if(!LogInUser.instance.getUserLogInState()){
             RequestDispatcher disp = servletRequest.getRequestDispatcher("login.jsp");
             disp.forward(servletRequest, servletResponse);
@@ -24,18 +24,15 @@ public class LogInFilter implements Filter {
         }*/
 
         if(session.isNew()){
-            RequestDispatcher disp = servletRequest.getRequestDispatcher("login.jsp");
             disp.forward(servletRequest, servletResponse);
         }else{
             if(!(null == session.getAttribute("login"))){
                 if(session.getAttribute("login").equals("true")) {
                    chain.doFilter(servletRequest, servletResponse);
                 }else{
-                    RequestDispatcher disp = servletRequest.getRequestDispatcher("login.jsp");
                     disp.forward(servletRequest, servletResponse);
                 }
             } else{
-                RequestDispatcher disp = servletRequest.getRequestDispatcher("login.jsp");
                 disp.forward(servletRequest, servletResponse);
             }
         }

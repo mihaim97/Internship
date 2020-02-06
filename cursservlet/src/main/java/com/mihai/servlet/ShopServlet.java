@@ -1,5 +1,11 @@
 package com.mihai.servlet;
 
+import com.mihai.db.ProductsDB;
+import com.mihai.loginstate.UsersBag;
+import com.mihai.util.Pages;
+import com.mihai.util.SessionProprieties;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -26,38 +32,18 @@ public class ShopServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(true);
-        PrintWriter out = resp.getWriter();
-        Cookie coockie = null;
-       // Map<String, String> products;
-        int accessTime = 0;
+        HttpSession session = req.getSession();
+        String user = (String)session.getAttribute(SessionProprieties.user);
 
-        resp.setContentType("text/html");
-        out.println("<h1>Welcome to</h1>");
-        out.println("<h2> " + getInitParameter("shopName") + "</h2>");
+        req.setAttribute("cars", ProductsDB.instance.getProducts().get("Cars"));
+        req.setAttribute("pc", ProductsDB.instance.getProducts().get("PC"));
 
-        synchronized (session){
-            if(session.isNew()){
-                out.print("You are new!");
-                coockie = new Cookie("Bag", "Product");
-                resp.addCookie(coockie);
-            }else{
-                accessTime = (int)session.getAttribute("key");
-                accessTime++;
-            }
-            session.setAttribute("key", accessTime);
-            out.println("Access time " + accessTime);
-
-            if(req.getCookies()[0].getName().equals("Bag")){
-                out.println("Your products " + req.getCookies()[0].getValue());
-            }
-
+        if(UsersBag.instance.userExist(user)){
+            req.setAttribute("userProducts", UsersBag.instance.countUserProducts(user));
         }
 
-
-
-
-
+        RequestDispatcher disp = req.getRequestDispatcher(Pages.sendRedirectShop);
+        disp.forward(req, resp);
     }
 
 

@@ -2,6 +2,8 @@ package com.mihai.servlet;
 
 import com.mihai.db.UserDB;
 import com.mihai.loginstate.LogInUser;
+import com.mihai.util.Pages;
+import com.mihai.util.SessionProprieties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,12 +31,12 @@ public class LogInServlet extends HttpServlet {
         System.out.println(isUserValid);
 
         if(isUserValid){
-           // LogInUser.instance.setUserLogInState(true);
             logger.info("User: {} log in at {}", username, new Date().toString());
-            session.setAttribute("login", "true");
+            session.setAttribute(SessionProprieties.login, "true");
+            session.setAttribute(SessionProprieties.user, username);
             resp.sendRedirect("shop");
         }else{
-            RequestDispatcher disp = req.getRequestDispatcher("login.jsp");
+            RequestDispatcher disp = req.getRequestDispatcher(Pages.login);
             disp.forward(req, resp);
         }
 

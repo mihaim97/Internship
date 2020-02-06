@@ -1,7 +1,13 @@
-com\mihai\servlet\LogInServlet.class
 com\mihai\filter\LogInFilter.class
 com\mihai\db\UserDB.class
-com\mihai\servlet\ApiServlet.class
+com\mihai\util\SessionProprieties.class
 com\mihai\servlet\ShopServlet.class
+com\mihai\util\Pages.class
+com\mihai\servlet\LogInServlet.class
+com\mihai\servlet\BagServlet.class
+com\mihai\servlet\ApiServlet.class
+com\mihai\db\ProductsDB.class
+com\mihai\loginstate\UsersBag.class
 com\mihai\loginstate\LogInUser.class
 com\mihai\model\UserInfo.class
+com\mihai\loginstate\UserBag.class
