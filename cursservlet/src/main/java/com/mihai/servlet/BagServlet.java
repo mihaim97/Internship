@@ -31,6 +31,6 @@ public class BagServlet extends HttpServlet {
         }
         // SF remove
 
-        resp.sendRedirect(Pages.shop);
+        resp.sendRedirect(Pages.sendRedirectShop);
     }
 }

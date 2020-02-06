@@ -42,8 +42,8 @@ public class ShopServlet extends HttpServlet {
             req.setAttribute("userProducts", UsersBag.instance.countUserProducts(user));
         }
 
-        RequestDispatcher disp = req.getRequestDispatcher(Pages.sendRedirectShop);
-        disp.forward(req, resp);
+          RequestDispatcher disp = req.getRequestDispatcher(Pages.shop);
+          disp.forward(req, resp);
     }
 
 
