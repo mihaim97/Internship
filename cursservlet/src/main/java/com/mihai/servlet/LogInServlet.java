@@ -1,12 +1,13 @@
 package com.mihai.servlet;
 
 import com.mihai.db.UserDB;
-import com.mihai.loginstate.LogInUser;
+import com.mihai.ejb.Databases;
 import com.mihai.util.Pages;
-import com.mihai.util.SessionProprieties;
+import com.mihai.util.SessionProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,9 @@ import java.util.Date;
 
 @WebServlet(name = "log-in", urlPatterns = "/attempt-login")
 public class LogInServlet extends HttpServlet {
+
+    @Inject
+    private Databases db;
 
     private static Logger logger = LoggerFactory.getLogger(LogInServlet.class);
 
@@ -29,11 +33,12 @@ public class LogInServlet extends HttpServlet {
         boolean isUserValid = UserDB.instance.findUserByCredentials(username, password);
 
         System.out.println(isUserValid);
+        db.getMsg();
 
         if(isUserValid){
             logger.info("User: {} log in at {}", username, new Date().toString());
-            session.setAttribute(SessionProprieties.login, "true");
-            session.setAttribute(SessionProprieties.user, username);
+            session.setAttribute(SessionProperties.login, "true");
+            session.setAttribute(SessionProperties.user, username);
             resp.sendRedirect("shop");
         }else{
             RequestDispatcher disp = req.getRequestDispatcher(Pages.login);

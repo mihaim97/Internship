@@ -2,7 +2,9 @@ package com.mihai.servlet;
 
 import com.mihai.loginstate.UserBag;
 import com.mihai.loginstate.UsersBag;
+import com.mihai.util.Attribute;
 import com.mihai.util.Pages;
+import com.mihai.util.Parameter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,8 +21,8 @@ public class BagServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String product = (String)req.getParameter("product");
-        String user = (String)(req.getSession().getAttribute("user"));
+        String product = (String)req.getParameter(Parameter.product);
+        String user = (String)(req.getSession().getAttribute(Attribute.user));
 
         // remove - JDBC
         if(UsersBag.instance.userExist(user)) {

@@ -1,9 +1,8 @@
 package com.mihai.servlet;
 
-import com.mihai.db.ProductsDB;
 import com.mihai.loginstate.UsersBag;
 import com.mihai.util.Pages;
-import com.mihai.util.SessionProprieties;
+import com.mihai.util.SessionProperties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,7 +19,7 @@ public class ShowUserBagServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = ((HttpServletRequest)req).getSession();
-        String user = (String)session.getAttribute(SessionProprieties.user);
+        String user = (String)session.getAttribute(SessionProperties.user);
 
         req.setAttribute("products", UsersBag.instance.getUserProducts(user));
 

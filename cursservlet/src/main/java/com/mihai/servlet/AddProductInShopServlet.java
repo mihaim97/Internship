@@ -1,8 +1,8 @@
 package com.mihai.servlet;
 
 import com.mihai.db.ProductsDB;
-import com.mihai.loginstate.UsersBag;
-import com.mihai.util.SessionProprieties;
+import com.mihai.util.Headers;
+import com.mihai.util.SessionProperties;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,10 +19,10 @@ public class AddProductInShopServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = ((HttpServletRequest)req).getSession();
-        String user = (String)session.getAttribute(SessionProprieties.user);
+        String user = (String)session.getAttribute(SessionProperties.user);
         PrintWriter out = resp.getWriter();
 
-        String addProduct = req.getHeader("prod");
+        String addProduct = req.getHeader(Headers.headerForAddProduct);
 
         try{
             ProductsDB.instance.addCarProduct(addProduct);

@@ -1,5 +1,7 @@
 package com.mihai.db;
 
+import com.mihai.util.DBProperties;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +17,8 @@ public class ProductsDB {
 
     private void initializeProducts(){
         products = new HashMap<>();
-        products.put("Cars", initializeCar());
-        products.put("PC", initializePC());
+        products.put(DBProperties.carsKey, initializeCar());
+        products.put(DBProperties.pcKey, initializePC());
     }
 
     private List<String> initializeCar(){
@@ -46,7 +48,7 @@ public class ProductsDB {
 
     public void addCarProduct(String product){
         checkInitialize();
-        getProducts().get("Cars").add(product);
+        getProducts().get(DBProperties.carsKey).add(product);
     }
 
 }

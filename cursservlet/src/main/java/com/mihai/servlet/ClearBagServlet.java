@@ -1,7 +1,7 @@
 package com.mihai.servlet;
 
 import com.mihai.loginstate.UsersBag;
-import com.mihai.util.SessionProprieties;
+import com.mihai.util.SessionProperties;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +17,7 @@ public class ClearBagServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = ((HttpServletRequest)req).getSession();
-        String user = (String)session.getAttribute(SessionProprieties.user);
+        String user = (String)session.getAttribute(SessionProperties.user);
         //PrintWriter out = resp.getWriter();
         String productToDelete = req.getHeader("prod");
 

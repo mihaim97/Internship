@@ -1,11 +1,15 @@
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\db\UserDB.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\LogInServlet.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\Headers.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\DBProperties.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\ApiServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\BagServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\Pages.java
-C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\SessionProprieties.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\Parameter.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\Attribute.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\ShopServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\UserBagServlet.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\Databases.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\loginstate\UsersBag.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\filter\LogInFilter.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\loginstate\UserBag.java
@@ -15,3 +19,4 @@ C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\m
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\model\UserInfo.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\loginstate\LogInUser.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\ShowUserBagServlet.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\SessionProperties.java
