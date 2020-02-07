@@ -1,9 +1,11 @@
 package com.mihai.servlet;
 
+import com.mihai.ejb.Database;
 import com.mihai.loginstate.UsersBag;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,12 +18,20 @@ import java.io.IOException;
 @WebServlet(name = "userBagView", urlPatterns = "/showBag")
 public class ShowUserBagServlet extends HttpServlet {
 
+    @Inject
+    private Database db;
+
+    @Inject
+    private UsersBag usersBag;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = ((HttpServletRequest)req).getSession();
         String user = (String)session.getAttribute(SessionProperties.user);
 
-        req.setAttribute("products", UsersBag.instance.getUserProducts(user));
+        db.getMsg();
+
+        req.setAttribute("products", usersBag.getUserProducts(user)); // UsersBag.instance
 
         RequestDispatcher disp = req.getRequestDispatcher(Pages.userBag);
         disp.forward(req, resp);

@@ -5,6 +5,7 @@ import com.mihai.loginstate.UsersBag;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
@@ -18,6 +19,12 @@ import java.io.IOException;
                 @WebInitParam(name="shopName", value = "End Shop")
             })
 public class ShopServlet extends HttpServlet {
+
+    @Inject
+    private UsersBag usersBag;
+
+    @Inject
+    private ProductsDB productsDb;
 
     @Override
     public void init() throws ServletException {
@@ -34,11 +41,11 @@ public class ShopServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String user = (String)session.getAttribute(SessionProperties.user);
 
-        req.setAttribute("cars", ProductsDB.instance.getProducts().get("Cars"));
-        req.setAttribute("pc", ProductsDB.instance.getProducts().get("PC"));
+        req.setAttribute("cars", productsDb.getProducts().get("Cars")); // ProductsDB.instance
+        req.setAttribute("pc", productsDb.getProducts().get("PC")); // ProductsDB.instance
 
-        if(UsersBag.instance.userExist(user)){
-            req.setAttribute("userProducts", UsersBag.instance.countUserProducts(user));
+        if(usersBag.userExist(user)){ //UsersBag.instance
+            req.setAttribute("userProducts", usersBag.countUserProducts(user)); //UsersBag.instance
         }
 
           RequestDispatcher disp = req.getRequestDispatcher(Pages.shop);

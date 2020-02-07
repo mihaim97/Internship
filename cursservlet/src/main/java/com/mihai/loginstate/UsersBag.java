@@ -2,15 +2,19 @@ package com.mihai.loginstate;
 
 import com.mihai.db.ProductsDB;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.*;
 
+@ApplicationScoped
 public class UsersBag {
 
-    public static UsersBag instance = new UsersBag();
-
-    private UsersBag(){}
+   // public static UsersBag instance = new UsersBag();
 
     private Map<String, UserBag> usersAndProducts;
+
+    public UsersBag(){
+        usersAndProducts = new HashMap<>();
+    }
 
     public void addNewUsersInBag(String user, UserBag bag){
         initializeUsersAndProducts();

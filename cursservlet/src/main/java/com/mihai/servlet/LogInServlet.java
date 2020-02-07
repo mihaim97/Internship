@@ -1,7 +1,8 @@
 package com.mihai.servlet;
 
 import com.mihai.db.UserDB;
-import com.mihai.ejb.Databases;
+import com.mihai.ejb.Database;
+import com.mihai.ejb.DatabaseImpl;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
 import org.slf4j.Logger;
@@ -19,7 +20,10 @@ import java.util.Date;
 public class LogInServlet extends HttpServlet {
 
     @Inject
-    private Databases db;
+    private Database db;
+
+    @Inject
+    private UserDB usersDB;
 
     private static Logger logger = LoggerFactory.getLogger(LogInServlet.class);
 
@@ -30,7 +34,7 @@ public class LogInServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        boolean isUserValid = UserDB.instance.findUserByCredentials(username, password);
+        boolean isUserValid = usersDB.findUserByCredentials(username, password); // UserDb.instance
 
         System.out.println(isUserValid);
         db.getMsg();

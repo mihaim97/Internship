@@ -2,18 +2,22 @@ package com.mihai.db;
 
 import com.mihai.util.DBProperties;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@ApplicationScoped
 public class ProductsDB {
 
-    public static ProductsDB instance = new ProductsDB();
+     //public static ProductsDB instance = new ProductsDB();
 
     private Map<String, List<String>> products;
 
-    private ProductsDB(){}
+    public ProductsDB(){
+        checkInitialize();
+    }
 
     private void initializeProducts(){
         products = new HashMap<>();
@@ -42,12 +46,12 @@ public class ProductsDB {
     }
 
     public Map<String, List<String>> getProducts(){
-        checkInitialize();
+       // checkInitialize();
         return this.products;
     }
 
     public void addCarProduct(String product){
-        checkInitialize();
+      //  checkInitialize();
         getProducts().get(DBProperties.carsKey).add(product);
     }
 

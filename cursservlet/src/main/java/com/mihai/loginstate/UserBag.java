@@ -1,8 +1,11 @@
 package com.mihai.loginstate;
 
+import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
 
+@Stateful
 public class UserBag {
 
     private List<String> products;

@@ -1,9 +1,11 @@
 package com.mihai.servlet;
 
 import com.mihai.db.ProductsDB;
+import com.mihai.ejb.Database;
 import com.mihai.util.Headers;
 import com.mihai.util.SessionProperties;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,9 @@ import java.io.PrintWriter;
 @WebServlet(name = "addProd", urlPatterns = "/addProduct")
 public class AddProductInShopServlet extends HttpServlet {
 
+    @Inject
+    private ProductsDB productsDb;
+
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = ((HttpServletRequest)req).getSession();
@@ -25,7 +30,7 @@ public class AddProductInShopServlet extends HttpServlet {
         String addProduct = req.getHeader(Headers.headerForAddProduct);
 
         try{
-            ProductsDB.instance.addCarProduct(addProduct);
+            productsDb.addCarProduct(addProduct); // ProductsDB.instance
         }catch(Exception e){
             e.printStackTrace();
         }
