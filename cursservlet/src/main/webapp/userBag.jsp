@@ -4,6 +4,7 @@
 
 <html>
     <body>
+    <h1>Your products<h1/>
     <table border="1">
       <c:forEach items="${products}" var="prod">
        <tr>

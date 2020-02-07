@@ -49,4 +49,11 @@ public class UsersBag {
         return false;
     }
 
+    public List<String> getUserProducts(String user){
+        if(userExist(user)){
+            return getUserBag(user).getProducts();
+        }
+        return null;
+    }
+
 }

@@ -1,5 +1,6 @@
 com\mihai\filter\LogInFilter.class
 com\mihai\db\UserDB.class
+com\mihai\servlet\ShowUserBagServlet.class
 com\mihai\util\SessionProprieties.class
 com\mihai\servlet\ShopServlet.class
 com\mihai\util\Pages.class

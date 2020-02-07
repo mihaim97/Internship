@@ -49,10 +49,4 @@ public class ProductsDB {
         getProducts().get("Cars").add(product);
     }
 
-    public List<String> getUserProducts(String user){
-        checkInitialize();
-        return this.products.get(user);
-    }
-
-
 }
