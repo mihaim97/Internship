@@ -7,21 +7,23 @@
 <div style="float:right">
     <h3>Your products</h3>
     <p>${userProducts}</p>
+    <a href="yourBag">Your bag</a>
 </div>
 
 <div>
     <h1>List of products</h1>
     <h2>Cars</h2>
-    <table>
+    <table border="1">
       <c:forEach items="${cars}" var="car">
        <tr>
          <td>${car}</td>
+          <td><a href="add-product?product=${car}">Add</a></td>
        </tr>
       </c:forEach>
     </table>
     </br>
     <h2>PC</h2>
-    <table>
+    <table border="1">
       <c:forEach items="${pc}" var="pc">
         <tr>
           <td>${pc}</td>

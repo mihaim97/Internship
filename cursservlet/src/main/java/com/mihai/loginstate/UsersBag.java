@@ -37,5 +37,16 @@ public class UsersBag {
         if(usersAndProducts == null){usersAndProducts = new HashMap<>(); }
     }
 
+    public UserBag getUserBag(String user){
+        return this.usersAndProducts.get(user);
+    }
+
+    public boolean userHasProductThenDelete(String user, String product){
+        if(userExist(user)){
+            UserBag userBag = getUserBag(user);
+            return userBag.ifProductExistDelete(product);
+        }
+        return false;
+    }
 
 }

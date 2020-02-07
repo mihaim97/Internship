@@ -21,4 +21,12 @@ public class UserBag {
 
     public List<String> getProducts(){return this.products;}
 
+    public boolean ifProductExistDelete(String product){
+        if(products.contains(product)){
+            removeProduct(product);
+            return true;
+        }
+        return false;
+    }
+
 }

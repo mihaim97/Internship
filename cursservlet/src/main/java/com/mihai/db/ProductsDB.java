@@ -35,13 +35,24 @@ public class ProductsDB {
         return pc;
     }
 
+    private void checkInitialize(){
+        if(products == null) initializeProducts();
+    }
+
     public Map<String, List<String>> getProducts(){
-        initializeProducts();
+        checkInitialize();
         return this.products;
     }
 
+    public void addCarProduct(String product){
+        checkInitialize();
+        getProducts().get("Cars").add(product);
+    }
 
-
+    public List<String> getUserProducts(String user){
+        checkInitialize();
+        return this.products.get(user);
+    }
 
 
 }

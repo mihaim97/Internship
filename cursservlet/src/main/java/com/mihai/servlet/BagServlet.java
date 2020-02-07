@@ -27,6 +27,7 @@ public class BagServlet extends HttpServlet {
             UsersBag.instance.addInUserBag(user, product);
         }else{
             userBag = new UserBag();
+            userBag.addProduct(product);
             UsersBag.instance.addNewUsersInBag(user, userBag);
         }
         // SF remove

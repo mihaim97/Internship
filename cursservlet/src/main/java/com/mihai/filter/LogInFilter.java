@@ -9,19 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(servletNames = {"shop-servlet", "apiServlet"})
+@WebFilter(servletNames = {"shop-servlet", "apiServlet", "clearBag", "addProduct"})
 public class LogInFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
         HttpSession session = ((HttpServletRequest)servletRequest).getSession(true);
         RequestDispatcher disp = servletRequest.getRequestDispatcher("login.jsp");
-        /*if(!LogInUser.instance.getUserLogInState()){
-            RequestDispatcher disp = servletRequest.getRequestDispatcher("login.jsp");
-            disp.forward(servletRequest, servletResponse);
-        }else{
-            chain.doFilter(servletRequest, servletResponse);
-        }*/
 
         if(session.isNew()){
             disp.forward(servletRequest, servletResponse);
