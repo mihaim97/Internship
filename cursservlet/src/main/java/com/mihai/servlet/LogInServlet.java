@@ -3,8 +3,12 @@ package com.mihai.servlet;
 import com.mihai.db.UserDB;
 import com.mihai.ejb.Database;
 import com.mihai.ejb.DatabaseImpl;
+import com.mihai.hibernate.db.HibernateDB;
+import com.mihai.hibernate.entity.Product;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +29,9 @@ public class LogInServlet extends HttpServlet {
     @Inject
     private UserDB usersDB;
 
+    @Inject
+    private HibernateDB hibernateDB;
+
     private static Logger logger = LoggerFactory.getLogger(LogInServlet.class);
 
     @Override
@@ -38,6 +45,30 @@ public class LogInServlet extends HttpServlet {
 
         System.out.println(isUserValid);
         db.getMsg();
+        db.queryProducts();
+
+
+        // Hibernate test
+        Transaction hibernateTransaction = null;
+        try( Session hibernateSession  = hibernateDB.createSession()){
+
+            hibernateTransaction = hibernateSession.getTransaction();
+            Product prod = new Product();
+            prod.setName("Audi");
+
+            hibernateTransaction.begin();
+            hibernateSession.save(prod);
+            hibernateTransaction.commit();
+
+        }catch(Exception exc){
+            if(hibernateTransaction != null) hibernateTransaction.rollback();
+            exc.printStackTrace();
+        }
+
+
+        // hebernate test SF -----
+
+
 
         if(isUserValid){
             logger.info("User: {} log in at {}", username, new Date().toString());
