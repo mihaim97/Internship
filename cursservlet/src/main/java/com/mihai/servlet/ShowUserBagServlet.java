@@ -19,17 +19,12 @@ import java.io.IOException;
 public class ShowUserBagServlet extends HttpServlet {
 
     @Inject
-    private Database db;
-
-    @Inject
     private UsersBag usersBag;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = ((HttpServletRequest)req).getSession();
         String user = (String)session.getAttribute(SessionProperties.user);
-
-        db.getMsg();
 
         req.setAttribute("products", usersBag.getUserProducts(user)); // UsersBag.instance
 

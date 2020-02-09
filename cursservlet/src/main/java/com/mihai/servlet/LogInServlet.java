@@ -2,13 +2,12 @@ package com.mihai.servlet;
 
 import com.mihai.db.UserDB;
 import com.mihai.ejb.Database;
-import com.mihai.ejb.DatabaseImpl;
-import com.mihai.hibernate.db.HibernateDB;
 import com.mihai.hibernate.entity.Product;
+import com.mihai.hibernate.services.ProductService;
+import com.mihai.qualifier.HibernateDB;
+import com.mihai.qualifier.JDBCDatabase;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,18 +18,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @WebServlet(name = "log-in", urlPatterns = "/attempt-login")
 public class LogInServlet extends HttpServlet {
 
     @Inject
+    @HibernateDB // putem schimba implementarea catre @JDBCDatabase
     private Database db;
 
     @Inject
     private UserDB usersDB;
-
-    @Inject
-    private HibernateDB hibernateDB;
 
     private static Logger logger = LoggerFactory.getLogger(LogInServlet.class);
 
@@ -44,30 +42,9 @@ public class LogInServlet extends HttpServlet {
         boolean isUserValid = usersDB.findUserByCredentials(username, password); // UserDb.instance
 
         System.out.println(isUserValid);
-        db.getMsg();
-        db.queryProducts();
 
-
-        // Hibernate test
-        Transaction hibernateTransaction = null;
-        try( Session hibernateSession  = hibernateDB.createSession()){
-
-            hibernateTransaction = hibernateSession.getTransaction();
-            Product prod = new Product();
-            prod.setName("Audi");
-
-            hibernateTransaction.begin();
-            hibernateSession.save(prod);
-            hibernateTransaction.commit();
-
-        }catch(Exception exc){
-            if(hibernateTransaction != null) hibernateTransaction.rollback();
-            exc.printStackTrace();
-        }
-
-
-        // hebernate test SF -----
-
+        // hibernate test SF -----
+        db.queryProducts().stream().forEach(p->{System.out.println(p.getName());});
 
 
         if(isUserValid){

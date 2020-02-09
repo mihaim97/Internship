@@ -1,13 +1,17 @@
 package com.mihai.ejb;
 
-import java.sql.Connection;
+import com.mihai.hibernate.entity.Product;
+
+import java.util.List;
 
 public interface Database {
 
     public void getMsg();
 
-    //public void connect();
+    public List<Product> queryProducts();
 
-    public void queryProducts();
+    public void queryProduct(int id);
+
+    public void saveProduct();
 
 }
