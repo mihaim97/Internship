@@ -7,6 +7,7 @@ import com.mihai.util.DBProperties;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -41,6 +42,7 @@ public class JDBCDatabaseImpl implements Database {
 
     @Override
     public List<Product> queryProducts() {
+        List<Product> listOfProducts = new ArrayList<>();
         this.connect();
         // Procedura stocata, ca sa nu repet aceleasi validari in cod de doua ori.......
 
@@ -48,8 +50,10 @@ public class JDBCDatabaseImpl implements Database {
             ResultSet result = ps.executeQuery();
 
             while(result.next()){
+               // listOfProducts.add(new Product());
                 System.out.println(result.getInt("id"));
                 System.out.println(result.getString("pName"));
+                System.out.println(result.getString("pType"));
             }
             this.connection.close();
         }catch(SQLException exc){
