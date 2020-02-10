@@ -36,6 +36,11 @@ public class HibernateDatabaseImpl implements Database {
     }
 
     @Override
+    public boolean findUserByCredentials(String username, String password) {
+        return false;
+    }
+
+    @Override
     public void queryProduct(int id) {
 
     }

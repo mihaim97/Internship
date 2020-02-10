@@ -21,6 +21,7 @@ com\mihai\qualifier\HibernateDB.class
 com\mihai\filter\LogInFilter.class
 com\mihai\hibernate\services\ProductServiceImpl.class
 com\mihai\qualifier\JDBCDatabase.class
+com\mihai\hibernate\entity\User.class
 com\mihai\servlet\ClearBagServlet.class
 com\mihai\servlet\BagServlet.class
 com\mihai\hibernate\services\ProductService.class

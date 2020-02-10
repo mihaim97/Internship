@@ -14,4 +14,10 @@ public interface Database {
 
     public void saveProduct();
 
+    // user method
+
+    public boolean findUserByCredentials(String username, String password);
+
+    // Sf user method
+
 }

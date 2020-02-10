@@ -24,7 +24,7 @@ import java.util.List;
 public class LogInServlet extends HttpServlet {
 
     @Inject
-    @HibernateDB // putem schimba implementarea catre @JDBCDatabase
+    @JDBCDatabase // putem schimba implementarea catre @JDBCDatabase sau HibernateDB
     private Database db;
 
     @Inject
@@ -39,12 +39,13 @@ public class LogInServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        boolean isUserValid = usersDB.findUserByCredentials(username, password); // UserDb.instance
+        boolean isUserValid =  db.findUserByCredentials(username, password);
+        //usersDB.findUserByCredentials(username, password); // UserDb.instance
 
         System.out.println(isUserValid);
 
         // hibernate test SF -----
-        db.queryProducts().stream().forEach(p->{System.out.println(p.getName());});
+       // db.queryProducts().stream().forEach(p->{System.out.println(p.getName());});
 
 
         if(isUserValid){

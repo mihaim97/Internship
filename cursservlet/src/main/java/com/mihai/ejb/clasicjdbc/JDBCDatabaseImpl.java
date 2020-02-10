@@ -42,6 +42,8 @@ public class JDBCDatabaseImpl implements Database {
     @Override
     public List<Product> queryProducts() {
         this.connect();
+        // Procedura stocata, ca sa nu repet aceleasi validari in cod de doua ori.......
+
         try(PreparedStatement ps = this.connection.prepareStatement("select * from product")){
             ResultSet result = ps.executeQuery();
 
@@ -59,6 +61,23 @@ public class JDBCDatabaseImpl implements Database {
     @Override
     public void saveProduct() {
 
+    }
+
+    @Override
+    public boolean findUserByCredentials(String username, String password) {
+        this.connect();
+        try(CallableStatement call = this.connection.prepareCall("call checkuser (?,?,?)")) {
+
+            call.setString(1, username);
+            call.setString(2, password);
+            call.registerOutParameter(3, Types.INTEGER);
+            call.executeQuery();
+            if(call.getInt(3) == 1)
+                return true;
+        }catch(SQLException exc){
+            exc.printStackTrace();
+        }
+        return false;
     }
 
     @Override

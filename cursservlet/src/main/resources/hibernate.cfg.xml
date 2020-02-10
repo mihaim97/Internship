@@ -11,5 +11,6 @@
         <property name="hbm2ddl.auto">update</property>
         <mapping  package="com.mihai.hibernate.entity"/> <!-- Nu merge cu intreg pachetul .... (: De ce ?????-->
         <mapping class="com.mihai.hibernate.entity.Product"/>
+        <mapping class = "com.mihai.hibernate.entity.User" />
     </session-factory>
 </hibernate-configuration>
