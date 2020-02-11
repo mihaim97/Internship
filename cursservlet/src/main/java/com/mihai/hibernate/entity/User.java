@@ -10,10 +10,6 @@ import java.util.Objects;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Id
     @Column(name = "username")
     private String username;
 
@@ -22,20 +18,12 @@ public class User {
 
     public User(){}
 
-    public int getId() {
-        return id;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public String getPassword() {
         return password;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setUsername(String username) {
@@ -51,13 +39,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id &&
-                Objects.equals(username, user.username) &&
+        return Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password);
+        return Objects.hash(username, password);
     }
 }

@@ -1,22 +1,24 @@
 use `internship`;
 delimiter //
 drop procedure checkuser;
-create procedure checkuser(in p_username varchar(20), in p_password varchar(20), inout result int)
+create procedure checkuser(in p_username varchar(20), inout o_password varchar(80))
 begin
-declare tmp_username varchar(20);
-declare tmp_password varchar(20);
-set result = 0;
+#declare tmp_username varchar(20);
+#declare tmp_password varchar(20);
+#set result = 0;
+set o_password = '';
 
-select username, password
-into tmp_username, tmp_password
+select password
+into o_password
 from 
 	users us 
 where 
-	us.username = p_username and us.password = p_password;
+	us.username = p_username;
 
-if tmp_username = p_username and tmp_password = p_password
-then
-	set result = 1;
-end if;
+#if tmp_username = p_username
+#then
+#	set result = 1;
+ #   set p_password = tmp_password;
+#end if;
 
 end;

@@ -8,6 +8,7 @@ import com.mihai.qualifier.HibernateDB;
 import com.mihai.qualifier.JDBCDatabase;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
