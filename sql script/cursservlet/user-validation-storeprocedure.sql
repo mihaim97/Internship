@@ -11,7 +11,7 @@ set o_password = '';
 select password
 into o_password
 from 
-	users us 
+	`user` us 
 where 
 	us.username = p_username;
 
