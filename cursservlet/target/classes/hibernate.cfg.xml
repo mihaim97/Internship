@@ -12,5 +12,6 @@
         <mapping  package="com.mihai.hibernate.entity"/> <!-- Nu merge cu intreg pachetul .... (: De ce ?????-->
         <mapping class="com.mihai.hibernate.entity.Product"/>
         <mapping class = "com.mihai.hibernate.entity.User" />
+        <mapping class = "com.mihai.hibernate.entity.ProductType" />
     </session-factory>
 </hibernate-configuration>

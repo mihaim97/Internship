@@ -15,11 +15,16 @@ public class Product implements Serializable {
     @Column(name = "pName")
     private String name;
 
+    @ManyToOne()
+    @JoinColumn(name = "pType")
+    private ProductType type;
+
     public Product(){}
 
-    public Product(int id, String name) {
+    public Product(int id, String name, ProductType type) {
         this.id = id;
         this.name = name;
+        this.type = type;
     }
 
     public int getId() {
@@ -36,6 +41,14 @@ public class Product implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ProductType getType() {
+        return type;
+    }
+
+    public void setType(ProductType type) {
+        this.type = type;
     }
 
     @Override

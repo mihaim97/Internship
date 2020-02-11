@@ -2,6 +2,7 @@ package com.mihai.ejb.clasicjdbc;
 
 import com.mihai.ejb.Database;
 import com.mihai.hibernate.entity.Product;
+import com.mihai.hibernate.entity.ProductType;
 import com.mihai.qualifier.JDBCDatabase;
 import com.mihai.util.DBProperties;
 import org.mindrot.jbcrypt.BCrypt;
@@ -47,20 +48,19 @@ public class JDBCDatabaseImpl implements Database {
         this.connect();
         // Procedura stocata, ca sa nu repet aceleasi validari in cod de doua ori.......
 
-        try(PreparedStatement ps = this.connection.prepareStatement("select * from product")){
-            ResultSet result = ps.executeQuery();
+        try(CallableStatement ps = this.connection.prepareCall("call retrieveProducts()")){
+            ps.executeQuery();
+            ResultSet result = ps.getResultSet();
 
             while(result.next()){
-               // listOfProducts.add(new Product());
-                System.out.println(result.getInt("id"));
-                System.out.println(result.getString("pName"));
-                System.out.println(result.getString("pType"));
+                listOfProducts.add(new Product(result.getInt("id"),result.getString("pName"),
+                                    new ProductType(result.getString("pType"))));
             }
             this.connection.close();
         }catch(SQLException exc){
             exc.printStackTrace();
         }
-        return null;
+        return listOfProducts;
     }
 
     @Override
