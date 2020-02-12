@@ -24,7 +24,7 @@ public interface Database {
 
     public void addProduct();
 
-    public void registerAnOrder();
+    public void registerAnOrder(String user, List<String> products);
 
     // Sf product method
 

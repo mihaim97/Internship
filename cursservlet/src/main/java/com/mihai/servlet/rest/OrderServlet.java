@@ -3,6 +3,7 @@ package com.mihai.servlet.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mihai.ejb.Database;
 import com.mihai.qualifier.JDBCDatabase;
+import com.mihai.util.SessionProperties;
 import org.apache.commons.io.IOUtils;
 
 import javax.inject.Inject;
@@ -34,5 +35,6 @@ public class OrderServlet extends HttpServlet {
         List<String> productInCurrentOrder = mapper.readValue(result, ArrayList.class);
 
         productInCurrentOrder.stream().forEach(p->System.out.println(p));
+        db.registerAnOrder(req.getHeader(SessionProperties.user), productInCurrentOrder);
     }
 }

@@ -46,7 +46,7 @@ public class HibernateDatabaseImpl implements Database {
     }
 
     @Override
-    public void registerAnOrder() {
+    public void registerAnOrder(String user, List<String> products) {
 
     }
 

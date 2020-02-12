@@ -5,6 +5,8 @@ import com.mihai.hibernate.entity.Product;
 import com.mihai.hibernate.entity.ProductType;
 import com.mihai.qualifier.JDBCDatabase;
 import com.mihai.util.DBProperties;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.hibernate.exception.spi.SQLExceptionConversionDelegate;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -42,6 +44,16 @@ public class JDBCDatabaseImpl implements Database {
         }
     }
 
+    private void disconnect(){
+        if(this.connection != null)
+            try{
+                this.connection.close();
+            }catch(SQLException exc){
+                exc.printStackTrace();
+            }
+
+    }
+
     @Override
     public List<Product> queryProducts() {
         List<Product> listOfProducts = new ArrayList<>();
@@ -56,10 +68,11 @@ public class JDBCDatabaseImpl implements Database {
                 listOfProducts.add(new Product(result.getInt("id"),result.getString("pName"),
                                     new ProductType(result.getString("pType"))));
             }
-            this.connection.close();
         }catch(SQLException exc){
             exc.printStackTrace();
         }
+
+        this.disconnect();
         return listOfProducts;
     }
 
@@ -76,11 +89,14 @@ public class JDBCDatabaseImpl implements Database {
             call.registerOutParameter(2, Types.VARCHAR);
             call.executeQuery();
             System.out.println(call.getString(2));
-            if(BCrypt.checkpw(password, call.getString(2)))
+            if(BCrypt.checkpw(password, call.getString(2))) {
+                this.connection.close();
                 return true;
+            }
         }catch(SQLException exc){
             exc.printStackTrace();
         }
+        this.disconnect();
         return false;
     }
 
@@ -90,12 +106,39 @@ public class JDBCDatabaseImpl implements Database {
     }
 
     @Override
-    public void registerAnOrder() {
+    public void registerAnOrder(String user, List<String> products) {
+        this.connect();
 
+        try(CallableStatement call = this.connection.prepareCall("call createorder (?,?)")){
+            call.setString(1, user);
+            call.registerOutParameter(2, Types.INTEGER);
+            call.executeQuery();
+            if(call.getInt(2) != -1)
+                this.registerOrderProducts(call.getInt(2), products);
+        }catch(SQLException exc){
+            exc.printStackTrace();
+        }
+        this.disconnect();
+    }
+
+    private void registerOrderProducts(int orderId, List<String> products){
+
+        try(CallableStatement call = this.connection.prepareCall("call addorderinfo (?,?)")){
+            products.stream().forEach(p->{
+                try{
+                    call.setInt(1, orderId);
+                    call.setString(2, p);
+                    call.execute();
+                }catch(SQLException exc){
+                    exc.printStackTrace();
+                }
+            });
+        }catch(SQLException exc){
+            exc.printStackTrace();
+        }
     }
 
     @Override
     public void queryProduct(int id) {
-
     }
 }
