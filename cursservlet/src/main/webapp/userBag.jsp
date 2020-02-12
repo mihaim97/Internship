@@ -12,5 +12,6 @@
        </tr>
       </c:forEach>
     </table>
+    <a href="buy">Buy</a>
     </body>
 </html>

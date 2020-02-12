@@ -85,6 +85,16 @@ public class JDBCDatabaseImpl implements Database {
     }
 
     @Override
+    public void addProduct() {
+
+    }
+
+    @Override
+    public void registerAnOrder() {
+
+    }
+
+    @Override
     public void queryProduct(int id) {
 
     }

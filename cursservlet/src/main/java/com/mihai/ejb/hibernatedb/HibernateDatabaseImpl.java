@@ -41,6 +41,16 @@ public class HibernateDatabaseImpl implements Database {
     }
 
     @Override
+    public void addProduct() {
+
+    }
+
+    @Override
+    public void registerAnOrder() {
+
+    }
+
+    @Override
     public void queryProduct(int id) {
 
     }

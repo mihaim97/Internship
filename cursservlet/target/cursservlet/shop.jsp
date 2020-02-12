@@ -16,8 +16,8 @@
     <table border="1">
       <c:forEach items="${cars}" var="car">
        <tr>
-         <td>${car}</td>
-          <td><a href="add-product?product=${car}">Add</a></td>
+         <td>${car.getName()}</td>
+          <td><a href="add-product?product=${car.getName()}">Add</a></td>
        </tr>
       </c:forEach>
     </table>
@@ -26,8 +26,8 @@
     <table border="1">
       <c:forEach items="${pc}" var="pc">
         <tr>
-          <td>${pc}</td>
-          <td><a href="add-product?product=${pc}">Add</a></td>
+          <td>${pc.getName()}</td>
+          <td><a href="add-product?product=${pc.getName()}">Add</a></td>
         </tr>
       </c:forEach>
     </table>

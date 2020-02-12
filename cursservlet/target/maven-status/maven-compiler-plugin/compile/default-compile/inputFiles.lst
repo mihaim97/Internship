@@ -1,5 +1,6 @@
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\LogInServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\Database.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\rest\OrderServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\entity\ProductType.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\clasicjdbc\JDBCDatabaseImpl.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\ApiServlet.java
@@ -13,6 +14,7 @@ C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\m
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\ClearBagServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\db\ProductsDB.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\entity\Product.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\URL.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\hibernatedb\HibernateDatabaseImpl.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\ShowUserBagServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\SessionProperties.java
@@ -26,6 +28,7 @@ C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\m
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\BagServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\Pages.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\Parameter.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\rest\BuyServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\ShopServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\UserBagServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\dao\ProductDAO.java

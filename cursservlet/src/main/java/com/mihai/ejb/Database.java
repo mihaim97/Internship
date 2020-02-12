@@ -20,4 +20,12 @@ public interface Database {
 
     // Sf user method
 
+    // product method
+
+    public void addProduct();
+
+    public void registerAnOrder();
+
+    // Sf product method
+
 }

@@ -7,6 +7,7 @@ com\mihai\hibernate\dao\ProductDAOImpl.class
 com\mihai\util\Pages.class
 com\mihai\ejb\hibernatedb\HibernateDatabaseImpl.class
 com\mihai\hibernate\dao\ProductDAO.class
+com\mihai\util\URL.class
 com\mihai\servlet\LogInServlet.class
 com\mihai\util\Attribute.class
 com\mihai\util\SessionProperties.class
@@ -20,8 +21,10 @@ com\mihai\util\DBProperties.class
 com\mihai\qualifier\HibernateDB.class
 com\mihai\filter\LogInFilter.class
 com\mihai\hibernate\services\ProductServiceImpl.class
+com\mihai\servlet\rest\BuyServlet.class
 com\mihai\hibernate\entity\ProductType.class
 com\mihai\qualifier\JDBCDatabase.class
+com\mihai\servlet\rest\OrderServlet.class
 com\mihai\hibernate\entity\User.class
 com\mihai\servlet\ClearBagServlet.class
 com\mihai\servlet\BagServlet.class

@@ -1,7 +1,10 @@
 package com.mihai.servlet;
 
 import com.mihai.db.ProductsDB;
+import com.mihai.ejb.Database;
+import com.mihai.hibernate.entity.Product;
 import com.mihai.loginstate.UsersBag;
+import com.mihai.qualifier.JDBCDatabase;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
 
@@ -12,6 +15,9 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @WebServlet(name = "shop-servlet", urlPatterns = "/shop",
@@ -24,7 +30,8 @@ public class ShopServlet extends HttpServlet {
     private UsersBag usersBag;
 
     @Inject
-    private ProductsDB productsDb;
+    @JDBCDatabase
+    private Database db;
 
     @Override
     public void init() throws ServletException {
@@ -41,8 +48,13 @@ public class ShopServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String user = (String)session.getAttribute(SessionProperties.user);
 
-        req.setAttribute("cars", productsDb.getProducts().get("Cars")); // ProductsDB.instance
-        req.setAttribute("pc", productsDb.getProducts().get("PC")); // ProductsDB.instance
+        List<Product> productList = db.queryProducts();
+
+        req.setAttribute("cars", productList.stream().
+                                filter(p->p.getType().getType().equals("CAR")).collect(Collectors.toList()));
+
+        req.setAttribute("pc", productList.stream().
+                filter(p->p.getType().getType().equals("PC")).collect(Collectors.toList()));
 
         if(usersBag.userExist(user)){ //UsersBag.instance
             req.setAttribute("userProducts", usersBag.countUserProducts(user)); //UsersBag.instance
