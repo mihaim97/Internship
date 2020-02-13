@@ -13,5 +13,6 @@
         <mapping class="com.mihai.hibernate.entity.Product"/>
         <mapping class = "com.mihai.hibernate.entity.User" />
         <mapping class = "com.mihai.hibernate.entity.ProductType" />
+        <mapping class = "com.mihai.hibernate.entity.Order"/>
     </session-factory>
 </hibernate-configuration>

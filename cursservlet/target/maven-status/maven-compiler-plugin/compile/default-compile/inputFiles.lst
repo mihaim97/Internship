@@ -19,8 +19,11 @@ C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\m
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\ShowUserBagServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\SessionProperties.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\db\UserDB.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\entity\OrderInfo.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\Headers.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\DBProperties.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\clasicjdbc\ConnectionPooling.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\entity\Order.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\session\HibernateSession.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\services\ProductService.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\dao\ProductDAOImpl.java

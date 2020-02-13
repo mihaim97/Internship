@@ -13,5 +13,15 @@
       </c:forEach>
     </table>
     <a href="buy">Buy</a>
+
+    <h1>Your orders</h1>
+    <table border="1">
+       <c:forEach items="${products}" var="prod">
+         <tr>
+           <td>${prod}</td>
+        </tr>
+      </c:forEach>
+    </table>
+
     </body>
 </html>

@@ -1,7 +1,7 @@
 use `internship`;
 
-drop table if exists `order`;
 drop table if exists `orderinfo`;
+drop table if exists `order`;
 
 create table `order`(
 `id` int primary key not null auto_increment,
@@ -18,7 +18,7 @@ create table `orderinfo`(
 `id` int primary key not null auto_increment,
 `orderId` int not null,
 `product` varchar(20) not null,
-constraint F_Key_OrderInfoId foreign key (`orderId`) references `order` (`id`),
+constraint F_Key_OrderInfoId foreign key (`orderId`) references `order` (`id`) on delete cascade,
 constraint F_Key_OrderInfoProd foreign key (`product`) references product (`pName`)
 );
 

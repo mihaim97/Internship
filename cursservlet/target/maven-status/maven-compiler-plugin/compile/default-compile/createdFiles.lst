@@ -1,3 +1,4 @@
+com\mihai\hibernate\entity\OrderInfo.class
 com\mihai\db\UserDB.class
 com\mihai\ejb\clasicjdbc\JDBCDatabaseImpl.class
 com\mihai\servlet\ShowUserBagServlet.class
@@ -20,6 +21,7 @@ com\mihai\loginstate\UsersBag.class
 com\mihai\util\DBProperties.class
 com\mihai\qualifier\HibernateDB.class
 com\mihai\filter\LogInFilter.class
+com\mihai\hibernate\entity\Order.class
 com\mihai\hibernate\services\ProductServiceImpl.class
 com\mihai\servlet\rest\BuyServlet.class
 com\mihai\hibernate\entity\ProductType.class
@@ -31,6 +33,7 @@ com\mihai\servlet\BagServlet.class
 com\mihai\hibernate\services\ProductService.class
 com\mihai\servlet\UserBagServlet.class
 com\mihai\db\ProductsDB.class
+com\mihai\ejb\clasicjdbc\ConnectionPooling.class
 com\mihai\hibernate\entity\Product.class
 com\mihai\servlet\AddProductInShopServlet.class
 com\mihai\loginstate\LogInUser.class

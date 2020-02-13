@@ -51,6 +51,11 @@ public class HibernateDatabaseImpl implements Database {
     }
 
     @Override
+    public void getUserOrders(String user) {
+
+    }
+
+    @Override
     public void queryProduct(int id) {
 
     }

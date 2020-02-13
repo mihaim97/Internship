@@ -26,6 +26,8 @@ public interface Database {
 
     public void registerAnOrder(String user, List<String> products);
 
+    public void getUserOrders(String user);
+
     // Sf product method
 
 }
