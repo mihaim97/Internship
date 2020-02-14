@@ -2,7 +2,9 @@ package com.mihai.servlet.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mihai.ejb.Database;
+import com.mihai.ejb.DatabaseService;
 import com.mihai.qualifier.JDBCDatabase;
+import com.mihai.qualifier.JDBCDatabaseService;
 import com.mihai.util.SessionProperties;
 import org.apache.commons.io.IOUtils;
 
@@ -24,12 +26,12 @@ import java.util.List;
 public class OrderServlet extends HttpServlet {
 
     @Inject
-    @JDBCDatabase
-    private Database db;
+    @JDBCDatabaseService
+    private DatabaseService db;
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Sa procesat comanda!!!!");
+        System.out.println("Procesare comanda!!!!");
         ObjectMapper mapper = new ObjectMapper();
         String result = IOUtils.toString(req.getInputStream(), StandardCharsets.UTF_8);
         List<String> productInCurrentOrder = mapper.readValue(result, ArrayList.class);

@@ -2,9 +2,11 @@ package com.mihai.servlet;
 
 import com.mihai.db.ProductsDB;
 import com.mihai.ejb.Database;
+import com.mihai.ejb.DatabaseService;
 import com.mihai.hibernate.entity.Product;
 import com.mihai.loginstate.UsersBag;
 import com.mihai.qualifier.JDBCDatabase;
+import com.mihai.qualifier.JDBCDatabaseService;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
 
@@ -30,8 +32,8 @@ public class ShopServlet extends HttpServlet {
     private UsersBag usersBag;
 
     @Inject
-    @JDBCDatabase
-    private Database db;
+    @JDBCDatabaseService
+    private DatabaseService db;
 
     @Override
     public void init() throws ServletException {

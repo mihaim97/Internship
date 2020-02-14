@@ -1,5 +1,6 @@
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\LogInServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\Database.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\DatabaseService.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\rest\OrderServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\entity\ProductType.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\clasicjdbc\JDBCDatabaseImpl.java
@@ -21,6 +22,7 @@ C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\m
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\db\UserDB.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\entity\OrderInfo.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\Headers.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\servicedb\JDBCDatabaseServiceImpl.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\util\DBProperties.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\ejb\clasicjdbc\ConnectionPooling.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\hibernate\entity\Order.java
@@ -38,4 +40,5 @@ C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\m
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\filter\LogInFilter.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\servlet\AddProductInShopServlet.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\model\UserInfo.java
+C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\qualifier\JDBCDatabaseService.java
 C:\Users\mihai.marian\Desktop\GitRepo\Internship\cursservlet\src\main\java\com\mihai\loginstate\LogInUser.java

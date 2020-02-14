@@ -1,10 +1,12 @@
 package com.mihai.servlet;
 
 import com.mihai.ejb.Database;
+import com.mihai.ejb.DatabaseService;
 import com.mihai.hibernate.entity.Order;
 import com.mihai.hibernate.entity.User;
 import com.mihai.loginstate.UsersBag;
 import com.mihai.qualifier.JDBCDatabase;
+import com.mihai.qualifier.JDBCDatabaseService;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
 import org.graalvm.compiler.lir.LIRInstruction;
@@ -27,8 +29,8 @@ public class ShowUserBagServlet extends HttpServlet {
     private UsersBag usersBag;
 
     @Inject
-    @JDBCDatabase
-    private Database db;
+    @JDBCDatabaseService
+    private DatabaseService db;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,16 +42,6 @@ public class ShowUserBagServlet extends HttpServlet {
         List<Order> orderList = db.getUserOrders(user);
 
         req.setAttribute("orders", orderList);
-
-        orderList.stream().forEach(order -> {
-            System.out.println(order.getId() + order.getOwner().getUsername());
-        });
-
-        orderList.stream().forEach(order -> {
-            order.getOrderInfo().stream().forEach(orderInfo -> {
-                System.out.println(orderInfo.getProduct().getName());
-            });
-        });
 
         RequestDispatcher disp = req.getRequestDispatcher(Pages.userBag);
         disp.forward(req, resp);

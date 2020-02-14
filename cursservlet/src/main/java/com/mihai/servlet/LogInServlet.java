@@ -2,7 +2,9 @@ package com.mihai.servlet;
 
 import com.mihai.db.UserDB;
 import com.mihai.ejb.Database;
+import com.mihai.ejb.DatabaseService;
 import com.mihai.qualifier.JDBCDatabase;
+import com.mihai.qualifier.JDBCDatabaseService;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
 
@@ -22,8 +24,8 @@ import java.util.Date;
 public class LogInServlet extends HttpServlet {
 
     @Inject
-    @JDBCDatabase // putem schimba implementarea catre @JDBCDatabase sau HibernateDB
-    private Database db;
+    @JDBCDatabaseService
+    private DatabaseService db;
 
     @Inject
     private UserDB usersDB;

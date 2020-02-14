@@ -1,9 +1,11 @@
+com\mihai\ejb\servicedb\JDBCDatabaseServiceImpl.class
 com\mihai\hibernate\entity\OrderInfo.class
 com\mihai\db\UserDB.class
 com\mihai\ejb\clasicjdbc\JDBCDatabaseImpl.class
 com\mihai\servlet\ShowUserBagServlet.class
 com\mihai\servlet\ShopServlet.class
 com\mihai\util\Parameter.class
+com\mihai\ejb\DatabaseService.class
 com\mihai\hibernate\dao\ProductDAOImpl.class
 com\mihai\util\Pages.class
 com\mihai\ejb\hibernatedb\HibernateDatabaseImpl.class
@@ -25,6 +27,7 @@ com\mihai\hibernate\entity\Order.class
 com\mihai\hibernate\services\ProductServiceImpl.class
 com\mihai\servlet\rest\BuyServlet.class
 com\mihai\hibernate\entity\ProductType.class
+com\mihai\qualifier\JDBCDatabaseService.class
 com\mihai\qualifier\JDBCDatabase.class
 com\mihai\servlet\rest\OrderServlet.class
 com\mihai\hibernate\entity\User.class

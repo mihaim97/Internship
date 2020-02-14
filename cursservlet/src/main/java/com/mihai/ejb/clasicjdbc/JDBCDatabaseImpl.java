@@ -32,28 +32,6 @@ public class JDBCDatabaseImpl implements Database {
         System.out.println("Mesajjj!!! from ejb " + Integer.toString(dbId));
     }
 
-
-    private void connect() {
-        try{
-            Class.forName(DBProperties.driver);
-            this.connection = DriverManager.getConnection(DBProperties.connectionString, DBProperties.user, DBProperties.password);
-        }catch(ClassNotFoundException exc){
-            exc.printStackTrace();
-        }catch(SQLException exc){
-            exc.printStackTrace();
-        }
-    }
-
-    private void disconnect(){
-        if(this.connection != null)
-            try{
-                this.connection.close();
-            }catch(SQLException exc){
-                exc.printStackTrace();
-            }
-
-    }
-
     @Override
     public List<Product> queryProducts() {
         List<Product> listOfProducts = new ArrayList<>();
@@ -94,7 +72,7 @@ public class JDBCDatabaseImpl implements Database {
     }
 
     public User getUserByName(Connection connection, String name) {
-        try(CallableStatement call = connection.prepareCall("select * from user where username = ?")) {
+        try(CallableStatement call = connection.prepareCall("call retrieveuser(?)")) {
             call.setString(1, name);
             ResultSet resultSet = call.executeQuery();
             User user = null;
@@ -128,7 +106,7 @@ public class JDBCDatabaseImpl implements Database {
     }
 
     private List<OrderInfo> getUserOrderInfo(Connection connection, Order order) {
-        try(CallableStatement call = connection.prepareCall("select * from orderinfo where orderId = ?")){
+        try(CallableStatement call = connection.prepareCall("call retrieveorderinfo(?)")){
             List<OrderInfo> orderInfo = new ArrayList<>();
             call.setInt(1, order.getId());
             ResultSet result = call.executeQuery();
