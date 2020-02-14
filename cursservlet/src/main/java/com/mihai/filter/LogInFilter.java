@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(servletNames = {"shop-servlet", "apiServlet", "clearBag", "addProduct", "showBag"})
+@WebFilter(servletNames = {"shop-servlet", "apiServlet", "clearBag", "addProduct", "userBagView"})
 public class LogInFilter implements Filter {
 
     @Override

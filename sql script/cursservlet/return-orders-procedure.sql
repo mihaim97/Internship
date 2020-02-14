@@ -9,13 +9,7 @@ from
 	`order` ord inner join `orderinfo` ordinf on ord.id = ordinf.orderId
 where ord.owner = p_username;
 */
-select 
-	ord.id,
-	ord.owner,
-    ord.orderDate,
-    ord.expDate,
-       ordinf.id,
-    ordinf.product
-from `order` ord inner join `orderinfo` ordinf on ord.id = ordinf.orderId
+select *
+from `order` ord
 where ord.owner = p_username;
 end;

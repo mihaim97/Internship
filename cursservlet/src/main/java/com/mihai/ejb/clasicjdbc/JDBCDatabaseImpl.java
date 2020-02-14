@@ -1,8 +1,7 @@
 package com.mihai.ejb.clasicjdbc;
 
 import com.mihai.ejb.Database;
-import com.mihai.hibernate.entity.Product;
-import com.mihai.hibernate.entity.ProductType;
+import com.mihai.hibernate.entity.*;
 import com.mihai.qualifier.JDBCDatabase;
 import com.mihai.util.DBProperties;
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
@@ -94,6 +93,21 @@ public class JDBCDatabaseImpl implements Database {
         return false;
     }
 
+    public User getUserByName(Connection connection, String name) {
+        try(CallableStatement call = connection.prepareCall("select * from user where username = ?")) {
+            call.setString(1, name);
+            ResultSet resultSet = call.executeQuery();
+            User user = null;
+            while(resultSet.next()){
+                user = new User(resultSet.getString(1));
+            }
+            return user;
+        }catch(SQLException exc){
+            exc.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public void addProduct() {
 
@@ -113,22 +127,41 @@ public class JDBCDatabaseImpl implements Database {
         }
     }
 
-    @Override
-    public void getUserOrders(String user) {
-        try(Connection connection = ConnectionPooling.getConnection();
-            CallableStatement call = connection.prepareCall("call userorders (?)")){
-            call.setString(1, user);
+    private List<OrderInfo> getUserOrderInfo(Connection connection, Order order) {
+        try(CallableStatement call = connection.prepareCall("select * from orderinfo where orderId = ?")){
+            List<OrderInfo> orderInfo = new ArrayList<>();
+            call.setInt(1, order.getId());
             ResultSet result = call.executeQuery();
             while(result.next()){
-                System.out.println(result.getString(1));
-                System.out.println(result.getDate(2));
-                System.out.println(result.getDate(3));
-                System.out.println(result.getString(4));
+                orderInfo.add(new OrderInfo(result.getInt(1), order, new Product(result.getString(3))));
             }
-
+            return orderInfo;
         }catch(SQLException exc){
             exc.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public List<Order> getUserOrders(String username) {
+        try(Connection connection = ConnectionPooling.getConnection();
+            CallableStatement call = connection.prepareCall("call userorders (?)")){
+            call.setString(1, username);
+            ResultSet result = call.executeQuery();
+            List<Order> orderList = new ArrayList<>();
+            User user = getUserByName(connection, username);
+            while(result.next()){
+                orderList.add(new Order(result.getInt(1), result.getDate(3),
+                        result.getDate(4), user));
+            }
+            orderList.stream().forEach(order->{
+                order.setOrderInfo(getUserOrderInfo(connection, order));
+            });
+            return orderList;
+        }catch(SQLException exc){
+            exc.printStackTrace();
+        }
+        return null;
     }
 
     private void registerOrderProducts(int orderId, List<String> products, Connection connection){
@@ -148,6 +181,7 @@ public class JDBCDatabaseImpl implements Database {
     }
 
     @Override
-    public void queryProduct(int id) {
+    public Product queryProduct(String name) {
+        return null;
     }
 }

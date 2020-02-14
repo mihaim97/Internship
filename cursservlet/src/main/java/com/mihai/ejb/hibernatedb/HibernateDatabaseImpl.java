@@ -1,7 +1,9 @@
 package com.mihai.ejb.hibernatedb;
 
 import com.mihai.ejb.Database;
+import com.mihai.hibernate.entity.Order;
 import com.mihai.hibernate.entity.Product;
+import com.mihai.hibernate.entity.User;
 import com.mihai.hibernate.services.ProductService;
 import com.mihai.qualifier.HibernateDB;
 import com.mihai.util.DBProperties;
@@ -51,12 +53,12 @@ public class HibernateDatabaseImpl implements Database {
     }
 
     @Override
-    public void getUserOrders(String user) {
-
+    public List<Order> getUserOrders(String user) {
+        return null;
     }
 
     @Override
-    public void queryProduct(int id) {
-
+    public Product queryProduct(String name) {
+        return null;
     }
 }

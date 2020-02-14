@@ -1,6 +1,8 @@
 package com.mihai.ejb;
 
+import com.mihai.hibernate.entity.Order;
 import com.mihai.hibernate.entity.Product;
+import com.mihai.hibernate.entity.User;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ public interface Database {
 
     public List<Product> queryProducts();
 
-    public void queryProduct(int id);
+    public Product queryProduct(String name);
 
     public void saveProduct();
 
@@ -26,7 +28,7 @@ public interface Database {
 
     public void registerAnOrder(String user, List<String> products);
 
-    public void getUserOrders(String user);
+    public List<Order> getUserOrders(String user);
 
     // Sf product method
 

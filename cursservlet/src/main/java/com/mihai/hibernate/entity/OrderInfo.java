@@ -25,6 +25,12 @@ public class OrderInfo {
         this.product = product;
     }
 
+    public OrderInfo(int id, Order order, Product product) {
+        this.id = id;
+        this.order = order;
+        this.product = product;
+    }
+
     public int getId() {
         return id;
     }

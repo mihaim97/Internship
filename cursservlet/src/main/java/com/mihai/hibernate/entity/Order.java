@@ -27,7 +27,16 @@ public class Order {
 
     public Order(){}
 
-    public Order(Date orderDate, Date expDate, User owner) {
+    public Order(int id, Date orderDate, Date expDate, User owner, List<OrderInfo> orderInfo) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.expDate = expDate;
+        this.owner = owner;
+        this.orderInfo = orderInfo;
+    }
+
+    public Order(int id, Date orderDate, Date expDate, User owner) {
+        this.id = id;
         this.orderDate = orderDate;
         this.expDate = expDate;
         this.owner = owner;
@@ -63,5 +72,13 @@ public class Order {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public List<OrderInfo> getOrderInfo() {
+        return orderInfo;
+    }
+
+    public void setOrderInfo(List<OrderInfo> orderInfo) {
+        this.orderInfo = orderInfo;
     }
 }

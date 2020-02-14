@@ -15,13 +15,17 @@
     <a href="buy">Buy</a>
 
     <h1>Your orders</h1>
-    <table border="1">
-       <c:forEach items="${products}" var="prod">
+     <c:forEach items="${orders}" var="order">
+        <h3>Order id: ${order.getId()}</h3>
+        <table border="1">
          <tr>
-           <td>${prod}</td>
-        </tr>
-      </c:forEach>
-    </table>
+           <c:forEach items="${order.getOrderInfo()}" var="orderInfo">
+             <td>${orderInfo.getProduct().getName()}</td>
+           </c:forEach>
+         </tr>
+       </table>
+     </c:forEach>
+
 
     </body>
 </html>

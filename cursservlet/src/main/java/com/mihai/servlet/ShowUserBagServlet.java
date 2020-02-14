@@ -1,10 +1,13 @@
 package com.mihai.servlet;
 
 import com.mihai.ejb.Database;
+import com.mihai.hibernate.entity.Order;
+import com.mihai.hibernate.entity.User;
 import com.mihai.loginstate.UsersBag;
 import com.mihai.qualifier.JDBCDatabase;
 import com.mihai.util.Pages;
 import com.mihai.util.SessionProperties;
+import org.graalvm.compiler.lir.LIRInstruction;
 
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "userBagView", urlPatterns = "/showBag")
 public class ShowUserBagServlet extends HttpServlet {
@@ -33,7 +37,19 @@ public class ShowUserBagServlet extends HttpServlet {
 
         req.setAttribute("products", usersBag.getUserProducts(user)); // UsersBag.instance
 
-        db.getUserOrders(user);
+        List<Order> orderList = db.getUserOrders(user);
+
+        req.setAttribute("orders", orderList);
+
+        orderList.stream().forEach(order -> {
+            System.out.println(order.getId() + order.getOwner().getUsername());
+        });
+
+        orderList.stream().forEach(order -> {
+            order.getOrderInfo().stream().forEach(orderInfo -> {
+                System.out.println(orderInfo.getProduct().getName());
+            });
+        });
 
         RequestDispatcher disp = req.getRequestDispatcher(Pages.userBag);
         disp.forward(req, resp);
