@@ -25,12 +25,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void addBook(Book book) {
-        bookDAO.addBook(book);
-        book.getAuthors().stream().forEach(author -> {
-            Number authorId = authorService.addAuthor(author);
-            // De facut legatura in tabelul booksAuthors pentru many to many
-        });
+    public Number addBook(Book book) {
+        Number bookNumber = bookDAO.addBook(book);
+        return bookNumber;
     }
 
     @Override

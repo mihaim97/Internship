@@ -2,6 +2,7 @@ package com.mihai.project.library.dao.jdbctemplate;
 
 import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.service.AuthorService;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,17 +18,24 @@ public class BookDAOImpl implements BookDAO {
 
     private JdbcTemplate jdbcTemplate;
 
-    public BookDAOImpl(JdbcTemplate jdbcTemplate){
+    private AuthorService authorService;
+
+    public BookDAOImpl(JdbcTemplate jdbcTemplate, AuthorService authorService){
         this.jdbcTemplate = jdbcTemplate;
+        this.authorService = authorService;
     }
 
     @Override
-    public void addBook(Book book) {
+    public Number addBook(Book book) {
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.BOOK).usingGeneratedKeyColumns(MyTable.BOOK_ID);
         Map<String, Object> values = new HashMap<>();
         values.put(MyTable.BOOK_TITLE, book.getTitle());
         values.put(MyTable.BOOK_DATE_ADDED, book.getDateAdded());
-        insert.execute(values);
+        book.getAuthors().stream().forEach(author -> {
+            Number authorId = authorService.addAuthor(author);
+            // De facut legatura in tabelul booksAuthors pentru many to many
+        });
+        return insert.executeAndReturnKey(values);
     }
 
     @Override

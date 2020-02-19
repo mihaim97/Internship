@@ -14,12 +14,8 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorServiceImpl(AuthorDAO authorDAO){this.authorDAO = authorDAO;}
 
     @Override
-    public Number addAuthor(Author authorParam) {
-        Author author = authorDAO.querySingleAuthor(authorParam.getName());
-        if(author == null)
-            return authorDAO.addAuthor(authorParam);
-        else
-            return author.getId();
+    public Number addAuthor(Author author) {
+      return authorDAO.addAuthor(author);
     }
 
     @Override

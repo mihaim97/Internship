@@ -22,10 +22,15 @@ public class AuthorDAOImpl implements AuthorDAO {
 
     @Override
     public Number addAuthor(Author author) {
-        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.AUTHOR).usingGeneratedKeyColumns(MyTable.AUTHOR_ID);
-        Map<String, Object> values = new HashMap<>();
-        values.put(MyTable.AUTHOR_NAME, author.getName());
-        return insert.executeAndReturnKey(values);
+        Author authorQuery = querySingleAuthor(author.getName());
+        if(authorQuery == null){
+            SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.AUTHOR).usingGeneratedKeyColumns(MyTable.AUTHOR_ID);
+            Map<String, Object> values = new HashMap<>();
+            values.put(MyTable.AUTHOR_NAME, author.getName());
+            return insert.executeAndReturnKey(values);
+        }
+        else
+            return authorQuery.getId();
     }
 
     @Override

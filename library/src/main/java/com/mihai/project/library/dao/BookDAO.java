@@ -5,7 +5,7 @@ import com.mihai.project.library.entity.book.Book;
 import java.util.List;
 
 public interface BookDAO {
-    public void addBook(Book book);
+    public Number addBook(Book book);
     public List<Book> queryBooks();
     public Book queryBook(int id);
 }
