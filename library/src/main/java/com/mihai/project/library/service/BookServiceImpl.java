@@ -3,6 +3,7 @@ package com.mihai.project.library.service;
 import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.dto.BookDTO;
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.util.MyObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,20 @@ public class BookServiceImpl implements BookService {
 
     private BookDAO bookDAO;
 
-    public BookServiceImpl(BookDAO bookDAO){
+    private AuthorService authorService;
+
+    public BookServiceImpl(BookDAO bookDAO, AuthorService authorService){
         this.bookDAO = bookDAO;
+        this.authorService = authorService;
     }
 
     @Override
     public void addBook(Book book) {
         bookDAO.addBook(book);
+        book.getAuthors().stream().forEach(author -> {
+            Number authorId = authorService.addAuthor(author);
+            // De facut legatura in tabelul booksAuthors pentru many to many
+        });
     }
 
     @Override
@@ -38,7 +46,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDTO> fromBooksToDTO() {
         List<Book> book = queryBooks();
-        ModelMapper mapper = new ModelMapper();
+        ModelMapper mapper = MyObjectMapper.getMapper();
         List<BookDTO> booksDTO = new ArrayList<>();
         book.stream().forEach(b->{
             booksDTO.add(mapper.map(b, (Type) BookDTO.class));
@@ -48,14 +56,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDTO fromBookToDTO(Book book) {
-        ModelMapper mapper = new ModelMapper();
+        ModelMapper mapper = MyObjectMapper.getMapper();
         BookDTO bookDTO = mapper.map(book, BookDTO.class);
         return bookDTO;
     }
 
     @Override
     public Book fromDTOToBook(BookDTO bookDTO) {
-        ModelMapper mapper = new ModelMapper();
+        ModelMapper mapper = MyObjectMapper.getMapper();
         Book book = mapper.map(bookDTO, Book.class);
         return book;
     }

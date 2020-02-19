@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @JsonIgnoreProperties(value = "id", allowGetters = true)
 public class BookDTO {
@@ -16,12 +17,16 @@ public class BookDTO {
     @NotNull
     private Date dateAdded;
 
+    @NotNull
+    private List<AuthorDTO> authors;
+
     public BookDTO(){}
 
-    public BookDTO(int id, String title, Date dateAdded) {
+    public BookDTO(int id, @NotNull String title, @NotNull Date dateAdded, @NotNull List<AuthorDTO> authors) {
         this.id = id;
         this.title = title;
         this.dateAdded = dateAdded;
+        this.authors = authors;
     }
 
     public int getId() {
@@ -46,5 +51,13 @@ public class BookDTO {
 
     public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public List<AuthorDTO> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<AuthorDTO> authors) {
+        this.authors = authors;
     }
 }

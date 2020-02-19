@@ -14,8 +14,7 @@ create table `books`(
 
 create table `authors`(
 `id` int primary key auto_increment not null,
-`name` varchar(50) not null,
-`addDate` date not null
+`name` varchar(50) not null unique
 );
 
 create table `booksAuthors`(
