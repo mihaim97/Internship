@@ -1,8 +1,10 @@
 package com.mihai.project.library.dao.jdbctemplate;
 
 import com.mihai.project.library.dao.BookDAO;
+import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.service.AuthorService;
+import com.mihai.project.library.service.BookDescriptionService;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,12 +19,13 @@ import java.util.Map;
 public class BookDAOImpl implements BookDAO {
 
     private JdbcTemplate jdbcTemplate;
-
     private AuthorService authorService;
+    private BookDescriptionService bookDescriptionService;
 
-    public BookDAOImpl(JdbcTemplate jdbcTemplate, AuthorService authorService){
+    public BookDAOImpl(JdbcTemplate jdbcTemplate, AuthorService authorService, BookDescriptionService bookDescriptionService){
         this.jdbcTemplate = jdbcTemplate;
         this.authorService = authorService;
+        this.bookDescriptionService = bookDescriptionService;
     }
 
     @Override
@@ -31,24 +34,36 @@ public class BookDAOImpl implements BookDAO {
         Map<String, Object> values = new HashMap<>();
         values.put(MyTable.BOOK_TITLE, book.getTitle());
         values.put(MyTable.BOOK_DATE_ADDED, book.getDateAdded());
+        Number bookId = insert.executeAndReturnKey(values);
         book.getAuthors().stream().forEach(author -> {
             Number authorId = authorService.addAuthor(author);
-            // De facut legatura in tabelul booksAuthors pentru many to many
+            addBookAuthorLink(bookId, authorId);
         });
-        return insert.executeAndReturnKey(values);
+        book.getBookDescriptions().stream().forEach(desc->{
+            bookDescriptionService.addBookDescription(bookId.intValue(), desc);
+        });
+        return bookId;
     }
 
     @Override
     public List<Book> queryBooks() {
         List<Book> books =  jdbcTemplate.query(MyQuery.QUERY_BOOKS,
-                (res, num)->{ return new Book( res.getInt(1), res.getString(2), res.getDate(3), null);});
+                (res, num)->{ return new Book( res.getInt(1), res.getString(2), res.getDate(3), null, null);});
         return books;
     }
 
     @Override
     public Book queryBook(int id) {
         Book books =  jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_BOOK, new Object[]{id},
-                (res, num)->{ return new Book( res.getInt(1), res.getString(2), res.getDate(3), null);});
+                (res, num)->{ return new Book( res.getInt(1), res.getString(2), res.getDate(3), null, null);});
         return books;
+    }
+
+    private void addBookAuthorLink(Number bookId, Number authorId){
+        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.BOOK_AUTHOR);
+        Map<String, Object> values = new HashMap<>();
+        values.put(MyTable.BOOK_AUTHOR_BOOK_ID, bookId.intValue());
+        values.put(MyTable.BOOK_AUTHOR_AUTHOR_ID, authorId.intValue());
+        insert.execute(values);
     }
 }

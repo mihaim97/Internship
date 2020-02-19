@@ -28,8 +28,9 @@ public class BookController {
     @PostMapping("/add")
     private void addBook(@RequestBody @Valid BookDTO bookDTO){
         Book book = bookService.fromDTOToBook(bookDTO);
-        System.out.println(book.getId() + " " + book.getTitle() + " " + book.getDateAdded());
-        book.getAuthors().stream().forEach(a->{System.out.println(a.getName());});
+        //System.out.println(book.getId() + " " + book.getTitle() + " " + book.getDateAdded());
+        //book.getAuthors().stream().forEach(a->{System.out.println(a.getName());});
+        //book.getBookDescriptions().stream().forEach(a->{System.out.println(a.getDescription());});
         bookService.addBook(book);
     }
 

@@ -20,13 +20,17 @@ public class BookDTO {
     @NotNull
     private List<AuthorDTO> authors;
 
+    @NotNull
+    private List<BookDescDTO>  bookDescriptions;
+
     public BookDTO(){}
 
-    public BookDTO(int id, @NotNull String title, @NotNull Date dateAdded, @NotNull List<AuthorDTO> authors) {
+    public BookDTO(int id, @NotNull String title, @NotNull Date dateAdded, @NotNull List<AuthorDTO> authors, @NotNull List<BookDescDTO> bookDescriptions) {
         this.id = id;
         this.title = title;
         this.dateAdded = dateAdded;
         this.authors = authors;
+        this.bookDescriptions = bookDescriptions;
     }
 
     public int getId() {
@@ -59,5 +63,13 @@ public class BookDTO {
 
     public void setAuthors(List<AuthorDTO> authors) {
         this.authors = authors;
+    }
+
+    public List<BookDescDTO> getBookDescriptions() {
+        return bookDescriptions;
+    }
+
+    public void setBookDescriptions(List<BookDescDTO> bookDescriptions) {
+        this.bookDescriptions = bookDescriptions;
     }
 }

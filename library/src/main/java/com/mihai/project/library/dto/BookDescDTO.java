@@ -1,15 +1,21 @@
-package com.mihai.project.library.entity.book;
+package com.mihai.project.library.dto;
 
-public class BookDesc {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mihai.project.library.entity.book.Book;
 
+@JsonIgnoreProperties(value = "id", allowGetters = true)
+public class BookDescDTO {
     private int id;
     private String description;
     private int status;
+
+    @JsonIgnore
     private Book bookId;
 
-    public BookDesc() { }
+    public BookDescDTO() { }
 
-    public BookDesc(int id, String description, int status, Book bookId) {
+    public BookDescDTO(int id, String description, int status, Book bookId) {
         this.id = id;
         this.description = description;
         this.status = status;

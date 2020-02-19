@@ -7,4 +7,7 @@ public class MyQuery {
 
     // Author
     public static String QUERY_SINGLE_AUTHOR= "select * from authors where name = ?";
+
+    // Book - Author M-M
+    public static String ADD_MANY_TO_MANY_LINK = "insert into booksAuthors values(?,?)";
 }

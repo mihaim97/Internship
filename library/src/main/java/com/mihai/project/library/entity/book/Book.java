@@ -10,14 +10,16 @@ public class Book {
     private String title;
     private Date dateAdded;
     private List<Author> authors;
+    private List<BookDesc> bookDescriptions;
 
     public Book(){}
 
-    public Book(int id, String title, Date dateAdded, List<Author> authors) {
+    public Book(int id, String title, Date dateAdded, List<Author> authors, List<BookDesc> bookDesc) {
         this.id = id;
         this.title = title;
         this.dateAdded = dateAdded;
         this.authors = authors;
+        this.bookDescriptions = bookDesc;
     }
 
     public int getId() {
@@ -50,5 +52,13 @@ public class Book {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    public List<BookDesc> getBookDescriptions() {
+        return bookDescriptions;
+    }
+
+    public void setBookDescriptions(List<BookDesc> bookDescriptions) {
+        this.bookDescriptions = bookDescriptions;
     }
 }

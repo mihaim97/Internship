@@ -34,7 +34,7 @@ constraint `FK_BookId_Tags` foreign key (`bookId`) references `books` (`id`) on 
 
 create table `bookDescriptions`(
 `id` int primary key auto_increment not null,
-`desc` varchar(80) not null,
+`description` varchar(80) not null,
 `status` int not null,
 `bookId` int not null,
 constraint `FK_BookId_Description` foreign key (`bookId`) references `books` (`id`) on delete cascade on update cascade
