@@ -9,7 +9,7 @@ drop table if exists `books`;
 create table `books`(
 `id` int primary key auto_increment not null,
 `title` varchar(50) not null,
-`addDate` date not null
+`dateAdded` date not null
 );
 
 create table `authors`(
