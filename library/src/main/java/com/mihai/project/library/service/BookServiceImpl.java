@@ -32,7 +32,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book queryBook(int id) {
-        return null;
+        return bookDAO.queryBook(id);
     }
 
     @Override
@@ -47,9 +47,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public BookDTO fromBookToDTO(Book book) {
+        ModelMapper mapper = new ModelMapper();
+        BookDTO bookDTO = mapper.map(book, BookDTO.class);
+        return bookDTO;
+    }
+
+    @Override
     public Book fromDTOToBook(BookDTO bookDTO) {
         ModelMapper mapper = new ModelMapper();
         Book book = mapper.map(bookDTO, Book.class);
         return book;
     }
+
+
 }

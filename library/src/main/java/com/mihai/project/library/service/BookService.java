@@ -10,5 +10,6 @@ public interface BookService {
     public List<Book> queryBooks();
     public Book queryBook(int id);
     public List<BookDTO> fromBooksToDTO();
+    public BookDTO fromBookToDTO(Book book);
     public Book fromDTOToBook (BookDTO bookDTO);
 }

@@ -38,6 +38,9 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public Book queryBook(int id) {
-        return null;
+        String query = "select * from books where id = ?";
+        Book books =  jdbcTemplate.queryForObject(query, new Object[]{id},
+                (res, num)->{ return new Book( res.getInt(1), res.getString(2), res.getDate(3));});
+        return books;
     }
 }
