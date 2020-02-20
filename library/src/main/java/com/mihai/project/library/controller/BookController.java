@@ -29,10 +29,6 @@ public class BookController {
     @PostMapping("/add")
     private void addBook(@RequestBody @Valid BookDTO bookDTO){
         Book book = bookService.fromDTOToBook(bookDTO);
-        //System.out.println(book.getId() + " " + book.getTitle() + " " + book.getDateAdded());
-        //book.getAuthors().stream().forEach(a->{System.out.println(a.getName());});
-        //book.getBookDescriptions().stream().forEach(a->{System.out.println(a.getDescription());});
-        book.getTags().stream().forEach(a->{System.out.println(a.getTag());});
         bookService.addBook(book);
     }
 
@@ -43,8 +39,13 @@ public class BookController {
 
     @GetMapping(value = "/book", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<BookDTO> querySingleBook(@RequestParam @NotNull @Min(1) int id){
+        ResponseEntity<BookDTO> responseEntity = null;
         Book book = bookService.queryBook(id);
-        return  new ResponseEntity<>(bookService.fromBookToDTO(book), HttpStatus.OK);
+        if(book == null )
+            responseEntity = new ResponseEntity(HttpStatus.NO_CONTENT);
+        else
+            responseEntity = new ResponseEntity(bookService.fromBookToDTO(book), HttpStatus.OK);
+        return responseEntity;
     }
 
 }

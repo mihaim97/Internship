@@ -2,7 +2,10 @@ package com.mihai.project.library.service;
 
 import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.dto.BookDTO;
+import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.book.BookDesc;
+import com.mihai.project.library.entity.book.BookTag;
 import com.mihai.project.library.util.MyObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,21 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> queryBooks() {
         return bookDAO.queryBooks();
+    }
+
+    @Override
+    public List<Author> queryBookAuthor(int bookId) {
+        return bookDAO.queryBookAuthor(bookId);
+    }
+
+    @Override
+    public List<BookDesc> queryBookDescriptions(int bookId) {
+        return bookDAO.queryBookDescriptions(bookId);
+    }
+
+    @Override
+    public List<BookTag> queryBookTags(int bookId) {
+        return bookDAO.queryBookTags(bookId);
     }
 
     @Override

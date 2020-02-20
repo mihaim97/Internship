@@ -9,6 +9,12 @@ public class BookDesc {
 
     public BookDesc() { }
 
+    public BookDesc(int id, String description, int status) {
+        this.id = id;
+        this.description = description;
+        this.status = status;
+    }
+
     public BookDesc(int id, String description, int status, Book bookId) {
         this.id = id;
         this.description = description;

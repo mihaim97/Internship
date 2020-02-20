@@ -9,6 +9,7 @@ import com.mihai.project.library.service.AuthorService;
 import com.mihai.project.library.service.BookDescriptionService;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
+import javafx.beans.binding.ObjectExpression;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -96,10 +97,42 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
+    public List<Author> queryBookAuthor(int bookId) {
+        List<Author> bookAuthors = null;
+        try{
+            bookAuthors = jdbcTemplate.query(MyQuery.QUERY_ALL_BOOK_AUTHOR_BY_ID, new Object[]{bookId},
+                    (res, num)->{return  new Author(res.getInt(1), res.getString(2));});
+        }catch(EmptyResultDataAccessException exc){ }
+        return bookAuthors;
+    }
+
+    @Override
+    public List<BookDesc> queryBookDescriptions(int bookId) {
+        List<BookDesc> bookAuthors = null;
+        try{
+            bookAuthors = jdbcTemplate.query(MyQuery.QUERY_ALL_BOOK_DESCRIPTIONS, new Object[]{bookId},
+                    (res, num)->{return  new BookDesc(res.getInt(1), res.getString(2), res.getInt(3));});
+        }catch(EmptyResultDataAccessException exc){ }
+        return bookAuthors;
+    }
+
+    @Override
+    public List<BookTag> queryBookTags(int bookId) {
+        return null;
+    }
+
+
+    @Override
     public Book queryBook(int id) {
-        Book books =  jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_BOOK, new Object[]{id},
-                (res, num)->{ return new Book( res.getInt(1), res.getString(2), res.getDate(3), null, null, null);});
-        return books;
+        Book book = null;
+        try{
+            book =  jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_BOOK, new Object[]{id},
+                    (res, num)->{ return new Book(res.getInt(1), res.getString(2), res.getDate(3));});
+            book.setAuthors(queryBookAuthor(book.getId()));
+            book.setBookDescriptions(queryBookDescriptions(book.getId()));
+        }catch(EmptyResultDataAccessException exc){ }
+
+        return book;
     }
 
     private void addBookAuthorLink(Number bookId, Number authorId){
