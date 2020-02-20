@@ -1,5 +1,6 @@
 use `library`;
 
+drop table if exists `bookTagManyToMany`;
 drop table if exists `booksAuthors`;
 drop table if exists `authors`;
 drop table if exists `bookDescriptions`;
@@ -27,9 +28,15 @@ constraint `FK_BA_AuthId` foreign key (`authorId`) references `authors` (`id`) o
 
 create table `bookTags`(
 `id` int primary key auto_increment not null,
-`tag` varchar(50) not null,
+`tag` varchar(50) not null unique
+);
+
+create table `bookTagManyToMany`(
 `bookId` int not null,
-constraint `FK_BookId_Tags` foreign key (`bookId`) references `books` (`id`) on delete cascade on update cascade
+`tagId` int not null,
+primary key (`bookId`, `tagId`),
+constraint `FK_BT_BookId` foreign key (`bookId`) references `books` (`id`) on delete cascade on update cascade,
+constraint `FK_BT_AuthId` foreign key (`tagId`) references `bookTags` (`id`) on delete cascade on update cascade
 );
 
 create table `bookDescriptions`(

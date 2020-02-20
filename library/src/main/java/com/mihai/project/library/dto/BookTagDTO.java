@@ -10,15 +10,11 @@ public class BookTagDTO {
     private int id;
     private String tag;
 
-    @JsonIgnore
-    private Book bookId;
-
     public BookTagDTO() { }
 
-    public BookTagDTO(int id, String tag, Book bookId) {
+    public BookTagDTO(int id, String tag) {
         this.id = id;
         this.tag = tag;
-        this.bookId = bookId;
     }
 
     public int getId() {
@@ -35,13 +31,5 @@ public class BookTagDTO {
 
     public void setTag(String tag) {
         this.tag = tag;
-    }
-
-    public Book getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Book bookId) {
-        this.bookId = bookId;
     }
 }

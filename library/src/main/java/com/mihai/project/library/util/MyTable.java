@@ -1,33 +1,37 @@
 package com.mihai.project.library.util;
 
 public class MyTable {
-    // Book
+    //@@ Book
     public static String BOOK= "books";
     public static String BOOK_ID= "id";
     public static String BOOK_TITLE= "title";
     public static String BOOK_DATE_ADDED= "dateAdded";
 
-    // Author
+    //@@ Author
     public static String AUTHOR = "authors";
     public static String AUTHOR_ID = "id";
     public static String AUTHOR_NAME = "name";
 
-    // Book-Author
+    //@@ Book-Author
     public static String BOOK_AUTHOR = "booksAuthors";
     public static String BOOK_AUTHOR_BOOK_ID = "bookId";
     public static String BOOK_AUTHOR_AUTHOR_ID = "authorId";
 
-    // Book Desc
+    //@@ Book Desc
     public static String BOOK_DESCRIPTION= "bookDescriptions";
     public static String BOOK_DESCRIPTION_ID= "id";
     public static String BOOK_DESCRIPTION_DESC= "description";
     public static String BOOK_DESCRIPTION_STATUS= "status";
     public static String BOOK_DESCRIPTION_BOOK_ID= "bookId";
 
-    // Book Tag
+    //@@ Book Tag
     public static String TAG_TABLE = "bookTags";
     public static String TAG_ID = "id";
     public static String TAG_FIELD = "tag";
-    public static String TAG_BOOK_ID = "bookId";
+
+    //@@ Book Tag Many To Mant
+    public static String BOOK_TAG = "bookTagManyToMany";
+    public static String BOOK_TAG_BOOK_ID = "bookId";
+    public static String BOOK_TAG_TAG_ID = "tagId";
 
 }

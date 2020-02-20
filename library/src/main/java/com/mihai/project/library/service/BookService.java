@@ -15,6 +15,7 @@ public interface BookService {
     public List<BookDesc> queryBookDescriptions(int bookId);
     public List<BookTag> queryBookTags(int bookId);
     public Book queryBook(int id);
+    public boolean deleteBook(int id);
     public List<BookDTO> fromBooksToDTO();
     public BookDTO fromBookToDTO(Book book);
     public Book fromDTOToBook (BookDTO bookDTO);

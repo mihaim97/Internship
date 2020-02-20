@@ -59,6 +59,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public boolean deleteBook(int id) {
+        return bookDAO.deleteBook(id);
+    }
+
+    @Override
     public List<BookDTO> fromBooksToDTO() {
         List<Book> book = queryBooks();
         ModelMapper mapper = MyObjectMapper.getMapper();

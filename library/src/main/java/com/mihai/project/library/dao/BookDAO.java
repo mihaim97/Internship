@@ -14,4 +14,5 @@ public interface BookDAO {
     public List<BookDesc> queryBookDescriptions(int bookId);
     public List<BookTag> queryBookTags(int bookId);
     public Book queryBook(int id);
+    public boolean deleteBook(int id);
 }

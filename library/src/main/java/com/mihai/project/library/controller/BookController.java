@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -27,18 +29,23 @@ public class BookController {
     private AuthorDAO authDAO;
 
     @PostMapping("/add")
-    private void addBook(@RequestBody @Valid BookDTO bookDTO){
-        Book book = bookService.fromDTOToBook(bookDTO);
-        bookService.addBook(book);
+    public ResponseEntity addBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult){
+        if(bindingResult.hasErrors()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }else{
+            Book book = bookService.fromDTOToBook(bookDTO);
+            bookService.addBook(book);
+        }
+        return  new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
-    private List<BookDTO> queryBooks(){
+    public List<BookDTO> queryBooks(){
         return bookService.fromBooksToDTO();
     }
 
     @GetMapping(value = "/book", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<BookDTO> querySingleBook(@RequestParam @NotNull @Min(1) int id){
+    public ResponseEntity<BookDTO> querySingleBook(@RequestParam Integer id){
         ResponseEntity<BookDTO> responseEntity = null;
         Book book = bookService.queryBook(id);
         if(book == null )
@@ -46,6 +53,14 @@ public class BookController {
         else
             responseEntity = new ResponseEntity(bookService.fromBookToDTO(book), HttpStatus.OK);
         return responseEntity;
+    }
+
+    @DeleteMapping(value = "/delete-book")
+    public ResponseEntity deleteBook(@RequestParam Integer id){
+        if(bookService.deleteBook(id))
+            return new ResponseEntity(HttpStatus.OK);
+        else
+            return new ResponseEntity(HttpStatus.BAD_REQUEST); // de implementat dto pentru raspuns
     }
 
 }

@@ -4,14 +4,12 @@ public class BookTag {
 
     private int id;
     private String tag;
-    private Book bookId;
 
     public BookTag() { }
 
-    public BookTag(int id, String tag, Book bookId) {
+    public BookTag(int id, String tag) {
         this.id = id;
         this.tag = tag;
-        this.bookId = bookId;
     }
 
     public int getId() {
@@ -28,13 +26,5 @@ public class BookTag {
 
     public void setTag(String tag) {
         this.tag = tag;
-    }
-
-    public Book getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Book bookId) {
-        this.bookId = bookId;
     }
 }

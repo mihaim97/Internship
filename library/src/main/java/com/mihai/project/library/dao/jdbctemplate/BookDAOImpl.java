@@ -30,23 +30,33 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public Number addBook(Book book) {
         Map<String, Object> values = new HashMap<>();
+        List<Integer> idForResolveManyToMany;
         //@@ Insert book and get id after insert.
         Number bookId = addBookDB(book, values);
         //@@ Insert all authors and store id in authorId
-        List<Integer> authorId = addBookAuthors(book.getAuthors(), values);
-        //@@ Resolve many to many relations between book and author
-        resolveManyToManyBookAuthor(authorId, values, bookId);
+        idForResolveManyToMany = addBookAuthors(book.getAuthors(), values);
+        //@@ Resolve many to many relation between book and author
+        resolveManyToManyBookAuthor(idForResolveManyToMany, values, bookId);
         //@@ Insert all book's descriptions
         addBookDescriptions(book.getBookDescriptions(), values, bookId);
         //@@ Insert book tags
-        addBookTags(book.getTags(), values, bookId);
+        idForResolveManyToMany.clear();
+        idForResolveManyToMany = addBookTags(book.getTags(), values);
+        //@@ Resolve many to many relation between book and tag
+        resolveManyToManyBookTag(idForResolveManyToMany, values, bookId);
         return bookId;
     }
 
     @Override
     public List<Book> queryBooks() {
         List<Book> books =  jdbcTemplate.query(MyQuery.QUERY_BOOKS,
-                (res, num)->{ return new Book( res.getInt(1), res.getString(2), res.getDate(3), null, null, null);});
+                (res, num)-> {
+                    Book book = new Book( res.getInt(1), res.getString(2), res.getDate(3), null, null, null);
+                    book.setTags(queryBookTags(book.getId()));
+                    book.setAuthors(queryBookAuthor(book.getId()));
+                    book.setBookDescriptions(queryBookDescriptions(book.getId()));
+                    return book;
+                });
         return books;
     }
 
@@ -55,7 +65,7 @@ public class BookDAOImpl implements BookDAO {
         List<Author> bookAuthors = null;
         try{
             bookAuthors = jdbcTemplate.query(MyQuery.QUERY_ALL_BOOK_AUTHOR_BY_ID, new Object[]{bookId},
-                    (res, num)->{return  new Author(res.getInt(1), res.getString(2));});
+                    (res, num)-> new Author(res.getInt(1), res.getString(2)));
         }catch(EmptyResultDataAccessException exc){ }
         return bookAuthors;
     }
@@ -65,28 +75,38 @@ public class BookDAOImpl implements BookDAO {
         List<BookDesc> bookAuthors = null;
         try{
             bookAuthors = jdbcTemplate.query(MyQuery.QUERY_ALL_BOOK_DESCRIPTIONS, new Object[]{bookId},
-                    (res, num)->{return  new BookDesc(res.getInt(1), res.getString(2), res.getInt(3));});
+                    (res, num)-> new BookDesc(res.getInt(1), res.getString(2), res.getInt(3)));
         }catch(EmptyResultDataAccessException exc){ }
         return bookAuthors;
     }
 
     @Override
     public List<BookTag> queryBookTags(int bookId) {
-        return null;
+        List<BookTag> bookTags = null;
+        try{
+            bookTags = jdbcTemplate.query(MyQuery.QUERY_ALL_BOOK_TAGS, new Object[]{bookId}, (res, num)->new BookTag(res.getInt(1), res.getString(2)));
+        }catch(EmptyResultDataAccessException exc){ }
+        return bookTags;
     }
-
 
     @Override
     public Book queryBook(int id) {
         Book book = null;
         try{
             book =  jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_BOOK, new Object[]{id},
-                    (res, num)->{ return new Book(res.getInt(1), res.getString(2), res.getDate(3));});
+                    (res, num)-> new Book(res.getInt(1), res.getString(2), res.getDate(3)));
             book.setAuthors(queryBookAuthor(book.getId()));
             book.setBookDescriptions(queryBookDescriptions(book.getId()));
+            book.setTags(queryBookTags(book.getId()));
         }catch(EmptyResultDataAccessException exc){ }
-
         return book;
+    }
+
+    @Override
+    public boolean deleteBook(int id) {
+        if(jdbcTemplate.update(MyQuery.DELETE_BOOK, new Object[]{id}) == 1)
+            return true;
+        return false;
     }
 
     private Number addBookDB(Book book, Map<String, Object> values){
@@ -102,9 +122,9 @@ public class BookDAOImpl implements BookDAO {
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.AUTHOR).usingGeneratedKeyColumns(MyTable.AUTHOR_ID);
         List<Integer> authorId = new ArrayList<>();
         for(Author auth: authors){
-            //@@ Check if author exists
             try{
-                Author authorExist = jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_AUTHOR, new Object[]{auth.getName()}, (res, num)->{ return new Author(res.getInt(1), res.getString(2));});
+                //@@ Check if author exists and prevent duplicate
+                Author authorExist = jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_AUTHOR, new Object[]{auth.getName()}, (res, num)-> new Author(res.getInt(1), res.getString(2)));
                 authorId.add(authorExist.getId());
             }catch(EmptyResultDataAccessException exc){
                 values.put(MyTable.AUTHOR_NAME, auth.getName());
@@ -116,10 +136,10 @@ public class BookDAOImpl implements BookDAO {
     }
 
     private void resolveManyToManyBookAuthor(List<Integer> authorId, Map<String, Object> values, Number bookId){
-        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.BOOK_AUTHOR).usingGeneratedKeyColumns(MyTable.AUTHOR_ID);
+        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.BOOK_AUTHOR);
         for(Integer authid: authorId){
             try{
-                Vector<Integer> pairExist = jdbcTemplate.queryForObject(MyQuery.QUERY_BOOK_AUTHOR_PAIR, new Object[]{bookId, authorId}, (res, num)->{return new Vector<>();});
+                Vector<Integer> pairExist = jdbcTemplate.queryForObject(MyQuery.QUERY_BOOK_AUTHOR_PAIR, new Object[]{bookId, authorId}, (res, num)-> new Vector<>());
             }catch(EmptyResultDataAccessException exc){
                 values.put(MyTable.BOOK_AUTHOR_BOOK_ID, bookId);
                 values.put(MyTable.BOOK_AUTHOR_AUTHOR_ID, authid);
@@ -140,13 +160,33 @@ public class BookDAOImpl implements BookDAO {
         }
     }
 
-    private void addBookTags(List<BookTag> bookTags, Map<String, Object> values, Number bookId){
-        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.TAG_TABLE);
+    private List<Integer> addBookTags(List<BookTag> bookTags, Map<String, Object> values){
+        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.TAG_TABLE).usingGeneratedKeyColumns(MyTable.TAG_ID);
+        List<Integer> tagsId = new ArrayList<>();
         for(BookTag bookTag: bookTags){
-            values.put(MyTable.TAG_FIELD, bookTag.getTag());
-            values.put(MyTable.TAG_BOOK_ID, bookId);
-            insert.execute(values);
-            values.clear();
+            try{
+                BookTag bookTagResult = jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_TAG, new Object[]{bookTag.getTag()}, (res, num)-> new BookTag(res.getInt(1), res.getString(2)));
+                tagsId.add(bookTagResult.getId());
+            }catch(EmptyResultDataAccessException exc){
+                values.put(MyTable.TAG_FIELD, bookTag.getTag());
+                tagsId.add(insert.executeAndReturnKey(values).intValue());
+                values.clear();
+            }
+        }
+        return  tagsId;
+    }
+
+    private void resolveManyToManyBookTag(List<Integer> tagsId, Map<String, Object> values, Number bookId){
+        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.BOOK_TAG);
+        for(Integer tag: tagsId){
+            try{
+                Vector<Integer> pairExist = jdbcTemplate.queryForObject(MyQuery.QUERY_BOOK_TAG_PAIR, new Object[]{bookId, tag}, (res, num)-> new Vector<>());
+            }catch(EmptyResultDataAccessException exc){
+                values.put(MyTable.BOOK_TAG_BOOK_ID, bookId);
+                values.put(MyTable.BOOK_TAG_TAG_ID, tag);
+                insert.execute(values);
+                values.clear();
+            }
         }
     }
 
