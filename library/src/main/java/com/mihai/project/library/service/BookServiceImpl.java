@@ -5,9 +5,8 @@ import com.mihai.project.library.dto.BookDTO;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.util.MyObjectMapper;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public Number addBook(Book book) {
         Number bookNumber = bookDAO.addBook(book);
         return bookNumber;

@@ -23,14 +23,18 @@ public class BookDTO {
     @NotNull
     private List<BookDescDTO>  bookDescriptions;
 
+    @NotNull
+    private List<BookTagDTO> tags;
+
     public BookDTO(){}
 
-    public BookDTO(int id, @NotNull String title, @NotNull Date dateAdded, @NotNull List<AuthorDTO> authors, @NotNull List<BookDescDTO> bookDescriptions) {
+    public BookDTO(int id, @NotNull String title, @NotNull Date dateAdded, @NotNull List<AuthorDTO> authors, @NotNull List<BookDescDTO> bookDescriptions, @NotNull List<BookTagDTO> tags) {
         this.id = id;
         this.title = title;
         this.dateAdded = dateAdded;
         this.authors = authors;
         this.bookDescriptions = bookDescriptions;
+        this.tags = tags;
     }
 
     public int getId() {
@@ -71,5 +75,13 @@ public class BookDTO {
 
     public void setBookDescriptions(List<BookDescDTO> bookDescriptions) {
         this.bookDescriptions = bookDescriptions;
+    }
+
+    public List<BookTagDTO> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<BookTagDTO> tags) {
+        this.tags = tags;
     }
 }

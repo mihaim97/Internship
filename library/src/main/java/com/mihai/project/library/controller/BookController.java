@@ -7,6 +7,7 @@ import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +32,16 @@ public class BookController {
         //System.out.println(book.getId() + " " + book.getTitle() + " " + book.getDateAdded());
         //book.getAuthors().stream().forEach(a->{System.out.println(a.getName());});
         //book.getBookDescriptions().stream().forEach(a->{System.out.println(a.getDescription());});
+        book.getTags().stream().forEach(a->{System.out.println(a.getTag());});
         bookService.addBook(book);
     }
 
-    @GetMapping(value = "/books", produces = "application/json")
+    @GetMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
     private List<BookDTO> queryBooks(){
         return bookService.fromBooksToDTO();
     }
 
-    @GetMapping(value = "/book", produces = "application/json")
+    @GetMapping(value = "/book", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<BookDTO> querySingleBook(@RequestParam @NotNull @Min(1) int id){
         Book book = bookService.queryBook(id);
         return  new ResponseEntity<>(bookService.fromBookToDTO(book), HttpStatus.OK);

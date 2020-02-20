@@ -24,6 +24,10 @@ public class MyTable {
     public static String BOOK_DESCRIPTION_STATUS= "status";
     public static String BOOK_DESCRIPTION_BOOK_ID= "bookId";
 
-
+    // Book Tag
+    public static String TAG_TABLE = "bookTags";
+    public static String TAG_ID = "id";
+    public static String TAG_FIELD = "tag";
+    public static String TAG_BOOK_ID = "bookId";
 
 }

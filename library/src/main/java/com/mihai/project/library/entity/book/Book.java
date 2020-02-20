@@ -11,15 +11,17 @@ public class Book {
     private Date dateAdded;
     private List<Author> authors;
     private List<BookDesc> bookDescriptions;
+    private List<BookTag> tags;
 
     public Book(){}
 
-    public Book(int id, String title, Date dateAdded, List<Author> authors, List<BookDesc> bookDesc) {
+    public Book(int id, String title, Date dateAdded, List<Author> authors, List<BookDesc> bookDescriptions, List<BookTag> tags) {
         this.id = id;
         this.title = title;
         this.dateAdded = dateAdded;
         this.authors = authors;
-        this.bookDescriptions = bookDesc;
+        this.bookDescriptions = bookDescriptions;
+        this.tags = tags;
     }
 
     public int getId() {
@@ -60,5 +62,13 @@ public class Book {
 
     public void setBookDescriptions(List<BookDesc> bookDescriptions) {
         this.bookDescriptions = bookDescriptions;
+    }
+
+    public List<BookTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<BookTag> tags) {
+        this.tags = tags;
     }
 }

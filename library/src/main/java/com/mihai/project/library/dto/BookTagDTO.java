@@ -1,14 +1,21 @@
-package com.mihai.project.library.entity.book;
+package com.mihai.project.library.dto;
 
-public class BookTag {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mihai.project.library.entity.book.Book;
+
+@JsonIgnoreProperties(value = "id", allowGetters = true)
+public class BookTagDTO {
 
     private int id;
     private String tag;
+
+    @JsonIgnore
     private Book bookId;
 
-    public BookTag() { }
+    public BookTagDTO() { }
 
-    public BookTag(int id, String tag, Book bookId) {
+    public BookTagDTO(int id, String tag, Book bookId) {
         this.id = id;
         this.tag = tag;
         this.bookId = bookId;
