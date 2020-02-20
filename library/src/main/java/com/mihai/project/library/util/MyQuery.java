@@ -9,6 +9,7 @@ public class MyQuery {
             "from authors auth inner join booksauthors ab on auth.id = ab.authorId inner join books b on ab.bookId = b.id\n" +
             "where b.id = ?";
     public static String QUERY_ALL_BOOK_DESCRIPTIONS = "select bd.* from books b inner join bookdescriptions bd on b.id = bd.bookId where b.id = ?;";
+    public static String QUERY_ALL_BOOK_TAGS = "";
 
     // Author
     public static String QUERY_SINGLE_AUTHOR= "select * from authors where name = ?";
