@@ -1,32 +1,39 @@
-package com.mihai.project.library.entity.book;
+package com.mihai.project.library.dto;
 
-import com.mihai.project.library.dto.AuthorDTO;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
-public class Book {
+@JsonPropertyOrder({"title", "description", "authors", "tags" })
+public class BookDTOQuery {
+
+    @NotNull
     private int id;
+
+    @NotNull
     private String title;
+
+    @NotNull
     private String description;
 
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateAdded;
 
-    private List<Author> authors;
-    private List<BookTag> tags;
+    @NotNull
+    private List<AuthorDTO> authors;
 
-    public Book(){}
+    @NotNull
+    private List<BookTagDTO> tags;
 
-    public Book(int id, String title, Date dateAdded) {
-        this.id = id;
-        this.title = title;
-        this.dateAdded = dateAdded;
-    }
+    public BookDTOQuery(){}
 
-    public Book(int id, String title, String description, Date dateAdded, List<Author> authors, List<BookTag> tags) {
+    public BookDTOQuery(@NotNull int id, @NotNull String title, @NotNull String description, @NotNull Date dateAdded, @NotNull List<AuthorDTO> authors, @NotNull List<BookTagDTO> tags) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -59,19 +66,19 @@ public class Book {
         this.dateAdded = dateAdded;
     }
 
-    public List<Author> getAuthors() {
+    public List<AuthorDTO> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(List<AuthorDTO> authors) {
         this.authors = authors;
     }
 
-    public List<BookTag> getTags() {
+    public List<BookTagDTO> getTags() {
         return tags;
     }
 
-    public void setTags(List<BookTag> tags) {
+    public void setTags(List<BookTagDTO> tags) {
         this.tags = tags;
     }
 
@@ -82,4 +89,5 @@ public class Book {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

@@ -18,11 +18,7 @@ public class MyTable {
     public static String BOOK_AUTHOR_AUTHOR_ID = "authorId";
 
     //@@ Book Desc
-    public static String BOOK_DESCRIPTION= "bookDescriptions";
-    public static String BOOK_DESCRIPTION_ID= "id";
-    public static String BOOK_DESCRIPTION_DESC= "description";
-    public static String BOOK_DESCRIPTION_STATUS= "status";
-    public static String BOOK_DESCRIPTION_BOOK_ID= "bookId";
+    public static String BOOK_TABLE_DESCRIPTION= "description";
 
     //@@ Book Tag
     public static String TAG_TABLE = "bookTags";

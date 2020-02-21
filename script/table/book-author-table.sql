@@ -3,14 +3,14 @@ use `library`;
 drop table if exists `bookTagManyToMany`;
 drop table if exists `booksAuthors`;
 drop table if exists `authors`;
-drop table if exists `bookDescriptions`;
 drop table if exists `bookTags`;
 drop table if exists `books`;
 
 create table `books`(
 `id` int primary key auto_increment not null,
 `title` varchar(50) not null,
-`dateAdded` date not null
+`description` varchar(250) not null,
+`dateAdded` datetime not null
 );
 
 create table `authors`(
@@ -37,14 +37,6 @@ create table `bookTagManyToMany`(
 primary key (`bookId`, `tagId`),
 constraint `FK_BT_BookId` foreign key (`bookId`) references `books` (`id`) on delete cascade on update cascade,
 constraint `FK_BT_AuthId` foreign key (`tagId`) references `bookTags` (`id`) on delete cascade on update cascade
-);
-
-create table `bookDescriptions`(
-`id` int primary key auto_increment not null,
-`description` varchar(80) not null,
-`status` int not null,
-`bookId` int not null,
-constraint `FK_BookId_Description` foreign key (`bookId`) references `books` (`id`) on delete cascade on update cascade
 );
 
 
