@@ -34,31 +34,37 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public List<Book> queryBooks() {
         return bookDAO.queryBooks();
     }
 
     @Override
+    @Transactional
     public List<Author> queryBookAuthor(int bookId) {
         return bookDAO.queryBookAuthor(bookId);
     }
 
     @Override
+    @Transactional
     public List<BookDesc> queryBookDescriptions(int bookId) {
         return bookDAO.queryBookDescriptions(bookId);
     }
 
     @Override
+    @Transactional
     public List<BookTag> queryBookTags(int bookId) {
         return bookDAO.queryBookTags(bookId);
     }
 
     @Override
+    @Transactional
     public Book queryBook(int id) {
         return bookDAO.queryBook(id);
     }
 
     @Override
+    @Transactional
     public boolean deleteBook(int id) {
         return bookDAO.deleteBook(id);
     }

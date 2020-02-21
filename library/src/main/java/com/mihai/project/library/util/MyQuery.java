@@ -12,6 +12,7 @@ public class MyQuery {
     public static String QUERY_ALL_BOOK_TAGS = "select bt.* from books b inner join bookTagManyToMany btm on b.id = btm.bookId inner join booktags bt on btm.tagId = bt.id\n" +
             "where b.id = ?";
     public static String DELETE_BOOK = "delete from books where id = ?";
+    public static String UPDATE_BOOK = "update books set title = ?, dateAdded = ? where id = ?";
 
     //@@ Author
     public static String QUERY_SINGLE_AUTHOR= "select * from authors where name = ?";

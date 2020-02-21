@@ -1,5 +1,6 @@
 package com.mihai.project.library.dao.jdbctemplate;
 
+import com.mihai.project.library.annotation.BookAOP;
 import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
@@ -28,6 +29,7 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
+    @BookAOP
     public Number addBook(Book book) {
         Map<String, Object> values = new HashMap<>();
         List<Integer> idForResolveManyToMany;
@@ -109,10 +111,18 @@ public class BookDAOImpl implements BookDAO {
         return false;
     }
 
+    @Override
+    public boolean updateBook(Book book, int bookId) {
+        Book existingBook = queryBook(bookId);
+        if(book == null)
+            return false;
+        else
+            return updateBookUsingData(book, bookId);
+    }
+
     private Number addBookDB(Book book, Map<String, Object> values){
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.BOOK).usingGeneratedKeyColumns(MyTable.BOOK_ID);
-        values.put(MyTable.BOOK_TITLE, book.getTitle());
-        values.put(MyTable.BOOK_DATE_ADDED, book.getDateAdded());
+        putBookValues(book, values);
         Number bookId = insert.executeAndReturnKey(values);
         values.clear();
         return  bookId;
@@ -188,6 +198,20 @@ public class BookDAOImpl implements BookDAO {
                 values.clear();
             }
         }
+    }
+
+    private boolean updateBookUsingData(Book book, int id){
+        Map<String, Object> values = new HashMap<>();
+        putBookValues(book, values);
+        jdbcTemplate.update(MyQuery.UPDATE_BOOK, values);
+
+        return true;
+    }
+
+    private Map<String, Object> putBookValues(Book book, Map<String, Object> values){
+        values.put(MyTable.BOOK_TITLE, book.getTitle());
+        values.put(MyTable.BOOK_DATE_ADDED, book.getDateAdded());
+        return values;
     }
 
 }

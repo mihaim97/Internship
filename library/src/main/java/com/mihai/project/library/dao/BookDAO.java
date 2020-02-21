@@ -15,4 +15,5 @@ public interface BookDAO {
     public List<BookTag> queryBookTags(int bookId);
     public Book queryBook(int id);
     public boolean deleteBook(int id);
+    public boolean updateBook(Book book, int bookId);
 }

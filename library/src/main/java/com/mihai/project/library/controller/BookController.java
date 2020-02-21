@@ -1,10 +1,13 @@
 package com.mihai.project.library.controller;
 
+import com.mihai.project.library.aop.QueryBookAspect;
 import com.mihai.project.library.dao.AuthorDAO;
 import com.mihai.project.library.dto.BookDTO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.service.BookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +25,8 @@ import java.util.List;
 @RequestMapping(path = "book")
 public class BookController {
 
+    private static final Logger logger = LoggerFactory.getLogger(BookController.class);
+
     @Autowired
     private BookService bookService;
 
@@ -31,6 +36,7 @@ public class BookController {
     @PostMapping("/add")
     public ResponseEntity addBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()) {
+            logger.error(bindingResult.getAllErrors().toString());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }else{
             Book book = bookService.fromDTOToBook(bookDTO);
@@ -45,7 +51,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/book", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookDTO> querySingleBook(@RequestParam Integer id){
+    public ResponseEntity<BookDTO> querySingleBook(@RequestParam @NotNull @Valid @Min(1) Integer id){
         ResponseEntity<BookDTO> responseEntity = null;
         Book book = bookService.queryBook(id);
         if(book == null )
@@ -56,7 +62,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/delete-book")
-    public ResponseEntity deleteBook(@RequestParam Integer id){
+    public ResponseEntity deleteBook(@RequestParam @NotNull @Valid @Min(1) Integer id){
         if(bookService.deleteBook(id))
             return new ResponseEntity(HttpStatus.OK);
         else
