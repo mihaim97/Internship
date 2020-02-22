@@ -7,6 +7,7 @@ import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.BookTag;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
+import com.mihai.project.library.util.enumeration.OperationType;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -18,13 +19,9 @@ import java.util.*;
 public class BookDAOImpl implements BookDAO {
 
     private JdbcTemplate jdbcTemplate;
-    //private AuthorService authorService;
-    //private BookDescriptionService bookDescriptionService;
 
-    public BookDAOImpl(JdbcTemplate jdbcTemplate /*AuthorService authorService, BookDescriptionService bookDescriptionService*/){
+    public BookDAOImpl(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
-      //  this.authorService = authorService;
-       // this.bookDescriptionService = bookDescriptionService;
     }
 
     @Override
@@ -34,15 +31,7 @@ public class BookDAOImpl implements BookDAO {
         List<Integer> idForResolveManyToMany;
         //@@ Insert book and get id after insert.
         Number bookId = addBookDB(book, values);
-        //@@ Insert all authors and store id in authorId
-        idForResolveManyToMany = addBookAuthors(book.getAuthors(), values);
-        //@@ Resolve many to many relation between book and author
-        resolveManyToManyBookAuthor(idForResolveManyToMany, values, bookId, "INSERT");
-        //@@ Insert book tags
-        idForResolveManyToMany.clear();
-        idForResolveManyToMany = addBookTags(book.getTags(), values);
-        //@@ Resolve many to many relation between book and tag
-        resolveManyToManyBookTag(idForResolveManyToMany, values, bookId);
+        resolveDBConsistencyAfterInsertOrUpdateBook(book, values, bookId.intValue());
         return queryBook(bookId.intValue());
     }
 
@@ -130,7 +119,7 @@ public class BookDAOImpl implements BookDAO {
         return authorId;
     }
 
-    private void resolveManyToManyBookAuthor(List<Integer> authorId, Map<String, Object> values, Number bookId, String type){
+    private void resolveManyToManyBookAuthor(List<Integer> authorId, Map<String, Object> values, Number bookId){
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.BOOK_AUTHOR);
         for(Integer authid: authorId){
             try{
@@ -153,7 +142,6 @@ public class BookDAOImpl implements BookDAO {
                 BookTag bookTagResult = jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_TAG, new Object[]{bookTag.getTag()}, (res, num)-> new BookTag(res.getInt(1), res.getString(2)));
                 tagsId.add(bookTagResult.getId());
             }catch(EmptyResultDataAccessException exc){
-                exc.printStackTrace();
                 values.put(MyTable.TAG_FIELD, bookTag.getTag());
                 tagsId.add(insert.executeAndReturnKey(values).intValue());
                 values.clear();
@@ -178,18 +166,22 @@ public class BookDAOImpl implements BookDAO {
 
     private Book updateBookUsingData(Book book, int id){
         Map<String, Object> values = new HashMap<>();
-        List<Integer>  idForResolveManyToMany;
         jdbcTemplate.update(MyQuery.UPDATE_BOOK, book.getTitle(), book.getDescription(), id);
+        resolveDBConsistencyAfterInsertOrUpdateBook(book, values, id);
+        return queryBook(id);
+    }
+
+    private void resolveDBConsistencyAfterInsertOrUpdateBook(Book book, Map<String, Object> values, int bookId){
+        List<Integer>  idForResolveManyToMany;
+        //@@ Add book authors
         idForResolveManyToMany = addBookAuthors(book.getAuthors(), values);
-        System.out.println(idForResolveManyToMany);
         //@@ Resolve many to many relation between book and author
-        resolveManyToManyBookAuthor(idForResolveManyToMany, values, id, "UPDATE");
+        resolveManyToManyBookAuthor(idForResolveManyToMany, values, bookId);
         //@@ Insert book tags
         idForResolveManyToMany.clear();
         idForResolveManyToMany = addBookTags(book.getTags(), values);
         //@@ Resolve many to many relation between book and tag
-        resolveManyToManyBookTag(idForResolveManyToMany, values, id);
-        return book;
+        resolveManyToManyBookTag(idForResolveManyToMany, values, bookId);
     }
 
     private Map<String, Object> putBookValues(Book book, Map<String, Object> values){

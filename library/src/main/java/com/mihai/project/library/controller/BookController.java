@@ -1,12 +1,13 @@
 package com.mihai.project.library.controller;
 
-import com.mihai.project.library.aop.QueryBookAspect;
+import com.mihai.project.library.contralleradvice.exception.IncorrectBookIdException;
+import com.mihai.project.library.contralleradvice.exception.NullFieldInBookDTOFoundException;
 import com.mihai.project.library.dao.AuthorDAO;
 import com.mihai.project.library.dto.BookDTO;
 import com.mihai.project.library.dto.BookDTOQuery;
-import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.service.BookService;
+import com.mihai.project.library.util.MyErrorBuilder;
 import com.mihai.project.library.util.dtoentity.BookDTOEntityConvertor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -39,51 +38,50 @@ public class BookController {
     @Autowired
     private BookDTOEntityConvertor convert;
 
-    @PostMapping("/add") // GENERIC
+    @Autowired
+    private MyErrorBuilder errorBuilder;
+
+    @PostMapping("/add")
     public ResponseEntity<BookDTOQuery> addBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult){
         Book book = null;
         if(bindingResult.hasErrors()) {
-            logger.error(bindingResult.getAllErrors().toString());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new NullFieldInBookDTOFoundException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
         }else{
             book = convert.fromDTOToBook(bookDTO);
-            return  new ResponseEntity<>(convert.fromBookToDTO(bookService.addBook(book)), HttpStatus.OK);
+            return new ResponseEntity<>(convert.fromBookToDTO(bookService.addBook(book)), HttpStatus.OK);
         }
     }
 
-    @Transactional
     @GetMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookDTOQuery> queryBooks(){
         return convert.fromBooksToDTO(bookService.queryBooks());
     }
 
-    @Transactional
     @GetMapping(value = "/book", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BookDTO> querySingleBook(@RequestParam @NotNull @Valid @Min(1) Integer id){
         ResponseEntity<BookDTO> responseEntity = null;
         Book book = bookService.queryBook(id);
-        System.out.println(book.getDateAdded().getTime());
-        if(book == null )
-            responseEntity = new ResponseEntity(HttpStatus.NO_CONTENT);
-        else
-            responseEntity = new ResponseEntity(convert.fromBookToDTO(book), HttpStatus.OK);
+        if(book == null)
+            throw new IncorrectBookIdException(errorBuilder.getErrorMessageOnIncorrectBookIdException(id));
+        responseEntity = new ResponseEntity(convert.fromBookToDTO(book), HttpStatus.OK);
         return responseEntity;
     }
 
-    @Transactional
-    @DeleteMapping(value = "/delete-book")
+    @DeleteMapping(value = "/delete-book", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity deleteBook(@RequestParam @NotNull @Valid @Min(1) Integer id){
-        if(bookService.deleteBook(id))
-            return new ResponseEntity(HttpStatus.OK);
-        else
-            return new ResponseEntity(HttpStatus.BAD_REQUEST); // de implementat dto pentru raspuns
+        if(!bookService.deleteBook(id))
+            throw new IncorrectBookIdException(errorBuilder.getErrorMessageOnIncorrectBookIdException(id));
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    @Transactional
-    @PutMapping(value = "/update-book")
-    public ResponseEntity<BookDTOQuery> updateBook(@RequestBody BookDTO book, @RequestParam int id){
-        bookService.updateBook(convert.fromDTOToBook(book), id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping(value = "/update-book", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BookDTOQuery> updateBook(@RequestBody @Valid  BookDTO book, BindingResult bindingResult,  @RequestParam Integer id){
+        if(bindingResult.hasErrors())
+            throw new NullFieldInBookDTOFoundException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
+        Book updateBook = bookService.updateBook(convert.fromDTOToBook(book), id);
+        if(updateBook == null)
+            throw new IncorrectBookIdException(errorBuilder.getErrorMessageOnIncorrectBookIdException(id));
+        return new ResponseEntity<>(convert.fromBookToDTO(updateBook), HttpStatus.OK);
     }
 
 }

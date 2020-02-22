@@ -1,21 +1,20 @@
 package com.mihai.project.library.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
-//@JsonIgnoreProperties(value = {"id", "dateAdded"}, allowGetters = true)
 @JsonPropertyOrder({"title", "description", "authors", "tags" })
 public class BookDTO {
 
     @NotNull
+    @Size(min = 2, max = 50)
     private String title;
 
     @NotNull
+    @Size(min = 5, max = 249)
     private String description;
 
     @NotNull
@@ -71,4 +70,5 @@ public class BookDTO {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }
