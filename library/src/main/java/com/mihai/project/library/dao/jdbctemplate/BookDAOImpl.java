@@ -7,7 +7,6 @@ import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.BookTag;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
-import com.mihai.project.library.util.enumeration.OperationType;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;

@@ -39,22 +39,44 @@ public class MyErrorBuilder {
         return toJson;
     }
 
-
-    //@@ Simple Helper
-    class SimpleMessageHelper{
-        private String message;
-
-        public SimpleMessageHelper(String message) {
-            this.message = message;
+    public String getErrorMessageOnUserExistException(String username){
+        String toJson = "";
+        try {
+            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Employee with username " + username + " already exist");
+        }catch (JsonProcessingException exc){
+            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnUserExistException()");
         }
+        return toJson;
+    }
 
-        public String getMessage() {
-            return message;
+    public String getErrorMessageOnEmailAlreadyExist(String email){
+        String toJson = "";
+        try {
+            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Email " + email + " already exist");
+        }catch (JsonProcessingException exc){
+            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnEmailAlreadyExist()");
         }
+        return toJson;
+    }
 
-        public void setMessage(String message) {
-            this.message = message;
+    public String getErrorMessageOnNoSuchUserToDeleteOrUpdate(String username){
+        String toJson = "";
+        try {
+            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Employee " + username + " doesn't not exist");
+        }catch (JsonProcessingException exc){
+            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnNoSuchUserToDelete()");
         }
+        return toJson;
+    }
+
+    public String getErrorMessageOnUserSuccessfullyDeleted(String username){
+        String toJson = "";
+        try {
+            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Employee with username " + username + " successfully deleted");
+        }catch (JsonProcessingException exc){
+            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnUserSuccessfullyDeleted()");
+        }
+        return toJson;
     }
 
 }

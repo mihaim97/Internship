@@ -2,7 +2,10 @@ package com.mihai.project.library.util.dtoentity;
 
 import com.mihai.project.library.dto.BookDTO;
 import com.mihai.project.library.dto.BookDTOQuery;
+import com.mihai.project.library.dto.user.UserDTO;
+import com.mihai.project.library.dto.user.UserDTOOut;
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.MyObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -12,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class BookDTOEntityConvertorImpl implements BookDTOEntityConvertor{
+public class BookDTOEntityConverterImpl implements BookDTOEntityConverter {
 
     @Override
     public List<BookDTOQuery> fromBooksToDTO(List<Book> books) {

@@ -25,9 +25,16 @@ public class MyTable {
     public static String TAG_ID = "id";
     public static String TAG_FIELD = "tag";
 
-    //@@ Book Tag Many To Mant
+    //@@ Book Tag Many To Many
     public static String BOOK_TAG = "bookTagManyToMany";
     public static String BOOK_TAG_BOOK_ID = "bookId";
     public static String BOOK_TAG_TAG_ID = "tagId";
 
+    //@@ User
+    public static String USER = "appusers";
+    public static String USER_ID = "username";
+    public static String USER_PASSWORD = "password";
+    public static String USER_EMAIL = "email";
+    public static String USER_ENABLE = "enabled";
+    public static String USER_ROLE = "role";
 }

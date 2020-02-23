@@ -1,20 +1,34 @@
-package com.mihai.project.library.entity.user;
+package com.mihai.project.library.dto.user;
 
-public class User {
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
+public class UserDTO {
+
+    @NotBlank
+    @Size(min = 5, max = 50)
     private String username;
+
+    @NotBlank
+    @Size(min=6)
     private String password;
+
+    @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email")
+    @NotBlank
     private String email;
-    private int enable;
+
+    @NotBlank
+    @Pattern(regexp = "ADMIN|REGULAR", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Incorrect role")
     private String role;
 
-    public User() { }
+    public UserDTO() { }
 
-    public User(String username, String password, String email, int enable, String role) {
+    public UserDTO(@NotBlank @Size(min = 5, max = 50) String username, @NotBlank @Size(min = 6) String password, @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email") @NotBlank String email, String role) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.enable = enable;
         this.role = role;
     }
 
@@ -40,14 +54,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public int getEnable() {
-        return enable;
-    }
-
-    public void setEnable(int enable) {
-        this.enable = enable;
     }
 
     public String getRole() {

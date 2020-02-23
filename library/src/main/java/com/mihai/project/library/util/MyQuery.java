@@ -8,7 +8,6 @@ public class MyQuery {
     public static String QUERY_ALL_BOOK_AUTHOR_BY_ID = "select auth.* \n" +
             "from authors auth inner join booksauthors ab on auth.id = ab.authorId inner join books b on ab.bookId = b.id\n" +
             "where b.id = ?";
-    public static String QUERY_ALL_BOOK_DESCRIPTIONS = "select bd.* from books b inner join bookdescriptions bd on b.id = bd.bookId where b.id = ?;";
     public static String QUERY_ALL_BOOK_TAGS = "select bt.* from books b inner join bookTagManyToMany btm on b.id = btm.bookId inner join booktags bt on btm.tagId = bt.id\n" +
             "where b.id = ?";
     public static String DELETE_BOOK = "delete from books where id = ?";
@@ -25,4 +24,14 @@ public class MyQuery {
 
     //@@ Tag
     public static String QUERY_SINGLE_TAG = "select * from bookTags where tag = ?";
+
+    //@@ User
+    public static String QUERY_SINGLE_USER = "select * from appusers where username = ?";
+    public static String QUERY_SINGLE_USER_BY_EMAIL = "select * from appusers where email = ?";
+    public static String QUERY_SINGLE_USER_BY_EMAIL_EXCEPT_CURRENT_USER = "select * from appusers where email = ? and username <> ?";
+    public static String QUERY_SINGLE_USER_BY_USERNAME_EXCEPT_CURRENT_USER = "select * from appusers where username = ? and username <> ?";
+    public static String DELETE_USER = "delete from appusers where username = ?";
+    public static String QUERY_ALL_USERS = "select * from appusers";
+    public static String UPDATE_USER= "update appusers set username = ?, password = ?, email = ?, role = ? where username = ?";
+
 }

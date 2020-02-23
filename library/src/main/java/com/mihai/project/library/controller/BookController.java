@@ -8,7 +8,7 @@ import com.mihai.project.library.dto.BookDTOQuery;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.service.BookService;
 import com.mihai.project.library.util.MyErrorBuilder;
-import com.mihai.project.library.util.dtoentity.BookDTOEntityConvertor;
+import com.mihai.project.library.util.dtoentity.BookDTOEntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class BookController {
     private AuthorDAO authDAO;
 
     @Autowired
-    private BookDTOEntityConvertor convert;
+    private BookDTOEntityConverter convert;
 
     @Autowired
     private MyErrorBuilder errorBuilder;

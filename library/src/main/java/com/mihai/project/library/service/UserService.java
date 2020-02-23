@@ -1,10 +1,10 @@
-package com.mihai.project.library.dao;
+package com.mihai.project.library.service;
 
 import com.mihai.project.library.entity.user.User;
 
 import java.util.List;
 
-public interface UserDAO {
+public interface UserService {
     public User addUser(User user);
     public User queryUser(String username);
     public List<User> queryAllUsers();

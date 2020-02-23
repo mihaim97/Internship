@@ -1,6 +1,9 @@
 package com.mihai.project.library.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -9,11 +12,11 @@ import java.util.List;
 @JsonPropertyOrder({"title", "description", "authors", "tags" })
 public class BookDTO {
 
-    @NotNull
+    @NotBlank
     @Size(min = 2, max = 50)
     private String title;
 
-    @NotNull
+    @NotBlank
     @Size(min = 5, max = 249)
     private String description;
 

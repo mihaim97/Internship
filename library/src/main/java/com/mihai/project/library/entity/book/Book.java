@@ -1,7 +1,5 @@
 package com.mihai.project.library.entity.book;
 
-import com.mihai.project.library.dto.AuthorDTO;
-
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
