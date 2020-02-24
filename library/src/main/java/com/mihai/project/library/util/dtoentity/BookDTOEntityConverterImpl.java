@@ -12,15 +12,17 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class BookDTOEntityConverterImpl implements BookDTOEntityConverter {
 
     @Override
-    public List<BookDTOQuery> fromBooksToDTO(List<Book> books) {
+    public Set<BookDTOQuery> fromBooksToDTO(Set<Book> books) {
         ModelMapper mapper = MyObjectMapper.getMapper();
-        List<BookDTOQuery> booksDTO = new ArrayList<>();
+        Set<BookDTOQuery> booksDTO = new HashSet<>();
         books.stream().forEach(b->{
             booksDTO.add(mapper.map(b, (Type) BookDTOQuery.class));
         });

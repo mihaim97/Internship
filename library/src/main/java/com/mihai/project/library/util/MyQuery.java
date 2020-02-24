@@ -7,9 +7,9 @@ public class MyQuery {
     public static String QUERY_SINGLE_BOOK= "select * from books where id = ?";
     public static String ADD_BOOK = "";
     public static String QUERY_ALL_BOOK_AUTHOR_BY_ID = "select auth.* \n" +
-            "from authors auth inner join booksauthors ab on auth.id = ab.authorId inner join books b on ab.bookId = b.id\n" +
+            "from authors auth inner join books_authors ab on auth.id = ab.authorid inner join books b on ab.bookid = b.id\n" +
             "where b.id = ?";
-    public static String QUERY_ALL_BOOK_TAGS = "select bt.* from books b inner join bookTagManyToMany btm on b.id = btm.bookId inner join booktags bt on btm.tagId = bt.id\n" +
+    public static String QUERY_ALL_BOOK_TAGS = "select bt.* from books b inner join book_tag_many_to_many btm on b.id = btm.bookid inner join book_tags bt on btm.tagid = bt.id\n" +
             "where b.id = ?";
     public static String DELETE_BOOK = "delete from books where id = ?";
     public static String UPDATE_BOOK = "update books set title = ?, description = ? where id = ?";
@@ -18,13 +18,13 @@ public class MyQuery {
     public static String QUERY_SINGLE_AUTHOR= "select * from authors where name = ?";
 
     //@@ Book-Author
-    public static String QUERY_BOOK_AUTHOR_PAIR = "select * from booksAuthors where bookId = ? and authorId = ?";
+    public static String QUERY_BOOK_AUTHOR_PAIR = "select * from books_authors where bookId = ? and authorId = ?";
 
     //@@
-    public static String QUERY_BOOK_TAG_PAIR = "select * from bookTagManyToMany where bookId = ? and tagId = ?";
+    public static String QUERY_BOOK_TAG_PAIR = "select * from book_tag_many_to_many where bookid = ? and tagid = ?";
 
     //@@ Tag
-    public static String QUERY_SINGLE_TAG = "select * from bookTags where tag = ?";
+    public static String QUERY_SINGLE_TAG = "select * from book_tags where tag = ?";
 
     //@@ User
     public static String QUERY_SINGLE_USER = "select * from appusers where username = ?";

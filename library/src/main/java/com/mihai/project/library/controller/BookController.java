@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "book")
@@ -53,7 +53,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookDTOQuery> queryBooks(){
+    public Set<BookDTOQuery> queryBooks(){
         return convert.fromBooksToDTO(bookService.queryBooks());
     }
 

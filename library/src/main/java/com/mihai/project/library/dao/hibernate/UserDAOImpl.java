@@ -8,13 +8,15 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.List;
 
-@Repository
+@Repository("UserDaoHibernateImplementation")
+@Qualifier("UserDaoHibernate")
 public class UserDAOImpl implements UserDAO {
 
     @Autowired

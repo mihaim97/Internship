@@ -2,6 +2,7 @@ package com.mihai.project.library.service;
 
 import com.mihai.project.library.dao.UserDAO;
 import com.mihai.project.library.entity.user.User;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,7 +14,7 @@ public class UserServiceImpl implements  UserService {
 
     private UserDAO userDAO;
 
-    public UserServiceImpl(UserDAO userDAO){this.userDAO = userDAO;}
+    public UserServiceImpl(@Qualifier("UserDaoHibernate") UserDAO userDAO){this.userDAO = userDAO;}
 
     @Override
     @Transactional

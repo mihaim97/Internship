@@ -5,6 +5,7 @@ import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -14,7 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//@Repository
+@Repository("UserDaoJDBCTemplateImplementation")
+@Qualifier("UserDaoJdbcTemplate")
 public class UserDAOImpl implements UserDAO {
 
     private JdbcTemplate jdbcTemplate;
@@ -84,9 +86,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean deleteUser(String username) {
-        if(jdbcTemplate.update(MyQuery.DELETE_USER, new Object[]{username}) == 1)
-            return true;
-        return false;
+        return jdbcTemplate.update(MyQuery.DELETE_USER, new Object[]{username}) == 1;
     }
 
     @Override

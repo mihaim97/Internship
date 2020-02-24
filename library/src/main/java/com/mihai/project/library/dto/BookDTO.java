@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @JsonPropertyOrder({"title", "description", "authors", "tags" })
 public class BookDTO {
@@ -21,21 +22,21 @@ public class BookDTO {
     private String description;
 
     @NotNull
-    private List<AuthorDTO> authors;
+    private Set<AuthorDTO> authors;
 
     @NotNull
-    private List<BookTagDTO> tags;
+    private Set<BookTagDTO> tags;
 
     public BookDTO(){}
 
-    public BookDTO(@NotNull String title, @NotNull String description, @NotNull List<AuthorDTO> authors, @NotNull List<BookTagDTO> tags) {
+    public BookDTO(@NotNull String title, @NotNull String description, @NotNull Set<AuthorDTO> authors, @NotNull Set<BookTagDTO> tags) {
         this.title = title;
         this.description = description;
         this.authors = authors;
         this.tags = tags;
     }
 
-    public BookDTO(int id, @NotNull String title, @NotNull String description, @NotNull Date dateAdded, @NotNull List<AuthorDTO> authors, @NotNull List<BookTagDTO> tags) {
+    public BookDTO(int id, @NotNull String title, @NotNull String description, @NotNull Date dateAdded, @NotNull Set<AuthorDTO> authors, @NotNull Set<BookTagDTO> tags) {
         this.title = title;
         this.description = description;
         this.authors = authors;
@@ -50,19 +51,19 @@ public class BookDTO {
         this.title = title;
     }
 
-    public List<AuthorDTO> getAuthors() {
+    public Set<AuthorDTO> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<AuthorDTO> authors) {
+    public void setAuthors(Set<AuthorDTO> authors) {
         this.authors = authors;
     }
 
-    public List<BookTagDTO> getTags() {
+    public Set<BookTagDTO> getTags() {
         return tags;
     }
 
-    public void setTags(List<BookTagDTO> tags) {
+    public void setTags(Set<BookTagDTO> tags) {
         this.tags = tags;
     }
 

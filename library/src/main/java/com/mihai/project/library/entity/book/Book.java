@@ -1,20 +1,45 @@
 package com.mihai.project.library.entity.book;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
-public class Book {
+@Entity
+@Table(name = "books")
+public class Book implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "description")
     private String description;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_added")
     private Date dateAdded;
 
-    private List<Author> authors;
-    private List<BookTag> tags;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "books_authors",
+            joinColumns = {@JoinColumn(name = "bookid")},
+            inverseJoinColumns = {@JoinColumn(name = "authorid")}
+    )
+    private Set<Author> authors;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "book_tag_many_to_many",
+            joinColumns = {@JoinColumn(name = "bookid")},
+            inverseJoinColumns = {@JoinColumn(name = "tagid")}
+    )
+    private Set<BookTag> tags;
 
     public Book(){}
 
@@ -24,7 +49,7 @@ public class Book {
         this.dateAdded = dateAdded;
     }
 
-    public Book(int id, String title, String description, Date dateAdded, List<Author> authors, List<BookTag> tags) {
+    public Book(int id, String title, String description, Date dateAdded, Set<Author> authors, Set<BookTag> tags) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -57,19 +82,19 @@ public class Book {
         this.dateAdded = dateAdded;
     }
 
-    public List<Author> getAuthors() {
+    public Set<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
 
-    public List<BookTag> getTags() {
+    public Set<BookTag> getTags() {
         return tags;
     }
 
-    public void setTags(List<BookTag> tags) {
+    public void setTags(Set<BookTag> tags) {
         this.tags = tags;
     }
 
@@ -79,5 +104,23 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return id == book.id &&
+                Objects.equals(title, book.title) &&
+                Objects.equals(description, book.description) &&
+                Objects.equals(dateAdded, book.dateAdded) &&
+                Objects.equals(authors, book.authors) &&
+                Objects.equals(tags, book.tags);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, dateAdded, authors, tags);
     }
 }

@@ -8,10 +8,11 @@ import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.user.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface BookDTOEntityConverter {
     /**Book**/
-    public List<BookDTOQuery> fromBooksToDTO(List<Book> books);
+    public Set<BookDTOQuery> fromBooksToDTO(Set<Book> books);
     public BookDTOQuery fromBookToDTO(Book book);
     public Book fromDTOToBook (BookDTO bookDTO);
 }

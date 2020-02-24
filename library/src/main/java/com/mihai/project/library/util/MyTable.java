@@ -5,7 +5,7 @@ public class MyTable {
     public static String BOOK= "books";
     public static String BOOK_ID= "id";
     public static String BOOK_TITLE= "title";
-    public static String BOOK_DATE_ADDED= "dateAdded";
+    public static String BOOK_DATE_ADDED= "date_added";
 
     //@@ Author
     public static String AUTHOR = "authors";
@@ -13,22 +13,22 @@ public class MyTable {
     public static String AUTHOR_NAME = "name";
 
     //@@ Book-Author
-    public static String BOOK_AUTHOR = "booksAuthors";
-    public static String BOOK_AUTHOR_BOOK_ID = "bookId";
-    public static String BOOK_AUTHOR_AUTHOR_ID = "authorId";
+    public static String BOOK_AUTHOR = "books_authors";
+    public static String BOOK_AUTHOR_BOOK_ID = "bookid";
+    public static String BOOK_AUTHOR_AUTHOR_ID = "authorid";
 
     //@@ Book Desc
     public static String BOOK_TABLE_DESCRIPTION= "description";
 
     //@@ Book Tag
-    public static String TAG_TABLE = "bookTags";
+    public static String TAG_TABLE = "book_tags";
     public static String TAG_ID = "id";
     public static String TAG_FIELD = "tag";
 
     //@@ Book Tag Many To Many
-    public static String BOOK_TAG = "bookTagManyToMany";
-    public static String BOOK_TAG_BOOK_ID = "bookId";
-    public static String BOOK_TAG_TAG_ID = "tagId";
+    public static String BOOK_TAG = "book_tag_many_to_many";
+    public static String BOOK_TAG_BOOK_ID = "bookid";
+    public static String BOOK_TAG_TAG_ID = "tagid";
 
     //@@ User
     public static String USER = "appusers";
