@@ -1,11 +1,25 @@
 package com.mihai.project.library.entity.user;
 
-public class User {
+import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
+@Table(name = "appusers")
+public class User implements Serializable {
+
+    @Id
     private String username;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "email", unique = true)
     private String email;
+
+    @Column(name = "enabled")
     private int enable;
+
+    @Column(name = "role")
     private String role;
 
     public User() { }

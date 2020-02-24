@@ -10,6 +10,7 @@ import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.service.UserService;
 import com.mihai.project.library.util.MyErrorBuilder;
 import com.mihai.project.library.util.dtoentity.UserDTOEntityConverter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -64,7 +65,7 @@ public class UserController {
             throw new IncorrectUserException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
         //@@ Check if user exist
         if(userService.queryUser(username) == null)
-            throw  new NoSuchUserException(errorBuilder.getErrorMessageOnNoSuchUserToDeleteOrUpdate(username));
+            throw new NoSuchUserException(errorBuilder.getErrorMessageOnNoSuchUserToDeleteOrUpdate(username));
         //@@ Check if username is taken
         if(userService.usernameAlreadyExistOnDifferentUser(username, user.getUsername()))
             throw new UserExistException(errorBuilder.getErrorMessageOnUserExistException(user.getUsername()));
@@ -74,5 +75,4 @@ public class UserController {
         User userReturned = userService.updateUser(convert.fromDTOToUser(user), username);
         return new ResponseEntity<>(convert.fromUserToUserDTOOut(userReturned), HttpStatus.OK);
     }
-
 }

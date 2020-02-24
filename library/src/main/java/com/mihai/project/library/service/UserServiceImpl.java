@@ -5,6 +5,7 @@ import com.mihai.project.library.entity.user.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Service
@@ -16,7 +17,7 @@ public class UserServiceImpl implements  UserService {
 
     @Override
     @Transactional
-    public User addUser(User user) {
+    public User addUser(User user){
         return userDAO.addUser(user);
     }
 

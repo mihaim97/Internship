@@ -37,4 +37,5 @@ public class MyTable {
     public static String USER_EMAIL = "email";
     public static String USER_ENABLE = "enabled";
     public static String USER_ROLE = "role";
+    public static String HIBERNATE_USER_NEW = "newusername";
 }

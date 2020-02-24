@@ -1,6 +1,7 @@
 package com.mihai.project.library.util;
 
 public class MyQuery {
+    /** JDBC **/
     //@@ Book
     public static String QUERY_BOOKS= "select * from books";
     public static String QUERY_SINGLE_BOOK= "select * from books where id = ?";
@@ -34,4 +35,10 @@ public class MyQuery {
     public static String QUERY_ALL_USERS = "select * from appusers";
     public static String UPDATE_USER= "update appusers set username = ?, password = ?, email = ?, role = ? where username = ?";
 
+    /** HIBERNATE **/
+    public static String HIBERNATE_QUERY_ALL_USERS = "from User";
+    public static String HIBERNATE_QUERY_USER_BY_USERNAME = "from User where username = :username";
+    public static String HIBERNATE_QUERY_USER_BY_EMAIL = "from User where email = :email";
+    public static String HIBERNATE_QUERY_SINGLE_USER_BY_EMAIL_EXCEPT_CURRENT_USER = "from User where email = :email and username <> :username";
+    public static String HIBERNATE_QUERY_SINGLE_USER_BY_USERNAME_EXCEPT_CURRENT_USER = "from User where username = :newusername and username <> :username";
 }
