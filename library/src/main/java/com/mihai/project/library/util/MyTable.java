@@ -1,5 +1,7 @@
 package com.mihai.project.library.util;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class MyTable {
     //@@ Book
     public static String BOOK= "books";

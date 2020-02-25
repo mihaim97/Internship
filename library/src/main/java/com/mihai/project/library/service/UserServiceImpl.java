@@ -17,41 +17,43 @@ public class UserServiceImpl implements  UserService {
     public UserServiceImpl(@Qualifier("UserDaoHibernate") UserDAO userDAO){this.userDAO = userDAO;}
 
     @Override
-    @Transactional
+    //@Transactional
     public User addUser(User user){
         return userDAO.addUser(user);
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public User queryUser(String username) {
         return userDAO.queryUser(username);
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public List<User> queryAllUsers() {
         return userDAO.queryAllUsers();
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public boolean emailAlreadyExist(String email) {
         return userDAO.emailAlreadyExist(email);
     }
 
     @Override
+    //@Transactional
     public boolean emailAlreadyExistOnDifferentUser(String currentUsername, String email) {
         return  userDAO.emailAlreadyExistOnDifferentUser(currentUsername, email);
     }
 
     @Override
+    //@Transactional
     public boolean usernameAlreadyExistOnDifferentUser(String currentUsername, String newUsername) {
         return userDAO.usernameAlreadyExistOnDifferentUser(currentUsername, newUsername);
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public boolean deleteUser(String username) {
         return userDAO.deleteUser(username);
     }

@@ -39,11 +39,13 @@ public class UserController {
         if(bindingResult.hasErrors()){
             throw new IncorrectUserException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
-        if(userService.emailAlreadyExist(user.getEmail()))
+        if(userService.emailAlreadyExist(user.getEmail())) {
             throw new EmailAlreadyExistException(errorBuilder.getErrorMessageOnEmailAlreadyExist(user.getEmail()));
+        }
         User userReturned =  userService.addUser(convert.fromDTOToUser(user));
-        if(userReturned == null)
+        if(userReturned == null) {
             throw new UserExistException(errorBuilder.getErrorMessageOnUserExistException(user.getUsername()));
+        }
         return new ResponseEntity<>(convert.fromUserToUserDTOOut(userReturned), HttpStatus.OK);
     }
 
@@ -61,17 +63,21 @@ public class UserController {
 
     @PutMapping("update")
     public ResponseEntity<UserDTOOut> updateUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult, @RequestParam String username){
-        if(bindingResult.hasErrors())
+        if(bindingResult.hasErrors()){
             throw new IncorrectUserException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
+        }
         //@@ Check if user exist
-        if(userService.queryUser(username) == null)
+        if(userService.queryUser(username) == null){
             throw new NoSuchUserException(errorBuilder.getErrorMessageOnNoSuchUserToDeleteOrUpdate(username));
+        }
         //@@ Check if username is taken
-        if(userService.usernameAlreadyExistOnDifferentUser(username, user.getUsername()))
+        if(userService.usernameAlreadyExistOnDifferentUser(username, user.getUsername())){
             throw new UserExistException(errorBuilder.getErrorMessageOnUserExistException(user.getUsername()));
+        }
         //@@ In case of someone already has this email.
-        if(userService.emailAlreadyExistOnDifferentUser(username, user.getEmail()))
+        if(userService.emailAlreadyExistOnDifferentUser(username, user.getEmail())){
             throw new EmailAlreadyExistException(errorBuilder.getErrorMessageOnEmailAlreadyExist(user.getEmail()));
+        }
         User userReturned = userService.updateUser(convert.fromDTOToUser(user), username);
         return new ResponseEntity<>(convert.fromUserToUserDTOOut(userReturned), HttpStatus.OK);
     }

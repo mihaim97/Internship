@@ -5,7 +5,6 @@ public class MyQuery {
     //@@ Book
     public static String QUERY_BOOKS= "select * from books";
     public static String QUERY_SINGLE_BOOK= "select * from books where id = ?";
-    public static String ADD_BOOK = "";
     public static String QUERY_ALL_BOOK_AUTHOR_BY_ID = "select auth.* \n" +
             "from authors auth inner join books_authors ab on auth.id = ab.authorid inner join books b on ab.bookid = b.id\n" +
             "where b.id = ?";
@@ -36,9 +35,13 @@ public class MyQuery {
     public static String UPDATE_USER= "update appusers set username = ?, password = ?, email = ?, role = ? where username = ?";
 
     /** HIBERNATE **/
+    //@ User
     public static String HIBERNATE_QUERY_ALL_USERS = "from User";
     public static String HIBERNATE_QUERY_USER_BY_USERNAME = "from User where username = :username";
     public static String HIBERNATE_QUERY_USER_BY_EMAIL = "from User where email = :email";
     public static String HIBERNATE_QUERY_SINGLE_USER_BY_EMAIL_EXCEPT_CURRENT_USER = "from User where email = :email and username <> :username";
     public static String HIBERNATE_QUERY_SINGLE_USER_BY_USERNAME_EXCEPT_CURRENT_USER = "from User where username = :newusername and username <> :username";
+
+    //@@ Book
+    public static String HIBERNATE_QUERY_SINGLE_BOOK = "from Book where id = :id";
 }

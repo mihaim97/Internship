@@ -15,7 +15,7 @@ public class BookServiceImpl implements BookService {
 
     private BookDAO bookDAO;
 
-    public BookServiceImpl(@Qualifier("BookDaoJDBCTemplate") BookDAO bookDAO, AuthorService authorService){
+    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService){
         this.bookDAO = bookDAO;
     }
 

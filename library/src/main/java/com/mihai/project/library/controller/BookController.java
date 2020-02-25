@@ -59,7 +59,7 @@ public class BookController {
 
     @GetMapping(value = "/book", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BookDTO> querySingleBook(@RequestParam @NotNull @Valid @Min(1) Integer id){
-        ResponseEntity<BookDTO> responseEntity = null;
+        ResponseEntity<BookDTO> responseEntity;
         Book book = bookService.queryBook(id);
         if(book == null)
             throw new IncorrectBookIdException(errorBuilder.getErrorMessageOnIncorrectBookIdException(id));
