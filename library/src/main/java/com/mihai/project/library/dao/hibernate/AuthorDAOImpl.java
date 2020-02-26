@@ -1,22 +1,19 @@
-package com.mihai.project.library.service;
+package com.mihai.project.library.dao.hibernate;
 
 import com.mihai.project.library.dao.AuthorDAO;
 import com.mihai.project.library.entity.book.Author;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Service
-public class AuthorServiceImpl implements AuthorService {
-
-    private AuthorDAO authorDAO;
-
-    public AuthorServiceImpl(@Qualifier("AuthorDaoHibernate") AuthorDAO authorDAO){this.authorDAO = authorDAO;}
+@Repository("AuthorDaoHibernateImplementation")
+@Qualifier("AuthorDaoHibernate")
+public class AuthorDAOImpl implements AuthorDAO {
 
     @Override
     public Number addAuthor(Author author) {
-      return authorDAO.addAuthor(author);
+        return null;
     }
 
     @Override

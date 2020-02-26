@@ -6,6 +6,7 @@ import com.mihai.project.library.contralleradvice.exception.NoUniqueUser;
 import com.mihai.project.library.contralleradvice.exception.UserExistException;
 import com.mihai.project.library.dao.UserDAO;
 import com.mihai.project.library.entity.user.User;
+import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.MyErrorBuilder;
 import com.mihai.project.library.util.enumeration.FieldType;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
     //@Transactional
     public User queryUser(String username) {
         try {
-            User user = getUniqueResult(userDAO.queryUser(username));
+            User user = HibernateUtil.getUniqueResult(userDAO.queryUser(username));
             if (user == null) {
                 throw new NoSuchUserException(errorBuilder.getErrorMessageOnNoSuchUserToDeleteOrUpdate(username));
             }
@@ -98,24 +99,14 @@ public class UserServiceImpl implements UserService {
         return userDAO.updateUser(user, userNewData);
     }
 
-    public static <T> T getUniqueResult(List<T> resultList) throws NoUniqueUser {
-        if (resultList == null || resultList.isEmpty()) {
-            return null;
-        }
-        if (resultList.size() > 1) {
-            throw new NoUniqueUser("Too many results");
-        }
-        return (T) resultList.get(0);
-    }
-
     private boolean checkForUsernameOrEmail(String value, FieldType operation) {
         try {
             if (operation == FieldType.EMAIL) {
-                if (getUniqueResult(userDAO.emailAlreadyExist(value)) == null) {
+                if (HibernateUtil.getUniqueResult(userDAO.emailAlreadyExist(value)) == null) {
                     return false;
                 }
             } else if (operation == FieldType.USERNAME) {
-                if (getUniqueResult(userDAO.userAlreadyExist(value)) == null) {
+                if (HibernateUtil.getUniqueResult(userDAO.userAlreadyExist(value)) == null) {
                     return false;
                 }
             }
@@ -128,11 +119,11 @@ public class UserServiceImpl implements UserService {
     private boolean checkForUsernameOrEmailOnDifferentUser(String currentUser, String value, FieldType operation) {
         try {
             if (operation == FieldType.EMAIL) {
-                if (getUniqueResult(userDAO.emailAlreadyExistOnDifferentUser(currentUser, value)) == null) {
+                if (HibernateUtil.getUniqueResult(userDAO.emailAlreadyExistOnDifferentUser(currentUser, value)) == null) {
                     return false;
                 }
             } else if (operation == FieldType.USERNAME) {
-                if (getUniqueResult(userDAO.usernameAlreadyExistOnDifferentUser(currentUser, value)) == null) {
+                if (HibernateUtil.getUniqueResult(userDAO.usernameAlreadyExistOnDifferentUser(currentUser, value)) == null) {
                     return false;
                 }
             }

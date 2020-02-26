@@ -33,9 +33,6 @@ public class BookController {
     private BookService bookService;
 
     @Autowired
-    private AuthorDAO authDAO;
-
-    @Autowired
     private BookDTOEntityConverter convert;
 
     @Autowired

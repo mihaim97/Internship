@@ -4,7 +4,6 @@ import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.BookTag;
 
-import java.util.List;
 import java.util.Set;
 
 public interface BookDAO {

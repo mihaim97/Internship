@@ -4,6 +4,7 @@ import com.mihai.project.library.dao.AuthorDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -13,7 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+@Repository("AuthorDaoJDBCTemplateImplementation")
+@Qualifier("AuthorDaoJDBCTemplate")
 public class AuthorDAOImpl implements AuthorDAO {
 
     private JdbcTemplate jdbcTemplate;

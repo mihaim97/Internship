@@ -4,6 +4,8 @@ import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.BookTag;
+import com.mihai.project.library.entity.user.User;
+import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
 import com.mihai.project.library.util.enumeration.AuthorType;
@@ -24,35 +26,22 @@ import java.util.*;
 @Qualifier("BookDaoHibernate")
 public class BookDAOImpl implements BookDAO {
 
-    @Autowired
-    private EntityManager entityManager;
-
-
     @Override
     public Book addBook(Book book) {
-      /*  //TODO Implement logic for duplicate entry key..
-        Session session = entityManager.unwrap(Session.class);
         Transaction transaction = null;
-        try(Session hsession = sessionFactory.openSession()){
-            transaction = hsession.getTransaction();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.getTransaction();
             transaction.begin();
-            Map<AuthorType, Set<Author>> authors = checkForExistingAuthor(book.getAuthors(), hsession);
-            //Map<TagType, Set<Author>> tags = checkForExistingAuthor(book.getAuthors(), hsession);
-            authors.get(AuthorType.EXISTING).stream().forEach(aut->{
-                System.out.println(aut.getName());
-            });
+            book.setDateAdded(new Date());
+            session.save(book);
             transaction.commit();
-        }catch(Exception exc){
+        } catch (Exception exc) {
             exc.printStackTrace();
-            if (transaction != null){
+            if (transaction != null) {
                 transaction.rollback();
             }
         }
-
-        book.setDateAdded(new Date());
-        System.out.println(book.getAuthors());
-        //session.saveOrUpdate(book);*/
-        return new Book();
+        return book;
     }
 
     @Override
@@ -62,7 +51,20 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public Set<Author> queryBookAuthor(int bookId) {
-        return null;
+        Transaction transaction = null;
+        Set<Author> authors = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.getTransaction();
+            transaction.begin();
+            /** LOGIC **/
+            transaction.commit();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return authors;
     }
 
     @Override
@@ -72,10 +74,7 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public Book queryBook(int id) {
-        Session session = entityManager.unwrap(Session.class);
-        Query<Book> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_BOOK);
-        query.setParameter(MyTable.BOOK_ID, id);
-        return getSingleResultOrNullFromQuery(query);
+        return null;
     }
 
     @Override
@@ -87,64 +86,4 @@ public class BookDAOImpl implements BookDAO {
     public Book updateBook(Book book, int bookId) {
         return null;
     }
-
-    private Book getSingleResultOrNullFromQuery(Query<Book> query){
-        try{
-            Book user = query.getSingleResult();
-            return user;
-        }catch(NoResultException exc){
-            return null;
-        }
-    }
-
-    private <T> T getSingleResultOrNullFromQueryGeneric(Query<T> query){
-        try{
-            T user = query.getSingleResult();
-            return user;
-        }catch(NoResultException exc){
-            return null;
-        }
-    }
-
-    private Map<AuthorType, Set<Author>> checkForExistingAuthor(Set<Author> authors, Session session){
-        Map<AuthorType, Set<Author>> resolveAuthor = new HashMap<>();
-        Set<Author> existingAuthor = new HashSet<>();
-        Set<Author> newAuthor = new HashSet<>();
-        Query<Author> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_AUTHOR_BY_NAME);
-        authors.stream().forEach(auth ->{
-            query.setParameter(MyTable.AUTHOR_NAME, auth.getName());
-            Author author = getSingleResultOrNullFromQueryGeneric(query);
-            if(auth == null){
-                newAuthor.add(auth);
-            }else{
-                existingAuthor.add(author);
-            }
-        });
-        resolveAuthor.put(AuthorType.EXISTING, existingAuthor);
-        resolveAuthor.put(AuthorType.NEW, newAuthor);
-        return resolveAuthor;
-    }
-
-  /*  private <Map<K,Set<T>>> Map<K, Set<Author>> checkForExistingAuthorOrTag(Set<Author> authors, Session session){
-        Transaction transaction = null;
-        Map<AuthorType, Set<Author>> resolveAuthor = new HashMap<>();
-        Set<Author> existingAuthor = new HashSet<>();
-        Set<Author> newAuthor = new HashSet<>();
-        Query<Author> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_AUTHOR_BY_NAME);
-        authors.stream().forEach(auth ->{
-            query.setParameter(MyTable.AUTHOR_NAME, auth.getName());
-            Author author = getSingleResultOrNullFromQueryGeneric(query);
-            if(auth == null){
-                newAuthor.add(auth);
-            }else{
-                existingAuthor.add(author);
-            }
-        });
-        resolveAuthor.put(AuthorType.EXISTING, existingAuthor);
-        resolveAuthor.put(AuthorType.NEW, newAuthor);
-        transaction.commit();
-        return resolveAuthor;
-    }*/
-
-
 }

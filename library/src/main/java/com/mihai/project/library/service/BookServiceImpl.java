@@ -6,8 +6,8 @@ import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.BookTag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -15,13 +15,19 @@ public class BookServiceImpl implements BookService {
 
     private BookDAO bookDAO;
 
-    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService){
+    private AuthorService authorService;
+
+    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService) {
         this.bookDAO = bookDAO;
+        this.authorService = authorService;
     }
 
     @Override
-   // @Transactional
+    // @Transactional
     public Book addBook(Book book) {
+        /** Logic for validation **/
+
+
         return bookDAO.addBook(book);
     }
 
