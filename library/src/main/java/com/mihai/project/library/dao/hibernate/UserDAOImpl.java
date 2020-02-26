@@ -1,7 +1,10 @@
 package com.mihai.project.library.dao.hibernate;
 
+import com.mihai.project.library.config.Hibernate;
+import com.mihai.project.library.contralleradvice.exception.NoUniqueUser;
 import com.mihai.project.library.dao.UserDAO;
 import com.mihai.project.library.entity.user.User;
+import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -21,61 +24,46 @@ import java.util.List;
 @Qualifier("UserDaoHibernate")
 public class UserDAOImpl implements UserDAO {
 
-   // @Autowired
-   // private EntityManager entityManager;
-
-    @Autowired
-    private SessionFactory sessionFactory;
-
     @Override
     public User addUser(User user){
         Transaction transaction = null;
-        User userToReturn = null;
-        try(Session session = sessionFactory.openSession()){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
             transaction = session.getTransaction();
             transaction.begin();
-            if(queryUserByUsernameOnAdd(user.getUsername(), session) != null){
-                transaction.commit();
-                return null;
-            }
-            session.saveOrUpdate(user);
-            userToReturn = queryUserByUsernameOnAdd(user.getUsername(), session);
+            session.save(user);
             transaction.commit();
         }catch (Exception exc){
             if(transaction != null){
                 transaction.rollback();
             }
         }
-        return userToReturn;
+        return user;
     }
 
     @Override
-    public User queryUser(String username) {
+    public List<User> queryUser(String username) {
         Transaction transaction = null;
-        try(Session session = sessionFactory.openSession()){
+        List<User> user = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
             transaction = session.getTransaction();
             transaction.begin();
             Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_USERNAME);
             query.setParameter(MyTable.USER_ID, username);
-            User user = getSingleResultOrNullFromQuery(query);
-            if(user != null){
-                transaction.commit();
-                return user;
-            }
+            user = query.getResultList();
             transaction.commit();
         }catch (Exception exc){
             if(transaction != null){
                 transaction.rollback();
             }
         }
-        return null;
+        return user;
     }
 
     @Override
     public List<User> queryAllUsers() {
         Transaction transaction = null;
         List<User> users = null;
-        try(Session session = sessionFactory.openSession()) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.getTransaction();
             transaction.begin();
             Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_USERS);
@@ -90,86 +78,92 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean emailAlreadyExist(String email) {
+    public List<User> emailAlreadyExist(String email) {
         Transaction transaction = null;
-        boolean emailExist = false;
-        try(Session session = sessionFactory.openSession()) {
+        List<User> users = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.getTransaction();
             transaction.begin();
             Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_EMAIL);
             query.setParameter(MyTable.USER_EMAIL, email);
-            User user = getSingleResultOrNullFromQuery(query);
-            if(user != null){
-                emailExist = true;
-            }
+            users = query.getResultList();
             transaction.commit();
-        }catch(Exception exc){
-            if (transaction != null){
+        }catch (Exception exc){
+            if(transaction != null){
                 transaction.rollback();
             }
         }
-        return emailExist;
+        return users;
     }
 
     @Override
-    public boolean emailAlreadyExistOnDifferentUser(String currentUsername, String email) {
+    public List<User> userAlreadyExist(String username) {
         Transaction transaction = null;
-        boolean emailExistOnDifferentUser = false;
-        try(Session session = sessionFactory.openSession()) {
+        List<User> users = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.getTransaction();
+            transaction.begin();
+            Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_USERNAME);
+            query.setParameter(MyTable.USER_ID, username);
+            users = query.getResultList();
+            transaction.commit();
+        }catch (Exception exc){
+            if(transaction != null){
+                transaction.rollback();
+            }
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> emailAlreadyExistOnDifferentUser(String currentUsername, String email) {
+        Transaction transaction = null;
+        List<User> users = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.getTransaction();
             transaction.begin();
             Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_USER_BY_EMAIL_EXCEPT_CURRENT_USER);
             query.setParameter(MyTable.USER_EMAIL, email);
             query.setParameter(MyTable.USER_ID, currentUsername);
-            User user = getSingleResultOrNullFromQuery(query);
-            if(user != null){
-                emailExistOnDifferentUser = true;
-            }
+            users = query.getResultList();
             transaction.commit();
         }catch (Exception exc){
             if(transaction != null){
                 transaction.rollback();
             }
         }
-        return  emailExistOnDifferentUser;
+        return users;
     }
 
     @Override
-    public boolean usernameAlreadyExistOnDifferentUser(String currentUsername, String newUsername) {
+    public List<User> usernameAlreadyExistOnDifferentUser(String currentUsername, String newUsername) {
         Transaction transaction = null;
-        boolean usernameExistOnDifferentUser = false;
-        try(Session session = sessionFactory.openSession()) {
+        List<User> users = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.getTransaction();
             transaction.begin();
             Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_USER_BY_USERNAME_EXCEPT_CURRENT_USER);
             query.setParameter(MyTable.HIBERNATE_USER_NEW, newUsername);
             query.setParameter(MyTable.USER_ID, currentUsername);
-            User user = getSingleResultOrNullFromQuery(query);
-            if(user != null){
-                usernameExistOnDifferentUser = true;
-            }
+            users = query.getResultList();
             transaction.commit();
         }catch (Exception exc){
             if(transaction != null){
                 transaction.rollback();
             }
         }
-        return usernameExistOnDifferentUser;
+        return users;
     }
 
     @Override
-    public boolean deleteUser(String username) {
-        User user = queryUser(username);
+    public boolean deleteUser(User username) {
         Transaction transaction = null;
-        try(Session session = sessionFactory.openSession()) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.getTransaction();
             transaction.begin();
-            if(user != null){
-                session.delete(user);
-                transaction.commit();
-                return true;
-            }
+            session.delete(username);
             transaction.commit();
+            return  true;
         }catch (Exception exc){
             if(transaction != null){
                 transaction.rollback();
@@ -179,60 +173,23 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User updateUser(User user, String username) {
-        User oldUser = queryUser(username);
+    public User updateUser(User user, User newUserData) {
         Transaction transaction = null;
-        boolean hasNewName = false;
-        if(oldUser == null){
-            return null;
-        }
-        populateUserDataOnUpdate(oldUser, user);
-        try(Session session = sessionFactory.openSession()) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            System.out.println(session.contains(user));
             transaction = session.getTransaction();
             transaction.begin();
-            if(hasUserNewName(oldUser, user)){ /** Username is primary key, if has new name we need to delete and after insert**/
-                session.update(oldUser);
-            }else{
-                session.delete(oldUser);
-                oldUser.setUsername(user.getUsername());
-                session.saveOrUpdate(oldUser);
-                hasNewName = true;
-            }
+            user.setUsername(newUserData.getUsername());
+            user.setRole(newUserData.getRole());
+            user.setPassword(DigestUtils.md5Hex(newUserData.getPassword().getBytes()));
+            user.setEmail(newUserData.getEmail());
+            session.update(user);
             transaction.commit();
         }catch (Exception exc){
             if(transaction != null){
                 transaction.rollback();
             }
         }
-        if(hasNewName){
-            return queryUser(user.getUsername());
-        }
-        return queryUser(username);
+        return user;
     }
-
-    private User queryUserByUsernameOnAdd(String username, Session session) {
-        Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_USERNAME);
-        query.setParameter(MyTable.USER_ID, username);
-        return getSingleResultOrNullFromQuery(query);
-    }
-
-    private User getSingleResultOrNullFromQuery(Query<User> query){
-        try{
-            return query.getSingleResult();
-        }catch(NoResultException exc){
-            return null;
-        }
-    }
-
-    private void populateUserDataOnUpdate(User oldUser, User user){
-        oldUser.setEmail(user.getEmail());
-        oldUser.setEnable(user.getEnable());
-        oldUser.setPassword(DigestUtils.md5Hex(user.getPassword()));
-        oldUser.setRole(user.getRole());
-    }
-
-    private boolean hasUserNewName(User oldUser, User user){
-        return oldUser.getUsername().equals(user.getUsername());
-    }
-
 }

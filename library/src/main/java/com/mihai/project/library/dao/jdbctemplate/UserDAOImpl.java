@@ -1,45 +1,30 @@
 package com.mihai.project.library.dao.jdbctemplate;
 
-import com.mihai.project.library.dao.UserDAO;
-import com.mihai.project.library.entity.user.User;
-import com.mihai.project.library.util.MyQuery;
-import com.mihai.project.library.util.MyTable;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+/** ------------------------------- It dose't work because new hibernate impl ---------------------------------------------------- **/
 @Repository("UserDaoJDBCTemplateImplementation")
 @Qualifier("UserDaoJdbcTemplate")
-public class UserDAOImpl implements UserDAO {
-
+public class UserDAOImpl{
+/*
     private JdbcTemplate jdbcTemplate;
 
     public UserDAOImpl(JdbcTemplate jdbcTemplate){this.jdbcTemplate = jdbcTemplate;}
 
     @Override
     public User addUser(User user) {
-        User userExisting = queryUser(user.getUsername());
-        if(userExisting == null){
-            saveNewUser(user);
-            return user;
-        }
-       return null;
+        saveNewUser(user);
+        return user;
     }
 
     @Override
-    public User queryUser(String username) {
-        User userExist = null;
+    public List<User> queryUser(String username) {
+        List<User> userExist = null;
         try{
-            userExist = jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_USER, new Object[]{username}, (res, num)->
+            userExist = jdbcTemplate.query(MyQuery.QUERY_SINGLE_USER, new Object[]{username}, (res, num)->
                     new User(res.getString(1), res.getString(2), res.getString(3), res.getInt(4), res.getString(5)));
         }catch(EmptyResultDataAccessException exc){ }
+
         return userExist;
     }
 
@@ -114,6 +99,6 @@ public class UserDAOImpl implements UserDAO {
 
     private User updateUserUsingData(User user, String username){
         jdbcTemplate.update(MyQuery.UPDATE_USER, user.getUsername(), DigestUtils.md5Hex(user.getPassword()), user.getEmail(), user.getRole(), username);
-        return queryUser(user.getUsername());
-    }
+        return user;
+    }*/
 }

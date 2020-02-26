@@ -10,6 +10,7 @@ public interface UserService {
     User queryUser(String username);
     List<User> queryAllUsers();
     boolean emailAlreadyExist(String email);
+    boolean userAlreadyExist(String username);
     boolean emailAlreadyExistOnDifferentUser(String currentUsername, String email);
     boolean usernameAlreadyExistOnDifferentUser(String currentUsername, String newUsername);
     boolean deleteUser(String username);

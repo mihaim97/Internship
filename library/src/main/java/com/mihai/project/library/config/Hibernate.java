@@ -7,9 +7,9 @@ import org.hibernate.cfg.Configuration;
 @Component
 public class Hibernate {
 
-    @Bean
+/*    @Bean
     public SessionFactory sessionFactory(){
         return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-    }
+    }*/
 
 }

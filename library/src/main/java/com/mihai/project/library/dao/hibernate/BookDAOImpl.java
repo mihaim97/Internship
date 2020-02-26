@@ -27,12 +27,10 @@ public class BookDAOImpl implements BookDAO {
     @Autowired
     private EntityManager entityManager;
 
-    @Autowired
-    private SessionFactory sessionFactory;
 
     @Override
     public Book addBook(Book book) {
-        //TODO Implement logic for duplicate entry key..
+      /*  //TODO Implement logic for duplicate entry key..
         Session session = entityManager.unwrap(Session.class);
         Transaction transaction = null;
         try(Session hsession = sessionFactory.openSession()){
@@ -40,18 +38,20 @@ public class BookDAOImpl implements BookDAO {
             transaction.begin();
             Map<AuthorType, Set<Author>> authors = checkForExistingAuthor(book.getAuthors(), hsession);
             //Map<TagType, Set<Author>> tags = checkForExistingAuthor(book.getAuthors(), hsession);
-
+            authors.get(AuthorType.EXISTING).stream().forEach(aut->{
+                System.out.println(aut.getName());
+            });
             transaction.commit();
         }catch(Exception exc){
+            exc.printStackTrace();
             if (transaction != null){
                 transaction.rollback();
             }
         }
 
-
         book.setDateAdded(new Date());
         System.out.println(book.getAuthors());
-        session.saveOrUpdate(book);
+        //session.saveOrUpdate(book);*/
         return new Book();
     }
 
@@ -107,7 +107,6 @@ public class BookDAOImpl implements BookDAO {
     }
 
     private Map<AuthorType, Set<Author>> checkForExistingAuthor(Set<Author> authors, Session session){
-        Transaction transaction = null;
         Map<AuthorType, Set<Author>> resolveAuthor = new HashMap<>();
         Set<Author> existingAuthor = new HashSet<>();
         Set<Author> newAuthor = new HashSet<>();
@@ -123,7 +122,6 @@ public class BookDAOImpl implements BookDAO {
         });
         resolveAuthor.put(AuthorType.EXISTING, existingAuthor);
         resolveAuthor.put(AuthorType.NEW, newAuthor);
-        transaction.commit();
         return resolveAuthor;
     }
 

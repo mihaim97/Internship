@@ -20,7 +20,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
+   // @Transactional
     public Book addBook(Book book) {
         return bookDAO.addBook(book);
     }
