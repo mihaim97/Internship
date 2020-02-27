@@ -4,10 +4,14 @@ import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.BookTag;
+import com.mihai.project.library.util.enumeration.CastOperationType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -26,6 +30,7 @@ public class BookServiceImpl implements BookService {
     // @Transactional
     public Book addBook(Book book) {
         /** Logic for validation **/
+        resolveExistingAuthorOrTag(book.getAuthors(), CastOperationType.AUTHOR);
 
 
         return bookDAO.addBook(book);
@@ -65,6 +70,18 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public Book updateBook(Book book, int bookId) {
         return bookDAO.updateBook(book, bookId);
+    }
+
+    private <T> Map<String, Set<T>> resolveExistingAuthorOrTag(Set<T> authorsToResolve, CastOperationType cast) {
+        Map<String, T> resolveResult = new HashMap<>();
+        Set<T> existingValues = new HashSet<>();
+        Set<T> newValues = new HashSet<>();
+        authorsToResolve.stream().forEach(auth -> {
+            if(authorService.querySingleAuthorForBookValidation(((Author)auth).getName()) == null){
+
+            }
+        });
+        return new HashMap<String, Set<T>>();
     }
 
 

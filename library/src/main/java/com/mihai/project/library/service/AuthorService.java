@@ -10,4 +10,6 @@ public interface AuthorService {
     List<Author> queryAuthors();
 
     Author querySingleAuthor(String name);
+
+    Author querySingleAuthorForBookValidation(String name);
 }

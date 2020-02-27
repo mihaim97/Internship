@@ -79,4 +79,15 @@ public class MyErrorBuilder {
         return toJson;
     }
 
+    public String getErrorMessageOnAuthorNotFoundException(String author){
+        String toJson = "";
+        try {
+            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Author with name " + author + " doesn't exist");
+        }catch (JsonProcessingException exc){
+            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnUserSuccessfullyDeleted()");
+        }
+        return toJson;
+    }
+
+
 }

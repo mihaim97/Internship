@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface AuthorDAO {
     Number addAuthor(Author author);
+
     List<Author> queryAuthors();
-    Author querySingleAuthor(String name);
+
+    List<Author> querySingleAuthor(String name);
 }

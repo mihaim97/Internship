@@ -2,7 +2,7 @@ package com.mihai.project.library.service;
 
 import com.mihai.project.library.contralleradvice.exception.EmailAlreadyExistException;
 import com.mihai.project.library.contralleradvice.exception.NoSuchUserException;
-import com.mihai.project.library.contralleradvice.exception.NoUniqueUser;
+import com.mihai.project.library.contralleradvice.exception.NoUniqueResult;
 import com.mihai.project.library.contralleradvice.exception.UserExistException;
 import com.mihai.project.library.dao.UserDAO;
 import com.mihai.project.library.entity.user.User;
@@ -12,9 +12,7 @@ import com.mihai.project.library.util.enumeration.FieldType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
 import javax.transaction.Transactional;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Service
@@ -50,7 +48,7 @@ public class UserServiceImpl implements UserService {
                 throw new NoSuchUserException(errorBuilder.getErrorMessageOnNoSuchUserToDeleteOrUpdate(username));
             }
             return user;
-        } catch (NoUniqueUser exc) {
+        } catch (NoUniqueResult exc) {
             throw new NoSuchUserException(errorBuilder.getErrorMessageOnNoSuchUserToDeleteOrUpdate(username));
         }
     }
@@ -110,7 +108,7 @@ public class UserServiceImpl implements UserService {
                     return false;
                 }
             }
-        } catch (NoUniqueUser exc) {
+        } catch (NoUniqueResult exc) {
             return true;
         }
         return true;
@@ -127,7 +125,7 @@ public class UserServiceImpl implements UserService {
                     return false;
                 }
             }
-        } catch (NoUniqueUser exc) {
+        } catch (NoUniqueResult exc) {
             return true;
         }
         return true;

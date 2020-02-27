@@ -4,23 +4,14 @@ import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.BookTag;
-import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.HibernateUtil;
-import com.mihai.project.library.util.MyQuery;
-import com.mihai.project.library.util.MyTable;
-import com.mihai.project.library.util.enumeration.AuthorType;
-import com.mihai.project.library.util.enumeration.TagType;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import java.util.*;
+import java.util.Date;
+import java.util.Set;
 
 @Repository("BookDaoHibernateImplementation")
 @Qualifier("BookDaoHibernate")

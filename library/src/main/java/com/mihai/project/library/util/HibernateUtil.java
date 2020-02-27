@@ -1,6 +1,6 @@
 package com.mihai.project.library.util;
 
-import com.mihai.project.library.contralleradvice.exception.NoUniqueUser;
+import com.mihai.project.library.contralleradvice.exception.NoUniqueResult;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -17,13 +17,15 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
-    public static <T> T getUniqueResult(List<T> resultList) throws NoUniqueUser {
+    public static <T> T getUniqueResult(List<T> resultList) throws NoUniqueResult {
         if (resultList == null || resultList.isEmpty()) {
             return null;
         }
         if (resultList.size() > 1) {
-            throw new NoUniqueUser("Too many results");
+            throw new NoUniqueResult("Too many results");
         }
         return (T) resultList.get(0);
     }
+
+
 }
