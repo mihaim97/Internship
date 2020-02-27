@@ -21,19 +21,29 @@ public class BookServiceImpl implements BookService {
 
     private AuthorService authorService;
 
-    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService) {
+    private BookTagService bookTagService;
+
+    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService, BookTagService bookTagService) {
         this.bookDAO = bookDAO;
         this.authorService = authorService;
+        this.bookTagService = bookTagService;
     }
 
     @Override
-    // @Transactional
+    @Transactional
     public Book addBook(Book book) {
-        /** Logic for validation **/
-        resolveExistingAuthorOrTag(book.getAuthors(), CastOperationType.AUTHOR);
+        Map<String, Set<Author>> mapOfAuthors = resolveExistingAuthorOrTag(book.getAuthors(), CastOperationType.AUTHOR);
+        Map<String, Set<BookTag>> mapOfTags = resolveExistingAuthorOrTag(book.getTags(), CastOperationType.TAG);
 
 
-        return bookDAO.addBook(book);
+        mapOfTags.get("existing").stream().forEach(author -> {
+            System.out.println(author.getTag() + " exc");
+        });
+        mapOfTags.get("new").stream().forEach(author -> {
+            System.out.println(author.getTag() + " new");
+        });
+        return new Book();
+        //return bookDAO.addBook(book);
     }
 
     @Override
@@ -73,15 +83,43 @@ public class BookServiceImpl implements BookService {
     }
 
     private <T> Map<String, Set<T>> resolveExistingAuthorOrTag(Set<T> authorsToResolve, CastOperationType cast) {
-        Map<String, T> resolveResult = new HashMap<>();
+        Map<String, Set<T>> resolveResult = new HashMap<>();
         Set<T> existingValues = new HashSet<>();
         Set<T> newValues = new HashSet<>();
-        authorsToResolve.stream().forEach(auth -> {
-            if(authorService.querySingleAuthorForBookValidation(((Author)auth).getName()) == null){
+        if (cast == CastOperationType.AUTHOR) {
+            return resolveExistingAuthor(resolveResult, authorsToResolve, existingValues, newValues);
+        } else if (cast == CastOperationType.TAG) {
+            return resolveExistingTag(resolveResult, authorsToResolve, existingValues, newValues);
+        }
+        return null;
+    }
 
+    private <T> Map<String, Set<T>> resolveExistingAuthor(Map<String, Set<T>> resolveResult, Set<T> listToResolve, Set<T> existingValues, Set<T> newValues) {
+        listToResolve.stream().forEach(value -> {
+            Author author = authorService.querySingleAuthorForBookValidation(((Author)value).getName());
+            if(author == null){
+                newValues.add(value);
+            }else{
+                existingValues.add((T)author);
             }
         });
-        return new HashMap<String, Set<T>>();
+        resolveResult.put("existing", existingValues);
+        resolveResult.put("new", newValues);
+        return resolveResult;
+    }
+
+    private <T> Map<String, Set<T>> resolveExistingTag(Map<String, Set<T>> resolveResult, Set<T> listToResolve, Set<T> existingValues, Set<T> newValues) {
+        listToResolve.stream().forEach(value -> {
+            BookTag bookTag = bookTagService.querySingleTahForBookValidation(((BookTag)value).getTag());
+            if(bookTag == null){
+                newValues.add(value);
+            }else{
+                existingValues.add((T)bookTag);
+            }
+        });
+        resolveResult.put("existing", existingValues);
+        resolveResult.put("new", newValues);
+        return resolveResult;
     }
 
 

@@ -1,10 +1,12 @@
 package com.mihai.project.library.util;
 
 public class MyQuery {
-    /** JDBC **/
+    /**
+     * JDBC
+     **/
     //@@ Book
-    public static String QUERY_BOOKS= "select * from books";
-    public static String QUERY_SINGLE_BOOK= "select * from books where id = ?";
+    public static String QUERY_BOOKS = "select * from books";
+    public static String QUERY_SINGLE_BOOK = "select * from books where id = ?";
     public static String QUERY_ALL_BOOK_AUTHOR_BY_ID = "select auth.* \n" +
             "from authors auth inner join books_authors ab on auth.id = ab.authorid inner join books b on ab.bookid = b.id\n" +
             "where b.id = ?";
@@ -14,7 +16,7 @@ public class MyQuery {
     public static String UPDATE_BOOK = "update books set title = ?, description = ? where id = ?";
 
     //@@ Author
-    public static String QUERY_SINGLE_AUTHOR= "select * from authors where name = ?";
+    public static String QUERY_SINGLE_AUTHOR = "select * from authors where name = ?";
 
     //@@ Book-Author
     public static String QUERY_BOOK_AUTHOR_PAIR = "select * from books_authors where bookId = ? and authorId = ?";
@@ -32,9 +34,11 @@ public class MyQuery {
     public static String QUERY_SINGLE_USER_BY_USERNAME_EXCEPT_CURRENT_USER = "select * from appusers where username = ? and username <> ?";
     public static String DELETE_USER = "delete from appusers where username = ?";
     public static String QUERY_ALL_USERS = "select * from appusers";
-    public static String UPDATE_USER= "update appusers set username = ?, password = ?, email = ?, role = ? where username = ?";
+    public static String UPDATE_USER = "update appusers set username = ?, password = ?, email = ?, role = ? where username = ?";
 
-    /** HIBERNATE **/
+    /**
+     * HIBERNATE
+     **/
     //@ User
     public static String HIBERNATE_QUERY_ALL_USERS = "from User";
     public static String HIBERNATE_QUERY_USER_BY_USERNAME = "from User where username = :username";
@@ -47,5 +51,8 @@ public class MyQuery {
 
     //@@ Author
     public static String HIBERNATE_QUERY_SINGLE_AUTHOR_BY_NAME = "from Author where name = :name";
+
+    //@@Tag
+    public static String HIBERNATE_QUERY_SINGLE_TAG = "from BookTag where tag = :tag";
 
 }

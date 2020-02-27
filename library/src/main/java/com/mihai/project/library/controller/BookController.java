@@ -40,7 +40,7 @@ public class BookController {
 
     @PostMapping("/add")
     public ResponseEntity<BookDTOQuery> addBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
-        Book book = null;
+        Book book;
         if (bindingResult.hasErrors()) {
             throw new NullFieldInBookDTOFoundException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
         } else {

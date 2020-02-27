@@ -16,15 +16,15 @@ import java.util.Map;
 
 @Repository("AuthorDaoJDBCTemplateImplementation")
 @Qualifier("AuthorDaoJDBCTemplate")
-public class AuthorDAOImpl implements AuthorDAO {
-
+public class AuthorDAOImpl  {
+/*
     private JdbcTemplate jdbcTemplate;
 
     public AuthorDAOImpl(JdbcTemplate jdbcTemplate){this.jdbcTemplate = jdbcTemplate;}
 
     @Override
     public Number addAuthor(Author author) {
-        Author authorQuery = querySingleAuthor(author.getName());
+       // Author authorQuery = querySingleAuthor(author.getName());
         if(authorQuery == null){
             SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate).withTableName(MyTable.AUTHOR).usingGeneratedKeyColumns(MyTable.AUTHOR_ID);
             Map<String, Object> values = new HashMap<>();
@@ -40,14 +40,16 @@ public class AuthorDAOImpl implements AuthorDAO {
         return null;
     }
 
+    *//** Not working **//*
     @Override
-    public Author querySingleAuthor(String name) {
+    public List<Author> querySingleAuthor(String name) {
         Author books = null;
         try{
             books =  jdbcTemplate.queryForObject(MyQuery.QUERY_SINGLE_AUTHOR, new Object[]{name},
                     (res, num)->{ return new Author( res.getInt(1), res.getString(2));});
         }catch(EmptyResultDataAccessException exc){ }
 
-        return books;
-    }
+        //return books;
+        return null;
+    }*/
 }
