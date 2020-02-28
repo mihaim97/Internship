@@ -1,8 +1,7 @@
 package com.mihai.project.library.service;
 
-import com.mihai.project.library.entity.book.Author;
-import com.mihai.project.library.entity.book.BookTag;
+import com.mihai.project.library.entity.book.Tag;
 
 public interface BookTagService {
-    BookTag querySingleTahForBookValidation(String name);
+    Tag querySingleTahForBookValidation(String name);
 }

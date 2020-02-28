@@ -1,5 +1,7 @@
 package com.mihai.project.library.entity.book;
 
+import com.mihai.project.library.entity.interntable.BookAuthor;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -17,6 +19,13 @@ public class Author {
 
     @ManyToMany(mappedBy = "authors")
     private Set<Book> books;
+
+   /* @OneToMany(
+            mappedBy = "author",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<BookAuthor> book;*/
 
     public Author(){}
 

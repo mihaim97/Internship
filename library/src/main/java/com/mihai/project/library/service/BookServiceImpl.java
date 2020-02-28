@@ -3,12 +3,12 @@ package com.mihai.project.library.service;
 import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
-import com.mihai.project.library.entity.book.BookTag;
+import com.mihai.project.library.entity.book.Tag;
 import com.mihai.project.library.util.enumeration.CastOperationType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,17 +33,22 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public Book addBook(Book book) {
         Map<String, Set<Author>> mapOfAuthors = resolveExistingAuthorOrTag(book.getAuthors(), CastOperationType.AUTHOR);
-        Map<String, Set<BookTag>> mapOfTags = resolveExistingAuthorOrTag(book.getTags(), CastOperationType.TAG);
-
-
-        mapOfTags.get("existing").stream().forEach(author -> {
+        Map<String, Set<Tag>> mapOfTags = resolveExistingAuthorOrTag(book.getTags(), CastOperationType.TAG);
+      /*  mapOfTags.get("existing").stream().forEach(author -> {
             System.out.println(author.getTag() + " exc");
         });
         mapOfTags.get("new").stream().forEach(author -> {
             System.out.println(author.getTag() + " new");
         });
-        return new Book();
-        //return bookDAO.addBook(book);
+        Set<BookTag> allTags = mergeSet(mapOfTags.get("existing"), mapOfTags.get("new"));
+        allTags.stream().forEach(tag -> {
+            System.out.println(tag.getTag() + " merge " + tag.getId());
+        });*/
+       // book.getTags().clear();
+       // book.getTags().addAll(mergeSet(mapOfTags.get("existing"), mapOfTags.get("new")));
+
+        //return new Book();
+        return bookDAO.addBook(book);
     }
 
     @Override
@@ -60,7 +65,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public Set<BookTag> queryBookTags(int bookId) {
+    public Set<Tag> queryBookTags(int bookId) {
         return bookDAO.queryBookTags(bookId);
     }
 
@@ -96,11 +101,11 @@ public class BookServiceImpl implements BookService {
 
     private <T> Map<String, Set<T>> resolveExistingAuthor(Map<String, Set<T>> resolveResult, Set<T> listToResolve, Set<T> existingValues, Set<T> newValues) {
         listToResolve.stream().forEach(value -> {
-            Author author = authorService.querySingleAuthorForBookValidation(((Author)value).getName());
-            if(author == null){
+            Author author = authorService.querySingleAuthorForBookValidation(((Author) value).getName());
+            if (author == null) {
                 newValues.add(value);
-            }else{
-                existingValues.add((T)author);
+            } else {
+                existingValues.add((T) author);
             }
         });
         resolveResult.put("existing", existingValues);
@@ -110,16 +115,21 @@ public class BookServiceImpl implements BookService {
 
     private <T> Map<String, Set<T>> resolveExistingTag(Map<String, Set<T>> resolveResult, Set<T> listToResolve, Set<T> existingValues, Set<T> newValues) {
         listToResolve.stream().forEach(value -> {
-            BookTag bookTag = bookTagService.querySingleTahForBookValidation(((BookTag)value).getTag());
-            if(bookTag == null){
+            Tag tag = bookTagService.querySingleTahForBookValidation(((Tag) value).getTag());
+            if (tag == null) {
                 newValues.add(value);
-            }else{
-                existingValues.add((T)bookTag);
+            } else {
+                existingValues.add((T) tag);
             }
         });
         resolveResult.put("existing", existingValues);
         resolveResult.put("new", newValues);
         return resolveResult;
+    }
+
+    private <T> Set<T> mergeSet(Set<T> set1, Set<T> set2) {
+        set1.addAll(set2);
+        return set1;
     }
 
 

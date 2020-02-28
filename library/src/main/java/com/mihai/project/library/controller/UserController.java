@@ -1,16 +1,13 @@
 package com.mihai.project.library.controller;
 
-import com.mihai.project.library.contralleradvice.exception.EmailAlreadyExistException;
 import com.mihai.project.library.contralleradvice.exception.IncorrectUserException;
 import com.mihai.project.library.contralleradvice.exception.NoSuchUserException;
-import com.mihai.project.library.contralleradvice.exception.UserExistException;
 import com.mihai.project.library.dto.user.UserDTO;
 import com.mihai.project.library.dto.user.UserDTOOut;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.service.UserService;
 import com.mihai.project.library.util.MyErrorBuilder;
 import com.mihai.project.library.util.dtoentity.UserDTOEntityConverter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

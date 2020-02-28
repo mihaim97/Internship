@@ -45,6 +45,7 @@ public class MyQuery {
     public static String HIBERNATE_QUERY_USER_BY_EMAIL = "from User where email = :email";
     public static String HIBERNATE_QUERY_SINGLE_USER_BY_EMAIL_EXCEPT_CURRENT_USER = "from User where email = :email and username <> :username";
     public static String HIBERNATE_QUERY_SINGLE_USER_BY_USERNAME_EXCEPT_CURRENT_USER = "from User where username = :newusername and username <> :username";
+    public static String HIBERNATE_DELETE_USER = "delete User where username = :username";
 
     //@@ Book
     public static String HIBERNATE_QUERY_SINGLE_BOOK = "from Book where id = :id";
@@ -53,6 +54,6 @@ public class MyQuery {
     public static String HIBERNATE_QUERY_SINGLE_AUTHOR_BY_NAME = "from Author where name = :name";
 
     //@@Tag
-    public static String HIBERNATE_QUERY_SINGLE_TAG = "from BookTag where tag = :tag";
+    public static String HIBERNATE_QUERY_SINGLE_TAG = "from Tag where tag = :tag";
 
 }

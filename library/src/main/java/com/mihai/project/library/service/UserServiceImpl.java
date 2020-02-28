@@ -11,8 +11,9 @@ import com.mihai.project.library.util.MyErrorBuilder;
 import com.mihai.project.library.util.enumeration.FieldType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //@Transactional
+    @Transactional
     public User addUser(User user) {
         if (emailAlreadyExist(user.getEmail())) {
             throw new EmailAlreadyExistException(errorBuilder.getErrorMessageOnEmailAlreadyExist(user.getEmail()));
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //@Transactional
+    @Transactional
     public List<User> queryAllUsers() {
         return userDAO.queryAllUsers();
     }
@@ -80,8 +81,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean deleteUser(String username) {
-        return userDAO.deleteUser(queryUser(username));
+        return userDAO.deleteUser(username);
     }
 
     @Override

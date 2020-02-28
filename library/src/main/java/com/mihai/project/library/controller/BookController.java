@@ -6,6 +6,7 @@ import com.mihai.project.library.dao.AuthorDAO;
 import com.mihai.project.library.dto.BookDTO;
 import com.mihai.project.library.dto.BookDTOQuery;
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.interntable.BookAuthor;
 import com.mihai.project.library.service.BookService;
 import com.mihai.project.library.util.MyErrorBuilder;
 import com.mihai.project.library.util.dtoentity.BookDTOEntityConverter;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @RestController

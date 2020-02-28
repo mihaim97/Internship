@@ -1,4 +1,4 @@
 package com.mihai.project.library.entity.book;
 
-public class BookRent {
+public class Rent {
 }

@@ -3,7 +3,7 @@ package com.mihai.project.library.dao.hibernate;
 import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
-import com.mihai.project.library.entity.book.BookTag;
+import com.mihai.project.library.entity.book.Tag;
 import com.mihai.project.library.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.Set;
 
@@ -20,11 +21,11 @@ import java.util.Set;
 public class BookDAOImpl implements BookDAO {
 
     @Autowired
-    private SessionFactory sessionFactory;
+    private EntityManager sessionFactory;
 
     @Override
     public Book addBook(Book book) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.unwrap(Session.class);
         book.setDateAdded(new Date());
         session.save(book);
         return book;
@@ -54,7 +55,7 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
-    public Set<BookTag> queryBookTags(int bookId) {
+    public Set<Tag> queryBookTags(int bookId) {
         return null;
     }
 

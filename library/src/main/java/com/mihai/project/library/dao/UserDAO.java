@@ -13,6 +13,6 @@ public interface UserDAO {
     List<User> userAlreadyExist(String username);
     List<User> emailAlreadyExistOnDifferentUser(String currentUsername, String email);
     List<User> usernameAlreadyExistOnDifferentUser(String currentUsername, String newUsername);
-    boolean deleteUser(User user);
+    boolean deleteUser(String user);
     User updateUser(User user, User newUserData);
 }

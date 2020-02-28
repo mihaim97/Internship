@@ -1,25 +1,13 @@
 package com.mihai.project.library.dao.jdbctemplate;
 
-import com.mihai.project.library.annotation.BookAOP;
-import com.mihai.project.library.dao.BookDAO;
-import com.mihai.project.library.entity.book.Author;
-import com.mihai.project.library.entity.book.Book;
-import com.mihai.project.library.entity.book.BookTag;
-import com.mihai.project.library.util.MyQuery;
-import com.mihai.project.library.util.MyTable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-
-import java.util.*;
 
 @Repository("BookDaoJDBCTemplateImplementation")
 @Qualifier("BookDaoJDBCTemplate")
-public class BookDAOImpl implements BookDAO {
+public class BookDAOImpl  {
 
-    private JdbcTemplate jdbcTemplate;
+  /*  private JdbcTemplate jdbcTemplate;
 
     public BookDAOImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -194,6 +182,6 @@ public class BookDAOImpl implements BookDAO {
         values.put(MyTable.BOOK_DATE_ADDED, new Date());
         values.put(MyTable.BOOK_TABLE_DESCRIPTION, book.getDescription());
         return values;
-    }
+    }*/
 
 }

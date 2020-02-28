@@ -3,7 +3,6 @@ package com.mihai.project.library.entity.book;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -25,7 +24,7 @@ public class Book implements Serializable {
     @Column(name = "date_added")
     private Date dateAdded;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "books_authors",
             joinColumns = {@JoinColumn(name = "bookid")},
@@ -33,13 +32,27 @@ public class Book implements Serializable {
     )
     private Set<Author> authors;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_tag_many_to_many",
             joinColumns = {@JoinColumn(name = "bookid")},
             inverseJoinColumns = {@JoinColumn(name = "tagid")}
     )
-    private Set<BookTag> tags;
+    private Set<Tag> tags;
+
+    /*@OneToMany(
+            mappedBy = "book",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<BookAuthor> authors;
+
+    @OneToMany(
+            mappedBy = "book",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<BookTag> tags;*/
 
     public Book(){}
 
@@ -49,7 +62,8 @@ public class Book implements Serializable {
         this.dateAdded = dateAdded;
     }
 
-    public Book(int id, String title, String description, Date dateAdded, Set<Author> authors, Set<BookTag> tags) {
+
+    public Book(int id, String title, String description, Date dateAdded, Set<Author> authors, Set<Tag> tags) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -74,6 +88,14 @@ public class Book implements Serializable {
         this.title = title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getDateAdded() {
         return dateAdded;
     }
@@ -90,20 +112,12 @@ public class Book implements Serializable {
         this.authors = authors;
     }
 
-    public Set<BookTag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<BookTag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Override

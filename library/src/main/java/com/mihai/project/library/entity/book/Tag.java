@@ -1,11 +1,12 @@
 package com.mihai.project.library.entity.book;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "book_tags")
-public class BookTag {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +18,17 @@ public class BookTag {
     @ManyToMany(mappedBy = "tags")
     private Set<Book> books;
 
-    public BookTag() { }
+  /*  @OneToMany(
+            mappedBy = "tag",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<Book> books;*/
 
-    public BookTag(int id, String tag) {
+
+    public Tag() { }
+
+    public Tag(int id, String tag) {
         this.id = id;
         this.tag = tag;
     }
@@ -46,5 +55,19 @@ public class BookTag {
 
     public void setBooks(Set<Book> books) {
         this.books = books;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tag)) return false;
+        Tag tag1 = (Tag) o;
+        return id == tag1.id &&
+                Objects.equals(tag, tag1.tag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, tag);
     }
 }

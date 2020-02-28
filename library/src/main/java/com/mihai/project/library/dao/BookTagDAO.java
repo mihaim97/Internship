@@ -1,10 +1,9 @@
 package com.mihai.project.library.dao;
 
-import com.mihai.project.library.entity.book.Author;
-import com.mihai.project.library.entity.book.BookTag;
+import com.mihai.project.library.entity.book.Tag;
 
 import java.util.List;
 
 public interface BookTagDAO {
-    List<BookTag> querySingleTag(String name);
+    List<Tag> querySingleTag(String name);
 }

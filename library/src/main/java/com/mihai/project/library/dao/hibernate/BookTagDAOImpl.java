@@ -1,7 +1,7 @@
 package com.mihai.project.library.dao.hibernate;
 
 import com.mihai.project.library.dao.BookTagDAO;
-import com.mihai.project.library.entity.book.BookTag;
+import com.mihai.project.library.entity.book.Tag;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
@@ -16,13 +16,13 @@ import java.util.List;
 public class BookTagDAOImpl implements BookTagDAO {
 
     @Override
-    public List<BookTag> querySingleTag(String tagName) {
+    public List<Tag> querySingleTag(String tagName) {
         Transaction transaction = null;
-        List<BookTag> tag = null;
+        List<Tag> tag = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.getTransaction();
             transaction.begin();
-            Query<BookTag> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_TAG);
+            Query<Tag> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_TAG);
             query.setParameter(MyTable.TAG_FIELD, tagName);
             tag = query.getResultList();
             transaction.commit();

@@ -11,7 +11,7 @@
         <property name="hbm2ddl.auto">update</property>
         <mapping class="com.mihai.project.library.entity.book.Author"/>
         <mapping class = "com.mihai.project.library.entity.book.Book" />
-        <mapping class = "com.mihai.project.library.entity.book.BookTag" />
+        <mapping class = "com.mihai.project.library.entity.book.Tag" />
         <mapping class = "com.mihai.project.library.entity.user.User"/>
     </session-factory>
 </hibernate-configuration>
