@@ -1,10 +1,11 @@
 package com.mihai.project.library.service;
 
-import com.mihai.project.library.contralleradvice.exception.NoUniqueResult;
 import com.mihai.project.library.dao.BookTagDAO;
 import com.mihai.project.library.entity.book.Tag;
 import com.mihai.project.library.util.HibernateUtil;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class BookTagServiceImpl implements BookTagService {
@@ -16,11 +17,9 @@ public class BookTagServiceImpl implements BookTagService {
     }
 
     @Override
-    public Tag querySingleTahForBookValidation(String name) {
-        try {
-            return HibernateUtil.getUniqueResult(bookTagDAO.querySingleTag(name));
-        } catch (NoUniqueResult exc) {
-            return null;
-        }
+    @Transactional
+    public Tag querySingleTagForBookValidation(String name) {
+        return HibernateUtil.getUniqueResult(bookTagDAO.querySingleTagForBookValidation(name));
+
     }
 }

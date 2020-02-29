@@ -1,12 +1,9 @@
 package com.mihai.project.library.controller;
 
-import com.mihai.project.library.contralleradvice.exception.IncorrectBookIdException;
 import com.mihai.project.library.contralleradvice.exception.NullFieldInBookDTOFoundException;
-import com.mihai.project.library.dao.AuthorDAO;
 import com.mihai.project.library.dto.BookDTO;
 import com.mihai.project.library.dto.BookDTOQuery;
 import com.mihai.project.library.entity.book.Book;
-import com.mihai.project.library.entity.interntable.BookAuthor;
 import com.mihai.project.library.service.BookService;
 import com.mihai.project.library.util.MyErrorBuilder;
 import com.mihai.project.library.util.dtoentity.BookDTOEntityConverter;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -57,32 +53,37 @@ public class BookController {
     }
 
     @GetMapping(value = "/book", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookDTO> querySingleBook(@RequestParam @NotNull @Valid @Min(1) Integer id) {
-        ResponseEntity<BookDTO> responseEntity;
+    public ResponseEntity querySingleBook(@RequestParam @NotNull @Valid @Min(1) Integer id) {
         Book book = bookService.queryBook(id);
-        if (book == null)
-            throw new IncorrectBookIdException(errorBuilder.getErrorMessageOnIncorrectBookIdException(id));
-        responseEntity = new ResponseEntity(convert.fromBookToDTO(book), HttpStatus.OK);
-        return responseEntity;
+        if (book == null) {
+          return noBookWasFind(id);
+        }
+        return new ResponseEntity(convert.fromBookToDTO(book), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete-book", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity deleteBook(@RequestParam @NotNull @Valid @Min(1) Integer id) {
-        if (!bookService.deleteBook(id))
-            throw new IncorrectBookIdException(errorBuilder.getErrorMessageOnIncorrectBookIdException(id));
-        return new ResponseEntity(HttpStatus.OK);
+        if (bookService.deleteBook(id)) {
+            return new ResponseEntity("deleted", HttpStatus.OK);
+        }
+        return noBookWasFind(id);
     }
 
     @PutMapping(value = "/update-book", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BookDTOQuery> updateBook(@RequestBody @Valid BookDTO book, BindingResult bindingResult, @RequestParam Integer id) {
-        if (bindingResult.hasErrors())
+        if (bindingResult.hasErrors()) {
             throw new NullFieldInBookDTOFoundException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
+        }
+        if(bookService.queryBook(id) == null){
+            return noBookWasFind(id);
+        }
         Book updateBook = bookService.updateBook(convert.fromDTOToBook(book), id);
-        if (updateBook == null)
-            throw new IncorrectBookIdException(errorBuilder.getErrorMessageOnIncorrectBookIdException(id));
         return new ResponseEntity<>(convert.fromBookToDTO(updateBook), HttpStatus.OK);
     }
 
+    public ResponseEntity noBookWasFind(int id){
+        return new ResponseEntity(errorBuilder.getErrorMessageOnIncorrectBookIdException(id), HttpStatus.BAD_REQUEST);
+    }
 }
 
 

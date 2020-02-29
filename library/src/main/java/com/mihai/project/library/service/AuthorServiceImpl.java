@@ -1,7 +1,6 @@
 package com.mihai.project.library.service;
 
 import com.mihai.project.library.contralleradvice.exception.AuthorNotFoundException;
-import com.mihai.project.library.contralleradvice.exception.NoUniqueResult;
 import com.mihai.project.library.dao.AuthorDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.util.HibernateUtil;
@@ -9,6 +8,7 @@ import com.mihai.project.library.util.MyErrorBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -35,23 +35,17 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author querySingleAuthor(String name) {
-        try {
-            Author author = HibernateUtil.getUniqueResult(authorDAO.querySingleAuthor(name));
-            if(author == null){
-                throw new AuthorNotFoundException(errorBuilder.getErrorMessageOnAuthorNotFoundException(name));
-            }
-            return author;
-        } catch (NoUniqueResult exc) {
+        Author author = HibernateUtil.getUniqueResult(authorDAO.querySingleAuthorForBookValidation(name));
+        if (author == null) {
             throw new AuthorNotFoundException(errorBuilder.getErrorMessageOnAuthorNotFoundException(name));
         }
+        return author;
     }
 
     @Override
+    @Transactional
     public Author querySingleAuthorForBookValidation(String name) {
-        try {
-            return HibernateUtil.getUniqueResult(authorDAO.querySingleAuthor(name));
-        } catch (NoUniqueResult exc) {
-           return null;
-        }
+        return HibernateUtil.getUniqueResult(authorDAO.querySingleAuthorForBookValidation(name));
+
     }
 }

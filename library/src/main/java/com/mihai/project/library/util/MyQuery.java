@@ -49,6 +49,8 @@ public class MyQuery {
 
     //@@ Book
     public static String HIBERNATE_QUERY_SINGLE_BOOK = "from Book where id = :id";
+    public static String HIBERNATE_QUERY_ALL_BOOKS = "from Book";
+    public static String HIBERNATE_DELETE_BOOK_BY_ID = "delete from Book where id = :id";
 
     //@@ Author
     public static String HIBERNATE_QUERY_SINGLE_AUTHOR_BY_NAME = "from Author where name = :name";

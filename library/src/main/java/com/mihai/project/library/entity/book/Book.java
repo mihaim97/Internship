@@ -24,7 +24,7 @@ public class Book implements Serializable {
     @Column(name = "date_added")
     private Date dateAdded;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "books_authors",
             joinColumns = {@JoinColumn(name = "bookid")},
@@ -32,27 +32,13 @@ public class Book implements Serializable {
     )
     private Set<Author> authors;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "book_tag_many_to_many",
             joinColumns = {@JoinColumn(name = "bookid")},
             inverseJoinColumns = {@JoinColumn(name = "tagid")}
     )
     private Set<Tag> tags;
-
-    /*@OneToMany(
-            mappedBy = "book",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<BookAuthor> authors;
-
-    @OneToMany(
-            mappedBy = "book",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<BookTag> tags;*/
 
     public Book(){}
 
@@ -125,16 +111,13 @@ public class Book implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
         Book book = (Book) o;
-        return id == book.id &&
-                Objects.equals(title, book.title) &&
+        return Objects.equals(title, book.title) &&
                 Objects.equals(description, book.description) &&
-                Objects.equals(dateAdded, book.dateAdded) &&
-                Objects.equals(authors, book.authors) &&
-                Objects.equals(tags, book.tags);
+                Objects.equals(dateAdded, book.dateAdded);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, dateAdded, authors, tags);
+        return Objects.hash(id, title, description, dateAdded);
     }
 }

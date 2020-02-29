@@ -13,7 +13,7 @@ public class Tag {
     private int id;
 
     @Column(name = "tag")
-    private String tag;
+    private String name;
 
     @ManyToMany(mappedBy = "tags")
     private Set<Book> books;
@@ -30,7 +30,7 @@ public class Tag {
 
     public Tag(int id, String tag) {
         this.id = id;
-        this.tag = tag;
+        this.name = tag;
     }
 
     public int getId() {
@@ -41,12 +41,12 @@ public class Tag {
         this.id = id;
     }
 
-    public String getTag() {
-        return tag;
+    public String getName() {
+        return name;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Book> getBooks() {
@@ -62,12 +62,11 @@ public class Tag {
         if (this == o) return true;
         if (!(o instanceof Tag)) return false;
         Tag tag1 = (Tag) o;
-        return id == tag1.id &&
-                Objects.equals(tag, tag1.tag);
+        return Objects.equals(name, tag1.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tag);
+        return Objects.hash(id, name);
     }
 }

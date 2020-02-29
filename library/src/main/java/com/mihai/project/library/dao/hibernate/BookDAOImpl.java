@@ -4,16 +4,17 @@ import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.Tag;
-import com.mihai.project.library.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import com.mihai.project.library.util.MyQuery;
+import com.mihai.project.library.util.MyTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Repository("BookDaoHibernateImplementation")
@@ -21,37 +22,23 @@ import java.util.Set;
 public class BookDAOImpl implements BookDAO {
 
     @Autowired
-    private EntityManager sessionFactory;
+    private EntityManager entityManager;
 
     @Override
     public Book addBook(Book book) {
-        Session session = sessionFactory.unwrap(Session.class);
         book.setDateAdded(new Date());
-        session.save(book);
+        entityManager.persist(book);
         return book;
     }
 
     @Override
     public Set<Book> queryBooks() {
-        return null;
+        return new HashSet<>(entityManager.createQuery(MyQuery.HIBERNATE_QUERY_ALL_BOOKS).getResultList());
     }
 
     @Override
     public Set<Author> queryBookAuthor(int bookId) {
-        Transaction transaction = null;
-        Set<Author> authors = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.getTransaction();
-            transaction.begin();
-            /** LOGIC **/
-            transaction.commit();
-        } catch (Exception exc) {
-            exc.printStackTrace();
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-        return authors;
+        return null;
     }
 
     @Override
@@ -61,16 +48,23 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public Book queryBook(int id) {
-        return null;
+        return entityManager.find(Book.class, id);
     }
 
     @Override
     public boolean deleteBook(int id) {
-        return false;
+        Query query = entityManager.createQuery(MyQuery.HIBERNATE_DELETE_BOOK_BY_ID);
+        query.setParameter(MyTable.BOOK_ID, id);
+        return query.executeUpdate() == 1;
     }
 
     @Override
     public Book updateBook(Book book, int bookId) {
-        return null;
+        Book existingBook = queryBook(bookId);
+        existingBook.getAuthors().addAll(book.getAuthors());
+        existingBook.getTags().addAll(book.getTags());
+        existingBook.setDescription(book.getDescription());
+        existingBook.setTitle(book.getTitle());
+        return existingBook;
     }
 }

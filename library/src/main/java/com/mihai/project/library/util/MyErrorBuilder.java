@@ -69,7 +69,7 @@ public class MyErrorBuilder {
         return toJson;
     }
 
-    public String getErrorMessageOnUserSuccessfullyDeleted(String username){
+    public String getMessageOnUserSuccessfullyDeleted(String username){
         String toJson = "";
         try {
             toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Employee with username " + username + " successfully deleted");

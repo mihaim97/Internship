@@ -2,35 +2,25 @@ package com.mihai.project.library.dao.hibernate;
 
 import com.mihai.project.library.dao.BookTagDAO;
 import com.mihai.project.library.entity.book.Tag;
-import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
 public class BookTagDAOImpl implements BookTagDAO {
 
+    @Autowired
+    private EntityManager entityManager;
+
     @Override
-    public List<Tag> querySingleTag(String tagName) {
-        Transaction transaction = null;
-        List<Tag> tag = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.getTransaction();
-            transaction.begin();
-            Query<Tag> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_TAG);
-            query.setParameter(MyTable.TAG_FIELD, tagName);
-            tag = query.getResultList();
-            transaction.commit();
-        } catch (Exception exc) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-        return tag;
+    public List<Tag> querySingleTagForBookValidation(String tagName) {
+        Query query = entityManager.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_TAG);
+        query.setParameter(MyTable.TAG_FIELD, tagName);
+        return query.getResultList();
     }
 }

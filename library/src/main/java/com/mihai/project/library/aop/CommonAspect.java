@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class QueryBookAspect {
+public class CommonAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(QueryBookAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommonAspect.class);
 
     @After("execution(* com.mihai.project.library.dao.*.BookDAOImpl.queryBook(..))")
     public void emptyResultDataAccessException(){

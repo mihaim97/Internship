@@ -11,5 +11,5 @@ public interface AuthorService {
 
     Author querySingleAuthor(String name);
 
-    Author querySingleAuthorForBookValidation(String name);
+    <T> T querySingleAuthorForBookValidation(String name);
 }

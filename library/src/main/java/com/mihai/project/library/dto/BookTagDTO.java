@@ -1,11 +1,8 @@
 package com.mihai.project.library.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mihai.project.library.entity.book.Book;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @JsonIgnoreProperties(value = "id", allowGetters = true)
@@ -15,13 +12,14 @@ public class BookTagDTO {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    private String tag;
+    private String name;
 
-    public BookTagDTO() { }
+    public BookTagDTO() {
+    }
 
-    public BookTagDTO(int id, String tag) {
+    public BookTagDTO(int id, @NotBlank @Size(min = 3, max = 50) String name) {
         this.id = id;
-        this.tag = tag;
+        this.name = name;
     }
 
     public int getId() {
@@ -32,11 +30,11 @@ public class BookTagDTO {
         this.id = id;
     }
 
-    public String getTag() {
-        return tag;
+    public String getName() {
+        return name;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setName(String name) {
+        this.name = name;
     }
 }

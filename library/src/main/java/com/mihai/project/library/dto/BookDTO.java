@@ -2,6 +2,7 @@ package com.mihai.project.library.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -21,29 +22,22 @@ public class BookDTO {
     @Size(min = 5, max = 249)
     private String description;
 
-    @NotNull
+    @Valid
     private Set<AuthorDTO> authors;
 
-    @NotNull
+    @Valid
     private Set<BookTagDTO> tags;
 
     public BookDTO(){}
 
-    public BookDTO(@NotNull String title, @NotNull String description, @NotNull Set<AuthorDTO> authors, @NotNull Set<BookTagDTO> tags) {
+    public BookDTO(@NotBlank @Size(min = 2, max = 50) String title, @NotBlank @Size(min = 5, max = 249) String description, @Valid Set<AuthorDTO> authors, @Valid Set<BookTagDTO> tags) {
         this.title = title;
         this.description = description;
         this.authors = authors;
         this.tags = tags;
     }
 
-    public BookDTO(int id, @NotNull String title, @NotNull String description, @NotNull Date dateAdded, @NotNull Set<AuthorDTO> authors, @NotNull Set<BookTagDTO> tags) {
-        this.title = title;
-        this.description = description;
-        this.authors = authors;
-        this.tags = tags;
-    }
-
-     public String getTitle() {
+    public String getTitle() {
         return title;
     }
 

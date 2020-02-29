@@ -9,5 +9,5 @@ public interface AuthorDAO {
 
     List<Author> queryAuthors();
 
-    List<Author> querySingleAuthor(String name);
+    List<Author> querySingleAuthorForBookValidation(String name);
 }

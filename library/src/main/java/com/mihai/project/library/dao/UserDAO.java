@@ -14,5 +14,5 @@ public interface UserDAO {
     List<User> emailAlreadyExistOnDifferentUser(String currentUsername, String email);
     List<User> usernameAlreadyExistOnDifferentUser(String currentUsername, String newUsername);
     boolean deleteUser(String user);
-    User updateUser(User user, User newUserData);
+    User updateUser(String username, User newUserData);
 }

@@ -4,11 +4,12 @@ import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.Tag;
-import com.mihai.project.library.util.enumeration.CastOperationType;
+import com.mihai.project.library.util.MyErrorBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -23,31 +24,24 @@ public class BookServiceImpl implements BookService {
 
     private BookTagService bookTagService;
 
-    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService, BookTagService bookTagService) {
+    private MyErrorBuilder errorBuilder;
+
+    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService, BookTagService bookTagService, MyErrorBuilder errorBuilder) {
         this.bookDAO = bookDAO;
         this.authorService = authorService;
         this.bookTagService = bookTagService;
+        this.errorBuilder = errorBuilder;
     }
 
     @Override
     @Transactional
     public Book addBook(Book book) {
-        Map<String, Set<Author>> mapOfAuthors = resolveExistingAuthorOrTag(book.getAuthors(), CastOperationType.AUTHOR);
-        Map<String, Set<Tag>> mapOfTags = resolveExistingAuthorOrTag(book.getTags(), CastOperationType.TAG);
-      /*  mapOfTags.get("existing").stream().forEach(author -> {
-            System.out.println(author.getTag() + " exc");
-        });
-        mapOfTags.get("new").stream().forEach(author -> {
-            System.out.println(author.getTag() + " new");
-        });
-        Set<BookTag> allTags = mergeSet(mapOfTags.get("existing"), mapOfTags.get("new"));
-        allTags.stream().forEach(tag -> {
-            System.out.println(tag.getTag() + " merge " + tag.getId());
-        });*/
-       // book.getTags().clear();
-       // book.getTags().addAll(mergeSet(mapOfTags.get("existing"), mapOfTags.get("new")));
-
-        //return new Book();
+        Map<String, Set<Author>> mapOfAuthors = resolveExistingAuthorOrTag(book.getAuthors(), Author.class);
+        Map<String, Set<Tag>> mapOfTags = resolveExistingAuthorOrTag(book.getTags(), Tag.class);
+        book.getTags().clear();
+        book.getTags().addAll(mergeSet(mapOfTags.get("existing"), mapOfTags.get("new")));
+        book.getAuthors().clear();
+        book.getAuthors().addAll(mergeSet(mapOfAuthors.get("existing"), mapOfAuthors.get("new")));
         return bookDAO.addBook(book);
     }
 
@@ -72,6 +66,8 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book queryBook(int id) {
+        Book t = bookDAO.queryBook(id);
+        System.out.println(t);
         return bookDAO.queryBook(id);
     }
 
@@ -84,42 +80,41 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book updateBook(Book book, int bookId) {
+        Map<String, Set<Author>> mapOfAuthors = resolveExistingAuthorOrTag(book.getAuthors(), Author.class);
+        Map<String, Set<Tag>> mapOfTags = resolveExistingAuthorOrTag(book.getTags(), Tag.class);
+        book.getTags().clear();
+        book.getTags().addAll(mergeSet(mapOfTags.get("existing"), mapOfTags.get("new")));
+        book.getAuthors().clear();
+        book.getAuthors().addAll(mergeSet(mapOfAuthors.get("existing"), mapOfAuthors.get("new")));
         return bookDAO.updateBook(book, bookId);
     }
 
-    private <T> Map<String, Set<T>> resolveExistingAuthorOrTag(Set<T> authorsToResolve, CastOperationType cast) {
+    private <T, C> Map<String, Set<T>> resolveExistingAuthorOrTag(Set<T> authorsToResolve, C cast) {
         Map<String, Set<T>> resolveResult = new HashMap<>();
         Set<T> existingValues = new HashSet<>();
         Set<T> newValues = new HashSet<>();
-        if (cast == CastOperationType.AUTHOR) {
-            return resolveExistingAuthor(resolveResult, authorsToResolve, existingValues, newValues);
-        } else if (cast == CastOperationType.TAG) {
-            return resolveExistingTag(resolveResult, authorsToResolve, existingValues, newValues);
-        }
-        return null;
+        return resolve(resolveResult, authorsToResolve, existingValues, newValues, cast);
     }
 
-    private <T> Map<String, Set<T>> resolveExistingAuthor(Map<String, Set<T>> resolveResult, Set<T> listToResolve, Set<T> existingValues, Set<T> newValues) {
-        listToResolve.stream().forEach(value -> {
-            Author author = authorService.querySingleAuthorForBookValidation(((Author) value).getName());
-            if (author == null) {
-                newValues.add(value);
-            } else {
-                existingValues.add((T) author);
-            }
-        });
-        resolveResult.put("existing", existingValues);
-        resolveResult.put("new", newValues);
-        return resolveResult;
-    }
-
-    private <T> Map<String, Set<T>> resolveExistingTag(Map<String, Set<T>> resolveResult, Set<T> listToResolve, Set<T> existingValues, Set<T> newValues) {
-        listToResolve.stream().forEach(value -> {
-            Tag tag = bookTagService.querySingleTahForBookValidation(((Tag) value).getTag());
-            if (tag == null) {
-                newValues.add(value);
-            } else {
-                existingValues.add((T) tag);
+    private <T, C> Map<String, Set<T>> resolve(Map<String, Set<T>> resolveResult, Set<T> listToResolve, Set<T> existingValues, Set<T> newValues, C cast) {
+        listToResolve.stream().forEach(item -> {
+            Method method;
+            System.out.println(cast);
+            try {
+                method = item.getClass().getMethod("getName");
+                T existingItem = null;
+                if (cast.equals(Author.class)) {
+                    existingItem = authorService.querySingleAuthorForBookValidation((String) method.invoke(item));
+                } else if (cast.equals(Tag.class)) {
+                    existingItem = bookTagService.querySingleTagForBookValidation((String) method.invoke(item));
+                }
+                if (existingItem == null) {
+                    newValues.add(item);
+                } else {
+                    existingValues.add(existingItem);
+                }
+            } catch (Exception exc) {
+                exc.printStackTrace();
             }
         });
         resolveResult.put("existing", existingValues);
@@ -131,6 +126,4 @@ public class BookServiceImpl implements BookService {
         set1.addAll(set2);
         return set1;
     }
-
-
 }
