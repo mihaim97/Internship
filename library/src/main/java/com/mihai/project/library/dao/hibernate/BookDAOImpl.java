@@ -67,4 +67,18 @@ public class BookDAOImpl implements BookDAO {
         existingBook.setTitle(book.getTitle());
         return existingBook;
     }
+
+    /**
+     * This also remove an author ot tag from a book
+     * The first one add all authors and tags
+     * This is equivalent to book.setTags()
+     * It is necessary for book to have an id
+     **/
+    @Override
+    public Book updateBookUsingTagAndAuthorId(Book book) {
+        entityManager.merge(book);
+        return book;
+    }
+
+
 }

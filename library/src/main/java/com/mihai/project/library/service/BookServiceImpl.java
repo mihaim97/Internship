@@ -24,24 +24,17 @@ public class BookServiceImpl implements BookService {
 
     private BookTagService bookTagService;
 
-    private MyErrorBuilder errorBuilder;
 
-    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService, BookTagService bookTagService, MyErrorBuilder errorBuilder) {
+    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService, BookTagService bookTagService) {
         this.bookDAO = bookDAO;
         this.authorService = authorService;
         this.bookTagService = bookTagService;
-        this.errorBuilder = errorBuilder;
     }
 
     @Override
     @Transactional
     public Book addBook(Book book) {
-        Map<String, Set<Author>> mapOfAuthors = resolveExistingAuthorOrTag(book.getAuthors(), Author.class);
-        Map<String, Set<Tag>> mapOfTags = resolveExistingAuthorOrTag(book.getTags(), Tag.class);
-        book.getTags().clear();
-        book.getTags().addAll(mergeSet(mapOfTags.get("existing"), mapOfTags.get("new")));
-        book.getAuthors().clear();
-        book.getAuthors().addAll(mergeSet(mapOfAuthors.get("existing"), mapOfAuthors.get("new")));
+        clearAndUpdate(book);
         return bookDAO.addBook(book);
     }
 
@@ -80,13 +73,19 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book updateBook(Book book, int bookId) {
-        Map<String, Set<Author>> mapOfAuthors = resolveExistingAuthorOrTag(book.getAuthors(), Author.class);
-        Map<String, Set<Tag>> mapOfTags = resolveExistingAuthorOrTag(book.getTags(), Tag.class);
-        book.getTags().clear();
-        book.getTags().addAll(mergeSet(mapOfTags.get("existing"), mapOfTags.get("new")));
-        book.getAuthors().clear();
-        book.getAuthors().addAll(mergeSet(mapOfAuthors.get("existing"), mapOfAuthors.get("new")));
+        clearAndUpdate(book);
         return bookDAO.updateBook(book, bookId);
+    }
+
+    /**
+     * In case of a book who already has an id and all authors and tags has an id
+     * It's more like a real world update. !! See BookDAOImpl - Hibernate
+     **/
+    @Override
+    @Transactional
+    public Book updateBookUsingTagAndAuthorId(Book book) {
+        return bookDAO.updateBookUsingTagAndAuthorId(book);
+
     }
 
     private <T, C> Map<String, Set<T>> resolveExistingAuthorOrTag(Set<T> authorsToResolve, C cast) {
@@ -125,5 +124,14 @@ public class BookServiceImpl implements BookService {
     private <T> Set<T> mergeSet(Set<T> set1, Set<T> set2) {
         set1.addAll(set2);
         return set1;
+    }
+
+    private void clearAndUpdate(Book book) {
+        Map<String, Set<Author>> mapOfAuthors = resolveExistingAuthorOrTag(book.getAuthors(), Author.class);
+        Map<String, Set<Tag>> mapOfTags = resolveExistingAuthorOrTag(book.getTags(), Tag.class);
+        book.getTags().clear();
+        book.getTags().addAll(mergeSet(mapOfTags.get("existing"), mapOfTags.get("new")));
+        book.getAuthors().clear();
+        book.getAuthors().addAll(mergeSet(mapOfAuthors.get("existing"), mapOfAuthors.get("new")));
     }
 }

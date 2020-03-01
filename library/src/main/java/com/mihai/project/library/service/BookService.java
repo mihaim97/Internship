@@ -20,4 +20,6 @@ public interface BookService {
     public boolean deleteBook(int id);
 
     public Book updateBook(Book book, int bookId);
+
+    Book updateBookUsingTagAndAuthorId(Book book);
 }

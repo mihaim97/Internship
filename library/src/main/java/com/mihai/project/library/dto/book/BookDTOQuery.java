@@ -1,13 +1,11 @@
-package com.mihai.project.library.dto;
+package com.mihai.project.library.dto.book;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @JsonPropertyOrder({"title", "description", "authors", "tags" })
@@ -30,11 +28,11 @@ public class BookDTOQuery {
     private Set<AuthorDTO> authors;
 
     @NotNull
-    private Set<BookTagDTO> tags;
+    private Set<TagDTO> tags;
 
     public BookDTOQuery(){}
 
-    public BookDTOQuery(@NotNull int id, @NotNull String title, @NotNull String description, @NotNull Date dateAdded, @NotNull Set<AuthorDTO> authors, @NotNull Set<BookTagDTO> tags) {
+    public BookDTOQuery(@NotNull int id, @NotNull String title, @NotNull String description, @NotNull Date dateAdded, @NotNull Set<AuthorDTO> authors, @NotNull Set<TagDTO> tags) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -75,11 +73,11 @@ public class BookDTOQuery {
         this.authors = authors;
     }
 
-    public Set<BookTagDTO> getTags() {
+    public Set<TagDTO> getTags() {
         return tags;
     }
 
-    public void setTags(Set<BookTagDTO> tags) {
+    public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
     }
 

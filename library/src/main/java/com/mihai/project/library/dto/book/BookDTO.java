@@ -1,14 +1,10 @@
-package com.mihai.project.library.dto;
+package com.mihai.project.library.dto.book;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @JsonPropertyOrder({"title", "description", "authors", "tags" })
@@ -26,11 +22,11 @@ public class BookDTO {
     private Set<AuthorDTO> authors;
 
     @Valid
-    private Set<BookTagDTO> tags;
+    private Set<TagDTO> tags;
 
     public BookDTO(){}
 
-    public BookDTO(@NotBlank @Size(min = 2, max = 50) String title, @NotBlank @Size(min = 5, max = 249) String description, @Valid Set<AuthorDTO> authors, @Valid Set<BookTagDTO> tags) {
+    public BookDTO(@NotBlank @Size(min = 2, max = 50) String title, @NotBlank @Size(min = 5, max = 249) String description, @Valid Set<AuthorDTO> authors, @Valid Set<TagDTO> tags) {
         this.title = title;
         this.description = description;
         this.authors = authors;
@@ -53,11 +49,11 @@ public class BookDTO {
         this.authors = authors;
     }
 
-    public Set<BookTagDTO> getTags() {
+    public Set<TagDTO> getTags() {
         return tags;
     }
 
-    public void setTags(Set<BookTagDTO> tags) {
+    public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
     }
 

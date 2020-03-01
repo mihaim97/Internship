@@ -1,8 +1,9 @@
 package com.mihai.project.library.controller;
 
 import com.mihai.project.library.contralleradvice.exception.NullFieldInBookDTOFoundException;
-import com.mihai.project.library.dto.BookDTO;
-import com.mihai.project.library.dto.BookDTOQuery;
+import com.mihai.project.library.dto.book.BookDTO;
+import com.mihai.project.library.dto.book.update.BookDTOID;
+import com.mihai.project.library.dto.book.BookDTOQuery;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.service.BookService;
 import com.mihai.project.library.util.MyErrorBuilder;
@@ -56,7 +57,7 @@ public class BookController {
     public ResponseEntity querySingleBook(@RequestParam @NotNull @Valid @Min(1) Integer id) {
         Book book = bookService.queryBook(id);
         if (book == null) {
-          return noBookWasFind(id);
+            return noBookWasFind(id);
         }
         return new ResponseEntity(convert.fromBookToDTO(book), HttpStatus.OK);
     }
@@ -69,19 +70,34 @@ public class BookController {
         return noBookWasFind(id);
     }
 
+    /** Add and modify authors and tags to a book that has this id. The id is not necessary to be in BookDTO **/
     @PutMapping(value = "/update-book", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BookDTOQuery> updateBook(@RequestBody @Valid BookDTO book, BindingResult bindingResult, @RequestParam Integer id) {
         if (bindingResult.hasErrors()) {
             throw new NullFieldInBookDTOFoundException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
-        if(bookService.queryBook(id) == null){
+        if (bookService.queryBook(id) == null) {
             return noBookWasFind(id);
         }
         Book updateBook = bookService.updateBook(convert.fromDTOToBook(book), id);
         return new ResponseEntity<>(convert.fromBookToDTO(updateBook), HttpStatus.OK);
     }
 
-    public ResponseEntity noBookWasFind(int id){
+    /** Update or remove authors and tags. The id is necessary to be part of BookDTOID body. **/
+    @PutMapping(value = "/update-book-using-id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BookDTOQuery> updateBookWithId(@RequestBody @Valid BookDTOID book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new NullFieldInBookDTOFoundException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
+        }
+        if (bookService.queryBook(book.getId()) == null) {
+            return noBookWasFind(book.getId());
+        }
+        Book updateBook = bookService.updateBookUsingTagAndAuthorId(convert.fromDTOIDToBook(book));
+        return new ResponseEntity<>(convert.fromBookToDTO(updateBook), HttpStatus.OK);
+    }
+
+
+    public ResponseEntity noBookWasFind(int id) {
         return new ResponseEntity(errorBuilder.getErrorMessageOnIncorrectBookIdException(id), HttpStatus.BAD_REQUEST);
     }
 }

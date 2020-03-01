@@ -1,13 +1,12 @@
-package com.mihai.project.library.dto;
+package com.mihai.project.library.dto.book;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @JsonIgnoreProperties(value = "id", allowGetters = true)
-public class AuthorDTO {
+public class TagDTO {
 
     private int id;
 
@@ -15,9 +14,10 @@ public class AuthorDTO {
     @Size(min = 3, max = 50)
     private String name;
 
-    public AuthorDTO(){}
+    public TagDTO() {
+    }
 
-    public AuthorDTO(int id, @NotNull String name) {
+    public TagDTO(int id, @NotBlank @Size(min = 3, max = 50) String name) {
         this.id = id;
         this.name = name;
     }

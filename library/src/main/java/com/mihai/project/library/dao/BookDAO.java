@@ -21,4 +21,6 @@ public interface BookDAO {
     boolean deleteBook(int id);
 
     Book updateBook(Book book, int bookId);
+
+    Book updateBookUsingTagAndAuthorId(Book book);
 }
