@@ -62,7 +62,7 @@ public class MyErrorBuilder {
     public String getErrorMessageOnNoSuchUserToDeleteOrUpdate(String username){
         String toJson = "";
         try {
-            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Employee " + username + " doesn't not exist");
+            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Employee " + username + " doesn't exist");
         }catch (JsonProcessingException exc){
             logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnNoSuchUserToDelete()");
         }

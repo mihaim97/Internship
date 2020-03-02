@@ -5,6 +5,8 @@ drop table if exists `appusers`;
 create table `appusers` (
   `id` int primary key auto_increment not null,
   `username` varchar(50) not null unique,
+  `first_name` varchar(50) not null,
+  `last_name` varchar(50) not null,
   `password` varchar(80) not null,
   `email` varchar(50) not null unique,
   `enabled` tinyint(1) not null,
@@ -21,4 +23,5 @@ create table `authorities` (
 */
 #parola 1234
 # ex parola encode $2a$10$K9z2QHLEiySh7S1AKaxRQe9nWtmQVVsvKw59R2acx.hD5ifT7cxji
-INSERT INTO library.`appusers`(`username`, `password`, `email`, `enabled`, `role`) VALUES ('mihai', md5('parola'), 'email', 1, 'admin');
+INSERT INTO library.`appusers`(`username`, `first_name`, `last_name`, `password`, `email`, `enabled`, `role`) 
+VALUES ('mihai', 'marian', 'ionut', md5('parola'), 'email', 1, 'admin');

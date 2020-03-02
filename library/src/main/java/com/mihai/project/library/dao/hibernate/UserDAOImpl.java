@@ -5,12 +5,14 @@ import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository("UserDaoHibernateImplementation")
@@ -18,44 +20,50 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
     @Autowired
-    private EntityManager entityManager;
+    private SessionFactory sessionFactory;
 
     @Override
     public User addUser(User user) {
+        Session session = sessionFactory.getCurrentSession();
         user.setPassword(DigestUtils.md5Hex(user.getPassword().getBytes()));
-        entityManager.persist(user);
+        session.persist(user);
         return user;
     }
 
     @Override
     public List<User> queryUser(String username) {
-        Query query =  entityManager.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_USERNAME);
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query =  session.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_USERNAME);
         query.setParameter(MyTable.USER_ID, username);
         return query.getResultList();
     }
 
     @Override
     public List<User> queryAllUsers() {
-        return entityManager.createQuery(MyQuery.HIBERNATE_QUERY_ALL_USERS).getResultList();
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_USERS).getResultList();
     }
 
     @Override
     public List<User> emailAlreadyExist(String email) {
-        Query query = entityManager.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_EMAIL);
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_EMAIL);
         query.setParameter(MyTable.USER_EMAIL, email);
         return query.getResultList();
     }
 
     @Override
     public List<User> userAlreadyExist(String username) {
-        Query query = entityManager.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_USERNAME);
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_USER_BY_USERNAME);
         query.setParameter(MyTable.USER_ID, username);
         return query.getResultList();
     }
 
     @Override
     public List<User> emailAlreadyExistOnDifferentUser(String currentUsername, String email) {
-        Query query = entityManager.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_USER_BY_EMAIL_EXCEPT_CURRENT_USER);
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_USER_BY_EMAIL_EXCEPT_CURRENT_USER);
         query.setParameter(MyTable.USER_EMAIL, email);
         query.setParameter(MyTable.USER_ID, currentUsername);
         return query.getResultList();
@@ -63,7 +71,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> usernameAlreadyExistOnDifferentUser(String currentUsername, String newUsername) {
-        Query query = entityManager.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_USER_BY_USERNAME_EXCEPT_CURRENT_USER);
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_USER_BY_USERNAME_EXCEPT_CURRENT_USER);
         query.setParameter(MyTable.HIBERNATE_USER_NEW, newUsername);
         query.setParameter(MyTable.USER_ID, currentUsername);
         return query.getResultList();
@@ -71,7 +80,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean deleteUser(String username) {
-        Query query = entityManager.createQuery(MyQuery.HIBERNATE_DELETE_USER);
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(MyQuery.HIBERNATE_DELETE_USER);
         query.setParameter(MyTable.USER_ID, username);
         return query.executeUpdate() == 1;
     }

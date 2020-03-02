@@ -6,6 +6,8 @@ import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.Tag;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -22,18 +24,21 @@ import java.util.Set;
 public class BookDAOImpl implements BookDAO {
 
     @Autowired
-    private EntityManager entityManager;
+    private SessionFactory sessionFactory;
 
     @Override
     public Book addBook(Book book) {
+        Session session = sessionFactory.getCurrentSession();
+        System.out.println(session);
         book.setDateAdded(new Date());
-        entityManager.persist(book);
+        session.persist(book);
         return book;
     }
 
     @Override
     public Set<Book> queryBooks() {
-        return new HashSet<>(entityManager.createQuery(MyQuery.HIBERNATE_QUERY_ALL_BOOKS).getResultList());
+        Session session = sessionFactory.getCurrentSession();
+        return new HashSet<>(session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_BOOKS).getResultList());
     }
 
     @Override
@@ -48,18 +53,25 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public Book queryBook(int id) {
-        return entityManager.find(Book.class, id);
+        Session session = sessionFactory.getCurrentSession();
+        return session.find(Book.class, id);
     }
 
     @Override
     public boolean deleteBook(int id) {
-        Query query = entityManager.createQuery(MyQuery.HIBERNATE_DELETE_BOOK_BY_ID);
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(MyQuery.HIBERNATE_DELETE_BOOK_BY_ID);
         query.setParameter(MyTable.BOOK_ID, id);
+       /* Book book = session.find(Book.class, id);
+        book.setAuthors(null);
+        book.setTags(null);
+        session.delete(book);*/
         return query.executeUpdate() == 1;
     }
 
     @Override
     public Book updateBook(Book book, int bookId) {
+        Session session = sessionFactory.getCurrentSession();
         Book existingBook = queryBook(bookId);
         existingBook.getAuthors().addAll(book.getAuthors());
         existingBook.getTags().addAll(book.getTags());
@@ -69,14 +81,15 @@ public class BookDAOImpl implements BookDAO {
     }
 
     /**
-     * This also remove an author ot tag from a book
+     * This also remove an author or tag from a book
      * The first one add all authors and tags
      * This is equivalent to book.setTags()
      * It is necessary for book to have an id
      **/
     @Override
     public Book updateBookUsingTagAndAuthorId(Book book) {
-        entityManager.merge(book);
+        Session session = sessionFactory.getCurrentSession();
+        session.merge(book);
         return book;
     }
 

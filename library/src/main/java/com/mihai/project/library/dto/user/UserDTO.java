@@ -1,5 +1,6 @@
 package com.mihai.project.library.dto.user;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -15,6 +16,14 @@ public class UserDTO {
     @Size(min=6)
     private String password;
 
+    @NotBlank
+    @Size(min = 3, max = 50)
+    private String firstName;
+
+    @NotBlank
+    @Size(min = 3, max = 50)
+    private String lastName;
+
     @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email")
     @NotBlank
     private String email;
@@ -25,9 +34,11 @@ public class UserDTO {
 
     public UserDTO() { }
 
-    public UserDTO(@NotBlank @Size(min = 5, max = 50) String username, @NotBlank @Size(min = 6) String password, @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email") @NotBlank String email, String role) {
+    public UserDTO(@NotBlank @Size(min = 5, max = 50) String username, @NotBlank @Size(min = 6) String password, @NotBlank @Size(min = 3, max = 50) String firstName, @NotBlank @Size(min = 3, max = 50) String lastName, @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email") @NotBlank String email, @NotBlank @Pattern(regexp = "ADMIN|REGULAR", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Incorrect role") String role) {
         this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.role = role;
     }
@@ -62,5 +73,21 @@ public class UserDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

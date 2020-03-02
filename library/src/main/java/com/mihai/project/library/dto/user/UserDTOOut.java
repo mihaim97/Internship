@@ -14,6 +14,14 @@ public class UserDTOOut {
     @Size(min = 5, max = 50)
     private String username;
 
+    @NotBlank
+    @Size(min = 3, max = 50)
+    private String firstName;
+
+    @NotBlank
+    @Size(min = 3, max = 50)
+    private String lastName;
+
     @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email")
     @NotBlank
     private String email;
@@ -23,9 +31,11 @@ public class UserDTOOut {
     public UserDTOOut() {
     }
 
-    public UserDTOOut(@NotNull int id, @NotBlank @Size(min = 5, max = 50) String username, @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email") @NotBlank String email, String role) {
+    public UserDTOOut(@NotNull int id, @NotBlank @Size(min = 5, max = 50) String username, @NotBlank @Size(min = 3, max = 50) String firstName, @NotBlank @Size(min = 3, max = 50) String lastName, @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email") @NotBlank String email, String role) {
         this.id = id;
         this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.role = role;
     }
@@ -60,5 +70,21 @@ public class UserDTOOut {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

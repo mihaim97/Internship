@@ -61,6 +61,7 @@ public class UserController {
     @GetMapping(path = "/single-user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity queryUser(@RequestParam String username) {
         User user = userService.queryUser(username);
+        System.out.println(user);
         if (user != null) {
             return new ResponseEntity(convert.fromUserToUserDTOOut(user), HttpStatus.OK);
         } else {
@@ -92,7 +93,7 @@ public class UserController {
     }
 
     public ResponseEntity noUserWithId(String username) {
-        return new ResponseEntity(errorBuilder.getErrorMessageOnNoSuchUserToDeleteOrUpdate(username), HttpStatus.NO_CONTENT);
+        return new ResponseEntity(errorBuilder.getErrorMessageOnNoSuchUserToDeleteOrUpdate(username), HttpStatus.BAD_REQUEST);
     }
 
 }
