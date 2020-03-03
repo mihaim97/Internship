@@ -34,7 +34,9 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public Tag updateTag(Tag tag) {
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        session.merge(tag);
+        return tag;
     }
 
     @Override

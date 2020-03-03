@@ -2,6 +2,7 @@ package com.mihai.project.library.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mihai.project.library.dto.errormodel.NullFieldDTO;
+import com.mihai.project.library.util.mapper.JsonMapperUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class MyErrorBuilder {
             buildErrorMessageList.add(new NullFieldDTO(err.getField(), err.getDefaultMessage()));
         });
         try{
-           toJson  = MyObjectMapper.getJsonMapper().writeValueAsString(buildErrorMessageList);
+           toJson  = JsonMapperUtil.getJsonMapper().writeValueAsString(buildErrorMessageList);
         }catch (JsonProcessingException exc){
             logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageFromResultBinding()");
         }
@@ -32,7 +33,7 @@ public class MyErrorBuilder {
     public String getErrorMessageOnIncorrectBookIdException(int id){
         String toJson = "";
         try {
-            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("No book with id " + id);
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("No book with id " + id);
         }catch (JsonProcessingException exc){
             logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnIncorrectBookIdException()");
         }
@@ -42,7 +43,7 @@ public class MyErrorBuilder {
     public String getErrorMessageOnUserExistException(String username){
         String toJson = "";
         try {
-            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Employee with username " + username + " already exist");
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Employee with username " + username + " already exist");
         }catch (JsonProcessingException exc){
             logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnUserExistException()");
         }
@@ -52,7 +53,7 @@ public class MyErrorBuilder {
     public String getErrorMessageOnEmailAlreadyExist(String email){
         String toJson = "";
         try {
-            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Email " + email + " already exist");
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Email " + email + " already exist");
         }catch (JsonProcessingException exc){
             logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnEmailAlreadyExist()");
         }
@@ -62,7 +63,7 @@ public class MyErrorBuilder {
     public String getErrorMessageOnNoSuchUserToDeleteOrUpdate(String username){
         String toJson = "";
         try {
-            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Employee " + username + " doesn't exist");
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Employee " + username + " doesn't exist");
         }catch (JsonProcessingException exc){
             logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnNoSuchUserToDelete()");
         }
@@ -72,7 +73,7 @@ public class MyErrorBuilder {
     public String getMessageOnUserSuccessfullyDeleted(String username){
         String toJson = "";
         try {
-            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Employee with username " + username + " successfully deleted");
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Employee with username " + username + " successfully deleted");
         }catch (JsonProcessingException exc){
             logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnUserSuccessfullyDeleted()");
         }
@@ -82,7 +83,7 @@ public class MyErrorBuilder {
     public String getErrorMessageOnAuthorNotFoundException(String author){
         String toJson = "";
         try {
-            toJson = MyObjectMapper.getJsonMapper().writeValueAsString("Author with name " + author + " doesn't exist");
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Author with name " + author + " doesn't exist");
         }catch (JsonProcessingException exc){
             logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnUserSuccessfullyDeleted()");
         }

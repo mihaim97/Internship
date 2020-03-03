@@ -1,4 +1,4 @@
-package com.mihai.project.library.service;
+package com.mihai.project.library.service.tag;
 
 import com.mihai.project.library.dao.TagDAO;
 import com.mihai.project.library.entity.book.Tag;
@@ -39,6 +39,10 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional
     public Tag updateTag(Tag tag) {
+        Tag existingTag = queryTagById(tag.getId());
+        if(existingTag != null){
+            return bookTagDAO.updateTag(tag);
+        }
         return null;
     }
 

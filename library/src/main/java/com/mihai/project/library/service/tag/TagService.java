@@ -1,4 +1,4 @@
-package com.mihai.project.library.service;
+package com.mihai.project.library.service.tag;
 
 import com.mihai.project.library.entity.book.Tag;
 

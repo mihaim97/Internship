@@ -3,9 +3,10 @@ package com.mihai.project.library.util.dtoentity;
 import com.mihai.project.library.dto.book.TagDTO;
 import com.mihai.project.library.dto.book.update.TagDTOID;
 import com.mihai.project.library.entity.book.Tag;
-import com.mihai.project.library.util.MyObjectMapper;
+import com.mihai.project.library.util.mapper.ModelMapperUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,20 +16,26 @@ public class TagDTOEntityConverterImpl implements TagDTOEntityConverter {
 
     @Override
     public TagDTO fromTagToDTO(Tag tag) {
-        ModelMapper mapper = MyObjectMapper.getMapper();
+        ModelMapper mapper = ModelMapperUtil.getMapper();
         return mapper.map(tag, TagDTO.class);
     }
 
     @Override
     public Tag fromDTOToTag(TagDTO tagDTO) {
-        ModelMapper mapper = MyObjectMapper.getMapper();
+        ModelMapper mapper = ModelMapperUtil.getMapper();
         return mapper.map(tagDTO, Tag.class);
     }
 
     @Override
     public TagDTOID fromTagToDTOID(Tag tag) {
-        ModelMapper mapper = MyObjectMapper.getMapper();
+        ModelMapper mapper = ModelMapperUtil.getMapper();
         return mapper.map(tag, TagDTOID.class);
+    }
+
+    @Override
+    public Tag fromDtoIdToTag(TagDTOID tagDTOID) {
+        ModelMapper mapper = ModelMapperUtil.getMapper();
+        return mapper.map(tagDTOID, Tag.class);
     }
 
     @Override
@@ -36,7 +43,7 @@ public class TagDTOEntityConverterImpl implements TagDTOEntityConverter {
         System.out.println(tags);
         if (tags != null && !tags.isEmpty()) {
             List<TagDTOID> tagsToReturn = new ArrayList<>();
-            ModelMapper mapper = MyObjectMapper.getMapper();
+            ModelMapper mapper = ModelMapperUtil.getMapper();
             tags.stream().forEach(tag -> {
                 tagsToReturn.add(mapper.map(tag, TagDTOID.class));
             });
