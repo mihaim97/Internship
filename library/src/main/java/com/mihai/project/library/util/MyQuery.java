@@ -57,5 +57,6 @@ public class MyQuery {
 
     //@@Tag
     public static String HIBERNATE_QUERY_SINGLE_TAG = "from Tag where tag = :tag";
+    public static String HIBERNATE_QUERY_ALL_TAGS = "from Tag";
 
 }

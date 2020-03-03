@@ -18,14 +18,6 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private Set<Book> books;
 
-  /*  @OneToMany(
-            mappedBy = "tag",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Book> books;*/
-
-
     public Tag() { }
 
     public Tag(int id, String tag) {

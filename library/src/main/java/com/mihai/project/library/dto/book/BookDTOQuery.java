@@ -1,6 +1,7 @@
 package com.mihai.project.library.dto.book;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.mihai.project.library.dto.book.update.TagDTOID;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,11 +29,11 @@ public class BookDTOQuery {
     private Set<AuthorDTO> authors;
 
     @NotNull
-    private Set<TagDTO> tags;
+    private Set<TagDTOID> tags;
 
     public BookDTOQuery(){}
 
-    public BookDTOQuery(@NotNull int id, @NotNull String title, @NotNull String description, @NotNull Date dateAdded, @NotNull Set<AuthorDTO> authors, @NotNull Set<TagDTO> tags) {
+    public BookDTOQuery(@NotNull int id, @NotNull String title, @NotNull String description, @NotNull Date dateAdded, @NotNull Set<AuthorDTO> authors, @NotNull Set<TagDTOID> tags) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -73,11 +74,11 @@ public class BookDTOQuery {
         this.authors = authors;
     }
 
-    public Set<TagDTO> getTags() {
+    public Set<TagDTOID> getTags() {
         return tags;
     }
 
-    public void setTags(Set<TagDTO> tags) {
+    public void setTags(Set<TagDTOID> tags) {
         this.tags = tags;
     }
 
