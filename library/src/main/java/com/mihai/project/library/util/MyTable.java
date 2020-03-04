@@ -1,13 +1,11 @@
 package com.mihai.project.library.util;
 
-import org.springframework.beans.factory.annotation.Value;
-
 public class MyTable {
     //@@ Book
-    public static String BOOK= "books";
-    public static String BOOK_ID= "id";
-    public static String BOOK_TITLE= "title";
-    public static String BOOK_DATE_ADDED= "date_added";
+    public static String BOOK = "books";
+    public static String BOOK_ID = "id";
+    public static String BOOK_TITLE = "title";
+    public static String BOOK_DATE_ADDED = "date_added";
 
     //@@ Author
     public static String AUTHOR = "authors";
@@ -20,7 +18,7 @@ public class MyTable {
     public static String BOOK_AUTHOR_AUTHOR_ID = "authorid";
 
     //@@ Book Desc
-    public static String BOOK_TABLE_DESCRIPTION= "description";
+    public static String BOOK_TABLE_DESCRIPTION = "description";
 
     //@@ Book Tag
     public static String TAG_TABLE = "book_tags";
@@ -41,4 +39,7 @@ public class MyTable {
     public static String USER_ENABLE = "enabled";
     public static String USER_ROLE = "role";
     public static String HIBERNATE_USER_NEW = "newusername";
+
+    //@@CopyStock
+    public static String COPY_BOOK_BOOK_ID = "bookId";
 }

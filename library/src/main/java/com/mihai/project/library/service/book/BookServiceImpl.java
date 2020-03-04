@@ -1,12 +1,12 @@
-package com.mihai.project.library.service;
+package com.mihai.project.library.service.book;
 
 import com.mihai.project.library.dao.BookDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.book.Tag;
+import com.mihai.project.library.service.author.AuthorService;
 import com.mihai.project.library.service.stock.CopyStockService;
 import com.mihai.project.library.service.tag.TagService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

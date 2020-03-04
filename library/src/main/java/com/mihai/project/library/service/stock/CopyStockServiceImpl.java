@@ -3,11 +3,12 @@ package com.mihai.project.library.service.stock;
 import com.mihai.project.library.dao.CopyStockDAO;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.stock.CopyStock;
-import com.mihai.project.library.util.enumeration.CopyFlag;
+import com.mihai.project.library.util.enumeration.StatusFlag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class CopyStockServiceImpl implements CopyStockService {
@@ -19,8 +20,35 @@ public class CopyStockServiceImpl implements CopyStockService {
     @Transactional
     public void addBookCopy(Book book, int copyNumber) {
         while (copyNumber != 0) {
-            copyStockDAO.addBookCopy(new CopyStock(CopyFlag.AV.toString(), CopyFlag.AV.toString(), book));
+            copyStockDAO.addBookCopy(createCopyStock(book));
             copyNumber--;
         }
     }
+
+    @Override
+    @Transactional
+    public CopyStock addSingleCopy(Book book, String flag, String status) {
+        return copyStockDAO.addBookCopy(createCopyStock(book, flag, status));
+    }
+
+    @Override
+    @Transactional
+    public CopyStock queryCopyStock(int id) {
+        return copyStockDAO.queryCopyStock(id);
+    }
+
+    @Override
+    @Transactional
+    public List<CopyStock> queryAllBookCopy(int bookId) {
+        return copyStockDAO.queryAllBookCopy(bookId);
+    }
+
+    private CopyStock createCopyStock(Book book, String flag, String status) {
+        return new CopyStock(flag, status, book);
+    }
+
+    private CopyStock createCopyStock(Book book) {
+        return new CopyStock(StatusFlag.AV.toString(), StatusFlag.AV.toString(), book);
+    }
+
 }

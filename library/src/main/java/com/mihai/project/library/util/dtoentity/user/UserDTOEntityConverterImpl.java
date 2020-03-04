@@ -1,4 +1,4 @@
-package com.mihai.project.library.util.dtoentity;
+package com.mihai.project.library.util.dtoentity.user;
 
 import com.mihai.project.library.dto.user.UserDTO;
 import com.mihai.project.library.dto.user.UserDTOOut;

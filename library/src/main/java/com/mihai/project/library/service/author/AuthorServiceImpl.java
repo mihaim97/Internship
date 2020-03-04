@@ -1,4 +1,4 @@
-package com.mihai.project.library.service;
+package com.mihai.project.library.service.author;
 
 import com.mihai.project.library.contralleradvice.exception.AuthorNotFoundException;
 import com.mihai.project.library.dao.AuthorDAO;
@@ -36,9 +36,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author querySingleAuthor(String name) {
         Author author = HibernateUtil.getUniqueResult(authorDAO.querySingleAuthorForBookValidation(name));
-        if (author == null) {
-            throw new AuthorNotFoundException(errorBuilder.getErrorMessageOnAuthorNotFoundException(name));
-        }
         return author;
     }
 

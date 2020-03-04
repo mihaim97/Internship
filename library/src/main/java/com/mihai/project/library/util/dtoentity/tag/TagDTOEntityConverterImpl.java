@@ -1,4 +1,4 @@
-package com.mihai.project.library.util.dtoentity;
+package com.mihai.project.library.util.dtoentity.tag;
 
 import com.mihai.project.library.dto.book.TagDTO;
 import com.mihai.project.library.dto.book.update.TagDTOID;
@@ -6,7 +6,6 @@ import com.mihai.project.library.entity.book.Tag;
 import com.mihai.project.library.util.mapper.ModelMapperUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -22,6 +22,8 @@ public class CopyStock {
     @JoinColumn(name = "book_id")
     private Book bookId;
 
+    public CopyStock(){}
+
     public CopyStock(int code, String flag, String status, Book bookId) {
         this.code = code;
         this.flag = flag;

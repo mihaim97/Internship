@@ -1,4 +1,4 @@
-package com.mihai.project.library.service;
+package com.mihai.project.library.service.book;
 
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.entity.book.Book;

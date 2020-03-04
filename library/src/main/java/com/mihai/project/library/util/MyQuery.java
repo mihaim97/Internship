@@ -60,4 +60,7 @@ public class MyQuery {
     public static String HIBERNATE_QUERY_ALL_TAGS = "from Tag";
     public static String HIBERNATE_QUERY_TAGS_LIKE = "from Tag where tag like :characters";
 
+    //@@CopyStock
+    public static String HIBERNATE_QUERY_ALL_BOOK_COPY = "from CopyStock where book_id = :bookId";
+
 }
