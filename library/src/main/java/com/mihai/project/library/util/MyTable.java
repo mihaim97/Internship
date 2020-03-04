@@ -26,6 +26,7 @@ public class MyTable {
     public static String TAG_TABLE = "book_tags";
     public static String TAG_ID = "id";
     public static String TAG_FIELD = "tag";
+    public static String TAG_CHAR = "characters";
 
     //@@ Book Tag Many To Many
     public static String BOOK_TAG = "book_tag_many_to_many";

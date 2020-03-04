@@ -66,6 +66,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     @Transactional
+    public List<Tag> queryTagsLike(String characters) {
+        return bookTagDAO.queryTagsLike(characters);
+    }
+
+    @Override
+    @Transactional
     public Tag querySingleTagForBookValidation(String name) {
         return HibernateUtil.getUniqueResult(bookTagDAO.querySingleTagForBookValidation(name));
 

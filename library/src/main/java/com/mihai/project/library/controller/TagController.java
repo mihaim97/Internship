@@ -73,6 +73,12 @@ public class TagController {
         return new ResponseEntity(converter.fromTagToDTOID(tag), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/search-tags", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity searchTags(@RequestParam String characters) {
+        return new ResponseEntity(converter.fromTagsToDTOID(tagService.queryTagsLike(characters)), HttpStatus.OK);
+    }
+
+
 
     /**
      * Separate class in all controllers

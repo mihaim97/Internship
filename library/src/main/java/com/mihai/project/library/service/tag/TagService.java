@@ -17,5 +17,7 @@ public interface TagService {
 
     List<Tag> queryTags();
 
+    List<Tag> queryTagsLike(String characters);
+
     <T> T querySingleTagForBookValidation(String name);
 }

@@ -1,11 +1,12 @@
 use `library`;
+drop table if exists `copy_stock`;
 
-drop table if exists `stock`;
-
-create table `stock`(
+create table `copy_stock`(
 `code` int primary key auto_increment not null,
-`flag` char not null check (`flag` in ('A', 'U')), # A - available, U - unavailable
-`status` char not null check (`status` in ('A', 'R', 'P')), # A - available, R - rented, P - pending
-`bookId` int not null,
-constraint `FK_Stock_BookId` foreign key (`bookId`) references `books` (`id`)
+`flag` varchar(2) not null check (`flag` in ('AV', 'UN')), # AV - available, UN - unavailable
+`status` varchar(2) not null check (`status` in ('AV', 'RE', 'PE')), # AV - available, RE - rented, PE - pending
+`book_id` int not null,
+constraint `FK_Stock_BookId` foreign key (`book_id`) references `books` (`id`) on delete cascade on update cascade
 );
+
+#insert into library.`copy_stock` (flag, status, book_id) values ('AV', 'AV', 1);

@@ -18,5 +18,7 @@ public interface TagDAO {
 
     List<Tag> queryTags();
 
+    List<Tag> queryTagsLike(String characters);
+
     List<Tag> querySingleTagForBookValidation(String name);
 }

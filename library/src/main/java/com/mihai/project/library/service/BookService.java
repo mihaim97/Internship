@@ -9,6 +9,8 @@ import java.util.Set;
 public interface BookService {
     public Book addBook(Book book);
 
+    public Book addBook(Book book, int copyNumber);
+
     public Set<Book> queryBooks();
 
     public Set<Author> queryBookAuthor(int bookId);

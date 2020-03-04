@@ -61,6 +61,14 @@ public class TagDAOImpl implements TagDAO {
     }
 
     @Override
+    public List<Tag> queryTagsLike(String characters) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<Tag> query = session.createQuery(MyQuery.HIBERNATE_QUERY_TAGS_LIKE);
+        query.setParameter(MyTable.TAG_CHAR, "%"+characters+"%");
+        return query.getResultList();
+    }
+
+    @Override
     public List<Tag> querySingleTagForBookValidation(String tagName) {
         Session session = sessionFactory.getCurrentSession();
         Query<Tag> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_TAG);
