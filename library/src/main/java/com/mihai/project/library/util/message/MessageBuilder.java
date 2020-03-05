@@ -1,4 +1,4 @@
-package com.mihai.project.library.util;
+package com.mihai.project.library.util.message;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mihai.project.library.dto.errormodel.NullFieldDTO;
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class MyErrorBuilder {
+public class MessageBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(MyErrorBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageBuilder.class);
 
     public String getErrorMessageFromResultBinding(BindingResult bindingResult){
         List<NullFieldDTO> buildErrorMessageList = new ArrayList<>();
@@ -25,7 +25,7 @@ public class MyErrorBuilder {
         try{
            toJson  = JsonMapperUtil.getJsonMapper().writeValueAsString(buildErrorMessageList);
         }catch (JsonProcessingException exc){
-            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageFromResultBinding()");
+            logger.error("Fail to parse json in " + MessageBuilder.class + " getErrorMessageFromResultBinding()");
         }
         return toJson;
     }
@@ -35,7 +35,7 @@ public class MyErrorBuilder {
         try {
             toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("No book with id " + id);
         }catch (JsonProcessingException exc){
-            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnIncorrectBookIdException()");
+            logger.error("Fail to parse json in " + MessageBuilder.class + " getErrorMessageOnIncorrectBookIdException()");
         }
         return toJson;
     }
@@ -45,7 +45,7 @@ public class MyErrorBuilder {
         try {
             toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Employee with username " + username + " already exist");
         }catch (JsonProcessingException exc){
-            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnUserExistException()");
+            logger.error("Fail to parse json in " + MessageBuilder.class + " getErrorMessageOnUserExistException()");
         }
         return toJson;
     }
@@ -55,7 +55,7 @@ public class MyErrorBuilder {
         try {
             toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Email " + email + " already exist");
         }catch (JsonProcessingException exc){
-            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnEmailAlreadyExist()");
+            logger.error("Fail to parse json in " + MessageBuilder.class + " getErrorMessageOnEmailAlreadyExist()");
         }
         return toJson;
     }
@@ -65,7 +65,7 @@ public class MyErrorBuilder {
         try {
             toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Employee " + username + " doesn't exist");
         }catch (JsonProcessingException exc){
-            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnNoSuchUserToDelete()");
+            logger.error("Fail to parse json in " + MessageBuilder.class + " getErrorMessageOnNoSuchUserToDelete()");
         }
         return toJson;
     }
@@ -75,7 +75,7 @@ public class MyErrorBuilder {
         try {
             toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Employee with username " + username + " successfully deleted");
         }catch (JsonProcessingException exc){
-            logger.error("Fail to parse json in " + MyErrorBuilder.class + " getErrorMessageOnUserSuccessfullyDeleted()");
+            logger.error("Fail to parse json in " + MessageBuilder.class + " getErrorMessageOnUserSuccessfullyDeleted()");
         }
         return toJson;
     }

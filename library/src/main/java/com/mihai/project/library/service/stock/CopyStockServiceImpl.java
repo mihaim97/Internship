@@ -43,6 +43,35 @@ public class CopyStockServiceImpl implements CopyStockService {
         return copyStockDAO.queryAllBookCopy(bookId);
     }
 
+    @Override
+    @Transactional
+    public List<CopyStock> queryAllCopy() {
+        return copyStockDAO.queryAllCopy();
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteCopy(int id) {
+        CopyStock copyStock = queryCopyStock(id);
+        if (copyStock != null) {
+            return copyStockDAO.deleteCopy(copyStock);
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public CopyStock updateCopy(CopyStock newValue) {
+        CopyStock copyToUpdate = queryCopyStock(newValue.getCode());
+        System.out.println(copyToUpdate);
+        if(copyToUpdate != null){
+            System.out.println("Intra");
+            return copyStockDAO.updateCopy(copyToUpdate, newValue);
+        }
+        return null;
+    }
+
+
     private CopyStock createCopyStock(Book book, String flag, String status) {
         return new CopyStock(flag, status, book);
     }

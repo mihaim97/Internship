@@ -11,4 +11,10 @@ public interface CopyStockDAO {
     CopyStock queryCopyStock(int id);
 
     List<CopyStock> queryAllBookCopy(int bookId);
+
+    List<CopyStock> queryAllCopy();
+
+    boolean deleteCopy(CopyStock copyStock);
+
+    CopyStock updateCopy(CopyStock copyToUpdate, CopyStock newValue);
 }

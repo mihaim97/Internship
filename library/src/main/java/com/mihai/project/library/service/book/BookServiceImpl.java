@@ -46,7 +46,7 @@ public class BookServiceImpl implements BookService {
     public Book addBook(Book book, int copyNumber) {
         clearAndUpdate(book);
         Book bookInserted = bookDAO.addBook(book);
-        copyStockService.addBookCopy(book, copyNumber);
+        copyStockService.addBookCopy(bookInserted, copyNumber);
         return bookInserted;
     }
 

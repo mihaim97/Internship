@@ -14,4 +14,11 @@ public interface CopyStockService {
     CopyStock queryCopyStock(int id);
 
     List<CopyStock> queryAllBookCopy(int bookId);
+
+    List<CopyStock> queryAllCopy();
+
+    boolean deleteCopy(int id);
+
+    CopyStock updateCopy(CopyStock newValue);
+
 }

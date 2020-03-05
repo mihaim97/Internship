@@ -1,10 +1,9 @@
 package com.mihai.project.library.service.author;
 
-import com.mihai.project.library.contralleradvice.exception.AuthorNotFoundException;
 import com.mihai.project.library.dao.AuthorDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.util.HibernateUtil;
-import com.mihai.project.library.util.MyErrorBuilder;
+import com.mihai.project.library.util.message.MessageBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +15,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     private AuthorDAO authorDAO;
 
-    private MyErrorBuilder errorBuilder;
+    private MessageBuilder errorBuilder;
 
-    public AuthorServiceImpl(@Qualifier("AuthorDaoHibernate") AuthorDAO authorDAO, MyErrorBuilder errorBuilder) {
+    public AuthorServiceImpl(@Qualifier("AuthorDaoHibernate") AuthorDAO authorDAO, MessageBuilder errorBuilder) {
         this.authorDAO = authorDAO;
         this.errorBuilder = errorBuilder;
     }

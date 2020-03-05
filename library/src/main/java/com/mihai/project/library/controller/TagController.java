@@ -5,6 +5,7 @@ import com.mihai.project.library.dto.book.update.TagDTOID;
 import com.mihai.project.library.entity.book.Tag;
 import com.mihai.project.library.service.tag.TagService;
 import com.mihai.project.library.util.dtoentity.tag.TagDTOEntityConverter;
+import com.mihai.project.library.util.message.tag.TagMessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,11 +25,14 @@ public class TagController {
     @Autowired
     private TagDTOEntityConverter converter;
 
+    @Autowired
+    private TagMessageBuilder messageBuilder;
+
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addTag(@RequestBody TagDTO tagDTO) {
         Tag tag = tagService.addTag(converter.fromDTOToTag(tagDTO));
         if (tag == null) {
-            return tagExist(tagDTO.getName());
+            return new ResponseEntity<>(messageBuilder.getMessageOnTagExist(tagDTO.getName()), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(converter.fromTagToDTOID(tag), HttpStatus.OK);
     }
@@ -36,7 +40,7 @@ public class TagController {
     @DeleteMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity removeTag(@RequestParam int id) {
         if (tagService.removeTag(id)) {
-            return new ResponseEntity<>("deleted", HttpStatus.OK);
+            return new ResponseEntity<>(messageBuilder.getMessageOnSuccessfullyDeleted(id), HttpStatus.OK);
         }
         return noTagWithId(id);
     }
@@ -59,7 +63,7 @@ public class TagController {
     public ResponseEntity queryTagByName(@RequestParam @NotBlank String name) {
         Tag tag = tagService.queryTagByName(name);
         if (tag == null) {
-            return new ResponseEntity<>("No tag with name " + name, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(messageBuilder.getMessageOnNoTagWithName(name), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(converter.fromTagToDTOID(tag), HttpStatus.OK);
     }
@@ -78,17 +82,8 @@ public class TagController {
         return new ResponseEntity<>(converter.fromTagsToDTOID(tagService.queryTagsLike(characters)), HttpStatus.OK);
     }
 
-
-
-    /**
-     * Separate class in all controllers
-     **/
-    private ResponseEntity<Object> tagExist(String name) {
-        return new ResponseEntity<>("Tag " + name + " exist", HttpStatus.BAD_REQUEST);
-    }
-
     private ResponseEntity<Object> noTagWithId(int id) {
-        return new ResponseEntity<>("No tag with id " + id, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(messageBuilder.getMessageOnNoTagWithId(id), HttpStatus.BAD_REQUEST);
     }
 
 }

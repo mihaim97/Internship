@@ -5,7 +5,7 @@ import com.mihai.project.library.dto.user.UserDTO;
 import com.mihai.project.library.dto.user.UserDTOOut;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.service.user.UserService;
-import com.mihai.project.library.util.MyErrorBuilder;
+import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.dtoentity.user.UserDTOEntityConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class UserController {
     private UserDTOEntityConverter convert;
 
     @Autowired
-    private MyErrorBuilder errorBuilder;
+    private MessageBuilder errorBuilder;
 
     @PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult) {

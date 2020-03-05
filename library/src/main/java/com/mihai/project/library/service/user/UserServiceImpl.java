@@ -3,7 +3,7 @@ package com.mihai.project.library.service.user;
 import com.mihai.project.library.dao.UserDAO;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.HibernateUtil;
-import com.mihai.project.library.util.MyErrorBuilder;
+import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.enumeration.FieldType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
 
-    public UserServiceImpl(@Qualifier("UserDaoHibernate") UserDAO userDAO, MyErrorBuilder errorBuilder) {
+    public UserServiceImpl(@Qualifier("UserDaoHibernate") UserDAO userDAO, MessageBuilder errorBuilder) {
         this.userDAO = userDAO;
     }
 

@@ -38,4 +38,25 @@ public class CopyStockDAOImpl implements CopyStockDAO {
         query.setParameter(MyTable.COPY_BOOK_BOOK_ID, bookId);
         return query.getResultList();
     }
+
+    @Override
+    public List<CopyStock> queryAllCopy() {
+        Session session = sessionFactory.getCurrentSession();
+        Query<CopyStock> query = session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_COPY);
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean deleteCopy(CopyStock copyStock) {
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(copyStock);
+        return true;
+    }
+
+    @Override
+    public CopyStock updateCopy(CopyStock copyToUpdate, CopyStock newValue) {
+        copyToUpdate.setFlag(newValue.getFlag());
+        copyToUpdate.setStatus(newValue.getStatus());
+        return copyToUpdate;
+    }
 }

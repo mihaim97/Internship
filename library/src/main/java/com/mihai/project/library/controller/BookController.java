@@ -6,7 +6,7 @@ import com.mihai.project.library.dto.book.update.BookDTOID;
 import com.mihai.project.library.dto.book.BookDTOQuery;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.service.book.BookService;
-import com.mihai.project.library.util.MyErrorBuilder;
+import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.dtoentity.book.BookDTOEntityConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class BookController {
     private BookDTOEntityConverter convert;
 
     @Autowired
-    private MyErrorBuilder errorBuilder;
+    private MessageBuilder errorBuilder;
 
     @PostMapping("/add")
     public ResponseEntity<BookDTOQuery> addBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {

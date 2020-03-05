@@ -29,7 +29,6 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public Book addBook(Book book) {
         Session session = sessionFactory.getCurrentSession();
-        System.out.println(session);
         book.setDateAdded(new Date());
         session.persist(book);
         return book;
