@@ -16,6 +16,8 @@ public interface TagDAO {
 
     List<Tag> queryTagByName(String name);
 
+    List<Tag> checkIfTagNameExistOnUpdate(String tagName, int currentTagId);
+
     List<Tag> queryTags();
 
     List<Tag> queryTagsLike(String characters);

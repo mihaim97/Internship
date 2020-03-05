@@ -85,7 +85,7 @@ public class BookController {
 
     /** Update or remove authors and tags. The id is necessary to be part of BookDTOID body. **/
     @PutMapping(value = "/update-book-using-id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookDTOQuery> updateBookWithId(@RequestBody @Valid BookDTOID book, BindingResult bindingResult) {
+    public ResponseEntity<BookDTOQuery> updateBookWithIdInBody(@RequestBody @Valid BookDTOID book, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
         }

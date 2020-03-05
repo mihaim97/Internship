@@ -57,6 +57,14 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
+    public List<Book> queryBookAndGetList(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_BOOK);
+        query.setParameter(MyTable.BOOK_ID, id);
+        return query.getResultList();
+    }
+
+    @Override
     public boolean deleteBook(int id) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(MyQuery.HIBERNATE_DELETE_BOOK_BY_ID);
@@ -76,6 +84,7 @@ public class BookDAOImpl implements BookDAO {
         existingBook.getTags().addAll(book.getTags());
         existingBook.setDescription(book.getDescription());
         existingBook.setTitle(book.getTitle());
+        session.merge(existingBook);
         return existingBook;
     }
 

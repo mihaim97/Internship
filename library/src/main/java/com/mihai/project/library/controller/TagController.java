@@ -49,7 +49,7 @@ public class TagController {
     public ResponseEntity updateTag(@RequestBody TagDTOID tagDTOID) {
         Tag tag = tagService.updateTag(converter.fromDtoIdToTag(tagDTOID));
         if (tag == null) {
-           return noTagWithId(tagDTOID.getId());
+           return new ResponseEntity(messageBuilder.getMessageOnUpdateError(tagDTOID.getId()), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(tagDTOID, HttpStatus.OK);
     }

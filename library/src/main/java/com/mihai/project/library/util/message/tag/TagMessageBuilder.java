@@ -10,4 +10,6 @@ public interface TagMessageBuilder {
 
     String getMessageOnSuccessfullyDeleted(int id);
 
+    String getMessageOnUpdateError(int id);
+
 }

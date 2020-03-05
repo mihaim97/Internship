@@ -41,7 +41,9 @@ public class TagServiceImpl implements TagService {
     public Tag updateTag(Tag tag) {
         Tag existingTag = queryTagById(tag.getId());
         if(existingTag != null){
-            return bookTagDAO.updateTag(tag);
+           if(checkIfTagNameExistOnUpdate(tag.getName(), existingTag.getId())){
+               return bookTagDAO.updateTag(tag);
+           }
         }
         return null;
     }
@@ -56,6 +58,12 @@ public class TagServiceImpl implements TagService {
     @Transactional
     public Tag queryTagByName(String name) {
         return HibernateUtil.getUniqueResult(bookTagDAO.queryTagByName(name));
+    }
+
+    @Override
+    @Transactional
+    public boolean checkIfTagNameExistOnUpdate(String tagName, int currentTagId) {
+        return bookTagDAO.checkIfTagNameExistOnUpdate(tagName, currentTagId).isEmpty();
     }
 
     @Override

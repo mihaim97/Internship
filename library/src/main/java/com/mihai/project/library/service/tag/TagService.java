@@ -15,6 +15,8 @@ public interface TagService {
 
     Tag queryTagByName(String name);
 
+    boolean checkIfTagNameExistOnUpdate(String tagName, int currentTagId);
+
     List<Tag> queryTags();
 
     List<Tag> queryTagsLike(String characters);

@@ -7,6 +7,7 @@ import com.mihai.project.library.entity.book.Tag;
 import com.mihai.project.library.service.author.AuthorService;
 import com.mihai.project.library.service.stock.CopyStockService;
 import com.mihai.project.library.service.tag.TagService;
+import com.mihai.project.library.util.HibernateUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,9 +72,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book queryBook(int id) {
-        Book t = bookDAO.queryBook(id);
-        System.out.println(t);
-        return bookDAO.queryBook(id);
+        return HibernateUtil.getUniqueResult(bookDAO.queryBookAndGetList(id));
     }
 
     @Override

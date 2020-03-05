@@ -65,7 +65,6 @@ public class CopyStockServiceImpl implements CopyStockService {
         CopyStock copyToUpdate = queryCopyStock(newValue.getCode());
         System.out.println(copyToUpdate);
         if(copyToUpdate != null){
-            System.out.println("Intra");
             return copyStockDAO.updateCopy(copyToUpdate, newValue);
         }
         return null;

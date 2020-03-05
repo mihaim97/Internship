@@ -55,4 +55,15 @@ public class TagMessageBuilderImpl implements TagMessageBuilder {
         return toJson;
     }
 
+    @Override
+    public String getMessageOnUpdateError(int id) {
+        String toJson = "";
+        try {
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("No tag with id " + id + " or tag name already exist");
+        }catch (JsonProcessingException exc){
+            logger.error("Fail to parse json in " + TagMessageBuilderImpl.class + " getMessageOnUpdateError()");
+        }
+        return toJson;
+    }
+
 }

@@ -54,6 +54,15 @@ public class TagDAOImpl implements TagDAO {
     }
 
     @Override
+    public List<Tag> checkIfTagNameExistOnUpdate(String tagName, int currentTagId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<Tag> query = session.createQuery(MyQuery.HIBERNATE_QUERY_TAG_NAME_ON_UPDATE);
+        query.setParameter(MyTable.TAG_FIELD, tagName);
+        query.setParameter(MyTable.TAG_ID, currentTagId);
+        return query.getResultList();
+    }
+
+    @Override
     public List<Tag> queryTags() {
         Session session = sessionFactory.getCurrentSession();
         Query<Tag> query = session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_TAGS);

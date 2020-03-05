@@ -10,6 +10,7 @@ import com.mihai.project.library.service.book.BookService;
 import com.mihai.project.library.service.stock.CopyStockService;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.dtoentity.stock.CopyStockDTOEntityConverter;
+import com.mihai.project.library.util.message.stock.CopyStockMessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,6 +38,9 @@ public class CopyBookController {
     @Autowired
     private MessageBuilder messageBuilder;
 
+    @Autowired
+    private CopyStockMessageBuilder copyMessageBuilder;
+
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addCopyBook(@RequestBody @Valid CopyStockDTO copyStockDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
@@ -47,16 +51,16 @@ public class CopyBookController {
             CopyStock copyStock = copyStockService.addSingleCopy(book, copyStockDTO.getFlag(), copyStockDTO.getStatus());
             return new ResponseEntity<>(convert.fromCopyStockToDto(copyStock), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(messageBuilder.getErrorMessageOnIncorrectBookIdException(copyStockDTO.getBookId()), HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value = "query-copy", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity queryCopyBook(@RequestParam @Valid @Min(1) int id) {
-        CopyStock copyStock = copyStockService.queryCopyStock(id);
+    public ResponseEntity queryCopyBook(@RequestParam @Valid @Min(1) int code) {
+        CopyStock copyStock = copyStockService.queryCopyStock(code);
         if (copyStock != null) {
             return new ResponseEntity<>(convert.fromCopyStockToDto(copyStock), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(copyMessageBuilder.getMessageOnNoCopyWithCode(code), HttpStatus.BAD_REQUEST);
     }
 
     /** All copy of a book **/
@@ -71,11 +75,11 @@ public class CopyBookController {
     }
 
     @DeleteMapping(value = "/delete" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteCopy(@RequestParam @Valid @Min(1) int copyId){
-        if(copyStockService.deleteCopy(copyId)){
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> deleteCopy(@RequestParam @Valid @Min(1) int copyCode){
+        if(copyStockService.deleteCopy(copyCode)){
+            return new ResponseEntity<>(copyMessageBuilder.getMessageOnCopySuccessfullyDeleted(copyCode), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(copyMessageBuilder.getMessageOnNoCopyWithCode(copyCode), HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -85,8 +89,8 @@ public class CopyBookController {
         }
         CopyStock copyStock = copyStockService.updateCopy(convert.fromCopyStockUpdateToCopyStock(copyStockDTOUpdate));
         if(copyStock != null){
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(convert.fromCopyStockToDto(copyStock), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(copyMessageBuilder.getMessageOnNoCopyWithCode(copyStockDTOUpdate.getCode()), HttpStatus.BAD_REQUEST);
     }
 }

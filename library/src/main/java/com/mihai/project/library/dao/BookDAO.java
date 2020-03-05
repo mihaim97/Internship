@@ -18,6 +18,8 @@ public interface BookDAO {
 
     Book queryBook(int id);
 
+    List<Book> queryBookAndGetList(int id);
+
     boolean deleteBook(int id);
 
     Book updateBook(Book book, int bookId);
