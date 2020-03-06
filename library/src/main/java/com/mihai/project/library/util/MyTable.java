@@ -41,5 +41,10 @@ public class MyTable {
     public static String HIBERNATE_USER_NEW = "newusername";
 
     //@@CopyStock
+    public static String COPY_STOCK_ID = "code";
     public static String COPY_BOOK_BOOK_ID = "bookId";
+    public static String COPY_BOOK_BOOK_FK = "book_id";
+    public static String COPY_BOOK_FLAG = "flag";
+    public static String COPY_BOOK_STATUS = "status";
+
 }

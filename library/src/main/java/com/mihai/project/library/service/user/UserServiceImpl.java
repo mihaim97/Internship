@@ -5,6 +5,7 @@ import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.enumeration.FieldType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,10 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    @Qualifier("UserDaoHibernate")
     private UserDAO userDAO;
-
-    public UserServiceImpl(@Qualifier("UserDaoHibernate") UserDAO userDAO, MessageBuilder errorBuilder) {
-        this.userDAO = userDAO;
-    }
+    
 
     @Override
     @Transactional

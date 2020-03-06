@@ -8,6 +8,7 @@ import com.mihai.project.library.service.author.AuthorService;
 import com.mihai.project.library.service.stock.CopyStockService;
 import com.mihai.project.library.service.tag.TagService;
 import com.mihai.project.library.util.HibernateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,20 +22,19 @@ import java.util.Set;
 @Service
 public class BookServiceImpl implements BookService {
 
+    @Autowired
+    @Qualifier("BookDaoHibernate")
     private BookDAO bookDAO;
 
+    @Autowired
     private AuthorService authorService;
 
+    @Autowired
     private TagService bookTagService;
 
+    @Autowired
     private CopyStockService copyStockService;
 
-    public BookServiceImpl(@Qualifier("BookDaoHibernate") BookDAO bookDAO, AuthorService authorService, TagService bookTagService, CopyStockService copyStockService) {
-        this.bookDAO = bookDAO;
-        this.authorService = authorService;
-        this.bookTagService = bookTagService;
-        this.copyStockService = copyStockService;
-    }
 
     @Override
     @Transactional

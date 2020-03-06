@@ -4,6 +4,8 @@ import com.mihai.project.library.dao.CopyStockDAO;
 import com.mihai.project.library.entity.stock.CopyStock;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
+import com.mihai.project.library.util.enumeration.Status;
+import com.mihai.project.library.util.enumeration.Flag;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -36,6 +38,16 @@ public class CopyStockDAOImpl implements CopyStockDAO {
         Session session = sessionFactory.getCurrentSession();
         Query<CopyStock> query = session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_BOOK_COPY);
         query.setParameter(MyTable.COPY_BOOK_BOOK_ID, bookId);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<CopyStock> querySingleBookCopyByBookId(int bookId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<CopyStock> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_BOOK_COPY_BY_ID).setMaxResults(1);
+        query.setParameter(MyTable.COPY_BOOK_BOOK_FK, bookId);
+        query.setParameter(MyTable.COPY_BOOK_STATUS, Status.AV.toString());
+        query.setParameter(MyTable.COPY_BOOK_FLAG, Flag.AV.toString());
         return query.getResultList();
     }
 

@@ -64,5 +64,6 @@ public class MyQuery {
     //@@CopyStock
     public static String HIBERNATE_QUERY_ALL_BOOK_COPY = "from CopyStock where book_id = :bookId";
     public static String HIBERNATE_QUERY_ALL_COPY = "from CopyStock";
+    public static String HIBERNATE_QUERY_SINGLE_BOOK_COPY_BY_ID = "from CopyStock cp join fetch cp.bookId where book_id = :book_id and flag = :flag and status = :status";
 
 }

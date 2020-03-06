@@ -3,7 +3,9 @@ package com.mihai.project.library.service.stock;
 import com.mihai.project.library.dao.CopyStockDAO;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.stock.CopyStock;
-import com.mihai.project.library.util.enumeration.StatusFlag;
+import com.mihai.project.library.util.HibernateUtil;
+import com.mihai.project.library.util.enumeration.Flag;
+import com.mihai.project.library.util.enumeration.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +47,12 @@ public class CopyStockServiceImpl implements CopyStockService {
 
     @Override
     @Transactional
+    public CopyStock querySingleBookCopyByBookId(int bookId) {
+        return HibernateUtil.getUniqueResult(copyStockDAO.querySingleBookCopyByBookId(bookId));
+    }
+
+    @Override
+    @Transactional
     public List<CopyStock> queryAllCopy() {
         return copyStockDAO.queryAllCopy();
     }
@@ -76,7 +84,7 @@ public class CopyStockServiceImpl implements CopyStockService {
     }
 
     private CopyStock createCopyStock(Book book) {
-        return new CopyStock(StatusFlag.AV.toString(), StatusFlag.AV.toString(), book);
+        return new CopyStock(Flag.AV.toString(), Status.AV.toString(), book);
     }
 
 }

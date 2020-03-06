@@ -3,6 +3,7 @@ package com.mihai.project.library.service.tag;
 import com.mihai.project.library.dao.TagDAO;
 import com.mihai.project.library.entity.book.Tag;
 import com.mihai.project.library.util.HibernateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -11,11 +12,8 @@ import java.util.List;
 @Service
 public class TagServiceImpl implements TagService {
 
+    @Autowired
     private TagDAO bookTagDAO;
-
-    public TagServiceImpl(TagDAO bookTagDAO) {
-        this.bookTagDAO = bookTagDAO;
-    }
 
     @Override
     @Transactional

@@ -4,6 +4,7 @@ import com.mihai.project.library.dao.AuthorDAO;
 import com.mihai.project.library.entity.book.Author;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.message.MessageBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +14,12 @@ import java.util.List;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
+    @Autowired
+    @Qualifier("AuthorDaoHibernate")
     private AuthorDAO authorDAO;
 
+    @Autowired
     private MessageBuilder errorBuilder;
-
-    public AuthorServiceImpl(@Qualifier("AuthorDaoHibernate") AuthorDAO authorDAO, MessageBuilder errorBuilder) {
-        this.authorDAO = authorDAO;
-        this.errorBuilder = errorBuilder;
-    }
 
     @Override
     public Number addAuthor(Author author) {
