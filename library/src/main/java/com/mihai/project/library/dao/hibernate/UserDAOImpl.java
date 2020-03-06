@@ -39,6 +39,12 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public User queryUserById(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.find(User.class, id);
+    }
+
+    @Override
     public List<User> queryAllUsers() {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_USERS).getResultList();

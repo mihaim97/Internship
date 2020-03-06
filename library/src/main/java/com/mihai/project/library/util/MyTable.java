@@ -47,4 +47,10 @@ public class MyTable {
     public static String COPY_BOOK_FLAG = "flag";
     public static String COPY_BOOK_STATUS = "status";
 
+    //@@BookRent
+    public static String BOOK_RENT_BOOK_FK = "book";
+    public static String BOOK_RENT_USER_FK = "emp_id";
+    public static String BOOK_RENT_STATUS = "status";
+    public static String BOOK_RENT_STATUS2 = "status2";
+
 }

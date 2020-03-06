@@ -6,6 +6,8 @@ public class JsonMapperUtil {
 
     private static ObjectMapper jsonMapper;
 
+    private JsonMapperUtil(){}
+
     public static ObjectMapper getJsonMapper() {
         if (jsonMapper == null) {
             synchronized (JsonMapperUtil.class) {

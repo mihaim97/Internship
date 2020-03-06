@@ -48,7 +48,7 @@ public class MyQuery {
     public static String HIBERNATE_DELETE_USER = "delete User where username = :username";
 
     //@@ Book
-    public static String HIBERNATE_QUERY_SINGLE_BOOK = "from Book b left join fetch b.authors left join fetch b.tags where b.id = :id";
+    public static String HIBERNATE_QUERY_SINGLE_BOOK = "select distinct b from Book b left join fetch b.authors a left join fetch b.tags t where b.id = :id";
     public static String HIBERNATE_QUERY_ALL_BOOKS = "from Book b left join fetch b.authors left join fetch b.tags ";
     public static String HIBERNATE_DELETE_BOOK_BY_ID = "delete from Book where id = :id";
 
@@ -66,4 +66,6 @@ public class MyQuery {
     public static String HIBERNATE_QUERY_ALL_COPY = "from CopyStock";
     public static String HIBERNATE_QUERY_SINGLE_BOOK_COPY_BY_ID = "from CopyStock cp join fetch cp.bookId where book_id = :book_id and flag = :flag and status = :status";
 
+    //@@BookRent
+    public static String HIBERNATE_QUERY_BOOK_RENT_BY_USER_BOOK_ID = "from BookRent br where br.book = :book and br.user = :emp_id and (br.status = :status or br.status = :status2)";
 }

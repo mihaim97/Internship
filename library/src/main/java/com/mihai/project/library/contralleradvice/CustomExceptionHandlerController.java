@@ -14,4 +14,11 @@ public class CustomExceptionHandlerController extends ResponseEntityExceptionHan
     public ResponseEntity<String> handleResponseBindingError(Exception exc){
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler({NoCopyStockAvailableException.class})
+    public ResponseEntity<String> noCopyAvailable(Exception exc){
+        return new ResponseEntity<>(exc.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+
 }

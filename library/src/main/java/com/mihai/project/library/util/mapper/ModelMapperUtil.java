@@ -6,6 +6,8 @@ public class ModelMapperUtil {
 
     private static ModelMapper mapper;
 
+    private ModelMapperUtil(){}
+
     public static ModelMapper getMapper() {
         if (mapper == null) {
             synchronized (ModelMapperUtil.class) {

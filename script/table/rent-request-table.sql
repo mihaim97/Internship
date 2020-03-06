@@ -8,7 +8,7 @@ create table `book_rent`(
 `id` int primary key auto_increment not null,
 `date_rent` datetime not null,
 `end_rent` datetime not null,
-`status` varchar(1) not null check (`status` in ('ON', 'LA', 'RE')), # O - on going, L - late, R - returned
+`status` varchar(2) not null check (`status` in ('ON', 'LA', 'RE')), # O - on going, L - late, R - returned
 `note` float null,
 `book_copy`int not null,
 `book` int not null,

@@ -18,7 +18,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     @Qualifier("UserDaoHibernate")
     private UserDAO userDAO;
-    
 
     @Override
     @Transactional
@@ -30,6 +29,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User queryUser(String username) {
         return HibernateUtil.getUniqueResult(userDAO.queryUser(username));
+    }
+
+    @Override
+    @Transactional
+    public User queryUserById(int id) {
+        return userDAO.queryUserById(id);
     }
 
     @Override

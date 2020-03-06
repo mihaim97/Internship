@@ -7,12 +7,22 @@ import java.util.List;
 
 public interface UserDAO {
     User addUser(User user);
+
     List<User> queryUser(String username);
+
+    User queryUserById(int id);
+
     List<User> queryAllUsers();
+
     List<User> emailAlreadyExist(String email);
+
     List<User> userAlreadyExist(String username);
+
     List<User> emailAlreadyExistOnDifferentUser(String currentUsername, String email);
+
     List<User> usernameAlreadyExistOnDifferentUser(String currentUsername, String newUsername);
+
     boolean deleteUser(String user);
+
     User updateUser(String username, User newUserData);
 }

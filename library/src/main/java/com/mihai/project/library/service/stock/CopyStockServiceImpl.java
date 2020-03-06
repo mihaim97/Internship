@@ -47,7 +47,7 @@ public class CopyStockServiceImpl implements CopyStockService {
 
     @Override
     @Transactional
-    public CopyStock querySingleBookCopyByBookId(int bookId) {
+    public CopyStock queryAvailableSingleBookCopyByBookId(int bookId) {
         return HibernateUtil.getUniqueResult(copyStockDAO.querySingleBookCopyByBookId(bookId));
     }
 
@@ -71,7 +71,6 @@ public class CopyStockServiceImpl implements CopyStockService {
     @Transactional
     public CopyStock updateCopy(CopyStock newValue) {
         CopyStock copyToUpdate = queryCopyStock(newValue.getCode());
-        System.out.println(copyToUpdate);
         if(copyToUpdate != null){
             return copyStockDAO.updateCopy(copyToUpdate, newValue);
         }

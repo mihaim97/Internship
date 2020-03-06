@@ -24,7 +24,7 @@ public class Book implements Serializable {
     @Column(name = "date_added")
     private Date dateAdded;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "books_authors",
             joinColumns = {@JoinColumn(name = "bookid")},
@@ -32,7 +32,7 @@ public class Book implements Serializable {
     )
     private Set<Author> authors;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_tag_many_to_many",
             joinColumns = {@JoinColumn(name = "bookid")},

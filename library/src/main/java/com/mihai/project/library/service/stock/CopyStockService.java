@@ -15,7 +15,7 @@ public interface CopyStockService {
 
     List<CopyStock> queryAllBookCopy(int bookId);
 
-    CopyStock querySingleBookCopyByBookId(int bookId);
+    CopyStock queryAvailableSingleBookCopyByBookId(int bookId);
 
     List<CopyStock> queryAllCopy();
 

@@ -9,6 +9,8 @@ public interface UserService {
 
     User queryUser(String username);
 
+    User queryUserById(int id);
+
     List<User> queryAllUsers();
 
     boolean emailAlreadyExist(String email);
