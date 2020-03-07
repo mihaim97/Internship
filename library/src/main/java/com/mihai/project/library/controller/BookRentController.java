@@ -35,9 +35,6 @@ public class BookRentController {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         BookRent bookRent = bookRentService.registerBookRent(bookRentDTO.getBookToRentId(), bookRentDTO.getUserId(), bookRentDTO.getPeriod());
-        if(bookRent == null){
-            return new ResponseEntity(userMessageBuilder.getMessageOnUserNotFind(bookRentDTO.getUserId()), HttpStatus.BAD_REQUEST);
-        }
         return new ResponseEntity(HttpStatus.OK);
     }
 

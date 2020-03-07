@@ -20,12 +20,12 @@ create table `book_rent`(
 
 create table `rent_request`(
 `id` int primary key auto_increment not null,
-`dateRequest` date not null,
-`status` varchar(3) not null check (`status` in ('W', 'WFC', 'D', 'G')), # W - waiting, WFC - waiting for conf, D - declined, G - granted
-`bookId`int not null,
-`employeeName` varchar(50) not null,
- constraint `FK_RentRequest_Book_Id` foreign key (`bookId`) references `books` (`id`),
- constraint `FK_RentRequest_Employee_Id` foreign key (`employeeName`) references `users` (`username`)
+`date_request` date not null,
+`status` varchar(3) not null check (`status` in ('WAC', 'WFC', 'DE', 'GR')), # WA - waiting, WFC - waiting for conf, DE - declined, GR - granted
+`book_id`int not null,
+`employee_id` int not null,
+ constraint `FK_RentRequest_Book_Id` foreign key (`book_id`) references `books` (`id`),
+ constraint `FK_RentRequest_Employee_Id` foreign key (`employee_id`) references `appusers` (`id`)
 );
 
 create table `book_request`(

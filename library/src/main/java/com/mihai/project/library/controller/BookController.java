@@ -8,6 +8,7 @@ import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.service.book.BookService;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.dtoentity.book.BookDTOEntityConverter;
+import com.mihai.project.library.util.message.book.BookMessageBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class BookController {
 
     @Autowired
     private MessageBuilder errorBuilder;
+
+    @Autowired
+    private BookMessageBuilder bookMessageBuilder;
 
     @PostMapping("/add")
     public ResponseEntity<BookDTOQuery> addBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
@@ -98,7 +102,7 @@ public class BookController {
 
 
     public ResponseEntity noBookWasFind(int id) {
-        return new ResponseEntity(errorBuilder.getErrorMessageOnIncorrectBookIdException(id), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(bookMessageBuilder.getMessageOnIncorrectBookId(id), HttpStatus.BAD_REQUEST);
     }
 }
 

@@ -74,6 +74,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
+    public Book queryBookUsingFind(int id) {
+        return bookDAO.queryBookUsingFind(id);
+    }
+
+    @Override
+    @Transactional
     public boolean deleteBook(int id) {
         return bookDAO.deleteBook(id);
     }

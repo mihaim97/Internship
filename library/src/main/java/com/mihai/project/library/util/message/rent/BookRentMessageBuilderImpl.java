@@ -15,9 +15,20 @@ public class BookRentMessageBuilderImpl implements BookRentMessageBuilder {
     public String getMessageOnNoCopyAvailable() {
         String toJson = "";
         try {
-            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("No book available or user already rented this book, please register for one or check if user already has one");
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("No book available, please register for one");
         } catch (JsonProcessingException exc) {
             logger.error("Fail to parse json in " + BookRentMessageBuilderImpl.class + " getMessageOnNoCopyAvailable()");
+        }
+        return toJson;
+    }
+
+    @Override
+    public String getMessageOnUserAlreadyRentABookWithId(int id) {
+        String toJson = "";
+        try {
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("User already rent a book with id " + id);
+        } catch (JsonProcessingException exc) {
+            logger.error("Fail to parse json in " + BookRentMessageBuilderImpl.class + " getMessageOnUserAlreadyRentABookWithId()");
         }
         return toJson;
     }

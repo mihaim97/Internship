@@ -28,6 +28,7 @@ public class BookRentDAOImpl implements BookRentDAO {
     @Override
     public BookRent registerBookRent(BookRent bookRent, CopyStock copyStock, User user, int period) {
         Session session = sessionFactory.getCurrentSession();
+        copyStock.setStatus(RentStatus.RE.toString());
         bookRent.setBook(copyStock.getBookId());
         bookRent.setCopy(copyStock);
         bookRent.setUser(user);
@@ -44,7 +45,7 @@ public class BookRentDAOImpl implements BookRentDAO {
         Query query = session.createQuery(MyQuery.HIBERNATE_QUERY_BOOK_RENT_BY_USER_BOOK_ID);
         query.setParameter(MyTable.BOOK_RENT_BOOK_FK, book);
         query.setParameter(MyTable.BOOK_RENT_USER_FK, user);
-        query.setParameter(MyTable.BOOK_RENT_STATUS, Status.AV.toString());
+        query.setParameter(MyTable.BOOK_RENT_STATUS, RentStatus.ON.toString());
         query.setParameter(MyTable.BOOK_RENT_STATUS2, RentStatus.LA.toString());
         return query.getResultList();
     }

@@ -1,12 +1,13 @@
 package com.mihai.project.library.controller;
 
-import com.mihai.project.library.contralleradvice.exception.IncorrectUserException;
+import com.mihai.project.library.contralleradvice.exception.ResultBindingValidationException;
 import com.mihai.project.library.dto.user.UserDTO;
 import com.mihai.project.library.dto.user.UserDTOOut;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.service.user.UserService;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.dtoentity.user.UserDTOEntityConverter;
+import com.mihai.project.library.util.message.user.UserMessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,12 +29,15 @@ public class UserController {
     private UserDTOEntityConverter convert;
 
     @Autowired
-    private MessageBuilder errorBuilder;
+    private MessageBuilder messageBuilder;
+
+    @Autowired
+    private UserMessageBuilder userMessageBuilder;
 
     @PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new IncorrectUserException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
+            throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         if (userService.emailAlreadyExist(user.getEmail())) {
             return emailExist(user);
@@ -50,7 +54,7 @@ public class UserController {
         if (!userService.deleteUser(username)) {
             return noUserWithId(username);
         }
-        return new ResponseEntity(errorBuilder.getMessageOnUserSuccessfullyDeleted(username), HttpStatus.OK);
+        return new ResponseEntity(userMessageBuilder.getMessageOnUserSuccessfullyDeleted(username), HttpStatus.OK);
     }
 
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,7 +76,7 @@ public class UserController {
     @PutMapping(path = "update", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity updateUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult, @RequestParam String username) {
         if (bindingResult.hasErrors()) {
-            throw new IncorrectUserException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
+            throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         if (userService.usernameAlreadyExistOnDifferentUser(username, user.getUsername())) {
             return userExist(user);
@@ -85,15 +89,15 @@ public class UserController {
     }
 
     public ResponseEntity userExist(UserDTO user) {
-        return new ResponseEntity(errorBuilder.getErrorMessageOnUserExistException(user.getUsername()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(userMessageBuilder.getMessageOnUserExistException(user.getUsername()), HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity emailExist(UserDTO user) {
-        return new ResponseEntity(errorBuilder.getErrorMessageOnEmailAlreadyExist(user.getEmail()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(userMessageBuilder.getMessageOnEmailAlreadyExist(user.getEmail()), HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity noUserWithId(String username) {
-        return new ResponseEntity(errorBuilder.getErrorMessageOnNoSuchUserToDeleteOrUpdate(username), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(userMessageBuilder.getMessageOnNoSuchUserToDeleteOrUpdate(username), HttpStatus.BAD_REQUEST);
     }
 
 }

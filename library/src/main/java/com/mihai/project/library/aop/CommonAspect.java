@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class CommonAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommonAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger("RENT");
 
     @After("execution(* com.mihai.project.library.dao.*.BookDAOImpl.queryBook(..))")
     public void emptyResultDataAccessException(){

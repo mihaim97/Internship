@@ -19,6 +19,8 @@ public interface BookService {
 
     public Book queryBook(int id);
 
+    public Book queryBookUsingFind(int id);
+
     public boolean deleteBook(int id);
 
     public Book updateBook(Book book, int bookId);

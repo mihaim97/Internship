@@ -4,4 +4,6 @@ public interface BookRentMessageBuilder {
 
     String getMessageOnNoCopyAvailable();
 
+    String getMessageOnUserAlreadyRentABookWithId(int id);
+
 }

@@ -56,6 +56,12 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
+    public Book queryBookUsingFind(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.find(Book.class, id);
+    }
+
+    @Override
     public List<Book> queryBookAndGetList(int id) {
         Session session = sessionFactory.getCurrentSession();
         Query<Book> query = session.createQuery(MyQuery.HIBERNATE_QUERY_SINGLE_BOOK);

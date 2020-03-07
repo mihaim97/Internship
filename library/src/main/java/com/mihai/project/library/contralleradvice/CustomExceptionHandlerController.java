@@ -10,12 +10,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomExceptionHandlerController extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({ResultBindingValidationException.class, IncorrectUserException.class})
+    @ExceptionHandler({ResultBindingValidationException.class})
     public ResponseEntity<String> handleResponseBindingError(Exception exc){
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({NoCopyStockAvailableException.class})
+    @ExceptionHandler({BookRentOrRequestException.class})
     public ResponseEntity<String> noCopyAvailable(Exception exc){
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.NOT_FOUND);
     }

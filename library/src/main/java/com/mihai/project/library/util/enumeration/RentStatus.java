@@ -5,3 +5,9 @@ public enum RentStatus {
     LA,
     RE
 }
+
+/**
+ * ON - on going
+ * LA - late
+ * RE - returned
+ **/

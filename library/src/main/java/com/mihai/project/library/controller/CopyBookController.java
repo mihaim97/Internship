@@ -10,6 +10,7 @@ import com.mihai.project.library.service.book.BookService;
 import com.mihai.project.library.service.stock.CopyStockService;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.dtoentity.stock.CopyStockDTOEntityConverter;
+import com.mihai.project.library.util.message.book.BookMessageBuilder;
 import com.mihai.project.library.util.message.stock.CopyStockMessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,9 @@ public class CopyBookController {
     @Autowired
     private CopyStockMessageBuilder copyMessageBuilder;
 
+    @Autowired
+    private BookMessageBuilder bookMessageBuilder;
+
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addCopyBook(@RequestBody @Valid CopyStockDTO copyStockDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
@@ -51,7 +55,7 @@ public class CopyBookController {
             CopyStock copyStock = copyStockService.addSingleCopy(book, copyStockDTO.getFlag(), copyStockDTO.getStatus());
             return new ResponseEntity<>(convert.fromCopyStockToDto(copyStock), HttpStatus.OK);
         }
-        return new ResponseEntity<>(messageBuilder.getErrorMessageOnIncorrectBookIdException(copyStockDTO.getBookId()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(bookMessageBuilder.getMessageOnIncorrectBookId(copyStockDTO.getBookId()), HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value = "query-copy", produces = MediaType.APPLICATION_JSON_VALUE)
