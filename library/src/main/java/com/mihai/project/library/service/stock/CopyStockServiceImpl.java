@@ -2,10 +2,16 @@ package com.mihai.project.library.service.stock;
 
 import com.mihai.project.library.dao.CopyStockDAO;
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.interntable.Pending;
+import com.mihai.project.library.entity.request.RentRequest;
 import com.mihai.project.library.entity.stock.CopyStock;
+import com.mihai.project.library.service.peding.PendingService;
+import com.mihai.project.library.service.request.RentRequestService;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.enumeration.Flag;
+import com.mihai.project.library.util.enumeration.RentRequestStatus;
 import com.mihai.project.library.util.enumeration.Status;
+import com.mihai.project.library.util.factory.LibraryFactoryManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +23,9 @@ public class CopyStockServiceImpl implements CopyStockService {
 
     @Autowired
     private CopyStockDAO copyStockDAO;
+
+    @Autowired
+    private PendingService pendingService;
 
     @Override
     @Transactional
@@ -30,7 +39,17 @@ public class CopyStockServiceImpl implements CopyStockService {
     @Override
     @Transactional
     public CopyStock addSingleCopy(Book book, String flag, String status) {
-        return copyStockDAO.addBookCopy(createCopyStock(book, flag, status));
+        RentRequest rentRequest = checkForRentRequestOnCurrentBook(book);
+        CopyStock copyStock = copyStockDAO.addBookCopy(createCopyStock(book, flag, status));
+        if(rentRequest != null){
+            copyStock.setStatus(Status.PE.toString());
+            rentRequest.setStatus(RentRequestStatus.WFC.toString());
+            Pending pending = LibraryFactoryManager.getInstance().getPendingInstance();
+            pending.setRentRequestId(rentRequest);
+            pending.setCopyId(copyStock.getCode());
+            pendingService.registerPending(pending);
+        }
+        return copyStock;
     }
 
     @Override
@@ -75,6 +94,12 @@ public class CopyStockServiceImpl implements CopyStockService {
             return copyStockDAO.updateCopy(copyToUpdate, newValue);
         }
         return null;
+    }
+
+    @Override
+    @Transactional(value = Transactional.TxType.MANDATORY)
+    public RentRequest checkForRentRequestOnCurrentBook(Book book) {
+        return HibernateUtil.getUniqueResult(copyStockDAO.checkForRentRequestOnCurrentBook(book));
     }
 
 

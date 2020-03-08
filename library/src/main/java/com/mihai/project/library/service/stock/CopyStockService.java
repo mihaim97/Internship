@@ -1,6 +1,7 @@
 package com.mihai.project.library.service.stock;
 
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.request.RentRequest;
 import com.mihai.project.library.entity.stock.CopyStock;
 
 import java.util.List;
@@ -22,5 +23,7 @@ public interface CopyStockService {
     boolean deleteCopy(int id);
 
     CopyStock updateCopy(CopyStock newValue);
+
+    RentRequest checkForRentRequestOnCurrentBook(Book book);
 
 }

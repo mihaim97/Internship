@@ -2,6 +2,7 @@ use `library`;
 
 drop table if exists `book_rent`;
 drop table if exists `rent_request`;
+drop table if exists library.`pending`;
 drop table if exists `book_request`;
 
 create table `book_rent`(
@@ -20,12 +21,21 @@ create table `book_rent`(
 
 create table `rent_request`(
 `id` int primary key auto_increment not null,
-`date_request` date not null,
+`date_request` datetime not null,
 `status` varchar(3) not null check (`status` in ('WAC', 'WFC', 'DE', 'GR')), # WA - waiting, WFC - waiting for conf, DE - declined, GR - granted
 `book_id`int not null,
 `employee_id` int not null,
  constraint `FK_RentRequest_Book_Id` foreign key (`book_id`) references `books` (`id`),
- constraint `FK_RentRequest_Employee_Id` foreign key (`employee_id`) references `appusers` (`id`)
+ constraint `FK_RentRequest_Employee_Id` foreign key (`employee_id`) references `appusers` (`id`),
+ index(`date_request`)
+);
+
+create table library.`pending`(
+`id` int primary key auto_increment not null,
+`rent_request_id` int not null,
+`copy_stock_id` int not null,
+constraint `Pending_Rent_FK` foreign key (`rent_request_id`) references `rent_request` (`id`),
+constraint `Unique_Pending_Rent` unique(`rent_request_id`)
 );
 
 create table `book_request`(

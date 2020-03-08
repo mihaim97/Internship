@@ -71,4 +71,7 @@ public class MyQuery {
 
     //@@RentRequest
     public static String HIBERNATE_QUERY_CHECK_IF_RENT_REQUEST_EXIST = "from RentRequest re where re.bookId = :book and re.user = :user and (re.status = :status or re.status = :status2)";
+    public static String HIBERNATE_QUERY_EXISTING_BOOK_RENT_REQUEST = "from RentRequest re where re.bookId = :book and re.status = :status order by re.dateRequest asc";
+    public static String HIBERNATE_QUERY_CHECK_IF_RENT_REQUEST_EXIST_WAC = "from RentRequest re where re.bookId = :book and re.status = :status order by re.dateRequest asc";
+
 }

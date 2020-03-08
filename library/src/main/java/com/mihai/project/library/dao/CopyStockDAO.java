@@ -1,5 +1,7 @@
 package com.mihai.project.library.dao;
 
+import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.request.RentRequest;
 import com.mihai.project.library.entity.stock.CopyStock;
 
 import java.util.List;
@@ -19,4 +21,7 @@ public interface CopyStockDAO {
     boolean deleteCopy(CopyStock copyStock);
 
     CopyStock updateCopy(CopyStock copyToUpdate, CopyStock newValue);
+
+    List<RentRequest> checkForRentRequestOnCurrentBook(Book book);
+
 }

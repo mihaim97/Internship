@@ -2,11 +2,14 @@ package com.mihai.project.library.dao.hibernate;
 
 import com.mihai.project.library.dao.RentRequestDAO;
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.interntable.Pending;
+import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.request.RentRequest;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
 import com.mihai.project.library.util.enumeration.RentRequestStatus;
+import com.mihai.project.library.util.enumeration.RentStatus;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -42,6 +45,33 @@ public class RentRequestDAOImpl implements RentRequestDAO {
         query.setParameter(MyTable.BOOK_RENT_REQUEST_BOOK_FK, book);
         query.setParameter(MyTable.BOOK_RENT_REQUEST_USER_FK, user);
         return query.getResultList();
+    }
+
+    @Override
+    public List<BookRent> checkIfUserAlreadyHasAvailableBookRent(Book book, User user) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(MyQuery.HIBERNATE_QUERY_BOOK_RENT_BY_USER_BOOK_ID);
+        query.setParameter(MyTable.BOOK_RENT_BOOK_FK, book);
+        query.setParameter(MyTable.BOOK_RENT_USER_FK, user);
+        query.setParameter(MyTable.BOOK_RENT_STATUS, RentStatus.ON.toString());
+        query.setParameter(MyTable.BOOK_RENT_STATUS2, RentStatus.LA.toString());
+        return query.getResultList();
+    }
+
+    @Override
+    public List<RentRequest> checkForExistingRequest(Book book) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(MyQuery.HIBERNATE_QUERY_EXISTING_BOOK_RENT_REQUEST).setMaxResults(1);
+        query.setParameter(MyTable.BOOK_RENT_REQUEST_BOOK_FK, book);
+        query.setParameter(MyTable.BOOK_RENT_REQUEST_STATUS, RentRequestStatus.WAC.toString());
+        return query.getResultList();
+    }
+
+    @Override
+    public Pending registerPending(Pending pending) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(pending);
+        return pending;
     }
 
 }

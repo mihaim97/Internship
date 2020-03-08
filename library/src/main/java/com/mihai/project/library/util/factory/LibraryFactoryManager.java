@@ -1,5 +1,6 @@
 package com.mihai.project.library.util.factory;
 
+import com.mihai.project.library.entity.interntable.Pending;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.request.RentRequest;
 import com.mihai.project.library.util.mapper.ModelMapperUtil;
@@ -26,6 +27,12 @@ public class LibraryFactoryManager {
         return new BookRent();
     }
 
-    public RentRequest getRentRequestInstance(){return new RentRequest();}
+    public RentRequest getRentRequestInstance() {
+        return new RentRequest();
+    }
+
+    public Pending getPendingInstance() {
+        return new Pending();
+    }
 
 }

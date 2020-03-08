@@ -4,4 +4,8 @@ public interface RentRequestMessageBuilder {
 
     String getMessageOnRentRequestExist();
 
+    String getMessageOnCopyAreAvailable();
+
+    String getMessageOnUserAlreadyHasARent();
+
 }

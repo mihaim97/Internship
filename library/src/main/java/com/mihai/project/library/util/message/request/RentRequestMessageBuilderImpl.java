@@ -21,4 +21,26 @@ public class RentRequestMessageBuilderImpl implements RentRequestMessageBuilder 
         }
         return toJson;
     }
+
+    @Override
+    public String getMessageOnCopyAreAvailable() {
+        String toJson = "";
+        try {
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Copy are available, you can't make a rent request");
+        } catch (JsonProcessingException exc) {
+            logger.error("Fail to parse json in " + RentRequestMessageBuilderImpl.class + " getMessageOnCopyAreAvailable()");
+        }
+        return toJson;
+    }
+
+    @Override
+    public String getMessageOnUserAlreadyHasARent() {
+        String toJson = "";
+        try {
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("User has a rent for this book");
+        } catch (JsonProcessingException exc) {
+            logger.error("Fail to parse json in " + RentRequestMessageBuilderImpl.class + " getMessageOnUserAlreadyHasARent()");
+        }
+        return toJson;
+    }
 }

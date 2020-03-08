@@ -1,5 +1,6 @@
 package com.mihai.project.library.service.rent;
 
+import com.mihai.project.library.annotation.AfterReturningBookAOP;
 import com.mihai.project.library.annotation.BookRentAOP;
 import com.mihai.project.library.contralleradvice.exception.BookRentOrRequestException;
 import com.mihai.project.library.dao.BookRentDAO;
@@ -7,6 +8,7 @@ import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.stock.CopyStock;
 import com.mihai.project.library.entity.user.User;
+import com.mihai.project.library.service.request.RentRequestService;
 import com.mihai.project.library.service.stock.CopyStockService;
 import com.mihai.project.library.service.user.UserService;
 import com.mihai.project.library.util.HibernateUtil;
@@ -33,6 +35,9 @@ public class BookRentServiceImpl implements BookRentService {
     private UserService userService;
 
     @Autowired
+    private RentRequestService rentRequestService;
+
+    @Autowired
     private BookRentMessageBuilder bookRentMessageBuilder;
 
     @Autowired
@@ -50,14 +55,16 @@ public class BookRentServiceImpl implements BookRentService {
         if (user != null) {
             /** If user has a rent on current book and status is ON or LA he can't make a book rent
              *  If there is a rent made by current user with status RE he can make one. No matter how many they are.
+             *  The second condition check a case when a new copy book is added and user has a rent request and he try to rent this book (When add a new copy book, i need to check for current request).
              **/
-            if (checkIfUserAlreadyHasARentForCurrentBook(copyStock.getBookId(), user) == null) {
+            System.out.println(rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user));
+            if (checkIfUserAlreadyHasARentForCurrentBook(copyStock.getBookId(), user) == null && rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user) == null) {
                 BookRent bookRent = LibraryFactoryManager.getInstance().getBookRentInstance();
                 return bookRentDAO.registerBookRent(bookRent, copyStock, user, period);
             } else {
                 throw new BookRentOrRequestException(bookRentMessageBuilder.getMessageOnUserAlreadyRentABookWithId(bookIdToRent));
             }
-        }else{
+        } else {
             throw new BookRentOrRequestException(userMessageBuilder.getMessageOnUserNotFind(userId));
         }
     }
@@ -70,6 +77,7 @@ public class BookRentServiceImpl implements BookRentService {
 
     @Override
     @Transactional
+    @AfterReturningBookAOP
     public BookRent returnARentedBook(int bookRentId, float note) {
         BookRent bookRent = queryBookRent(bookRentId);
         if (bookRent != null && !bookRent.getStatus().equals(Status.RE.toString())) {

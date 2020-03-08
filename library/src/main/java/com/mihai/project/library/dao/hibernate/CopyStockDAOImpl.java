@@ -1,9 +1,12 @@
 package com.mihai.project.library.dao.hibernate;
 
 import com.mihai.project.library.dao.CopyStockDAO;
+import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.request.RentRequest;
 import com.mihai.project.library.entity.stock.CopyStock;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
+import com.mihai.project.library.util.enumeration.RentRequestStatus;
 import com.mihai.project.library.util.enumeration.Status;
 import com.mihai.project.library.util.enumeration.Flag;
 import org.hibernate.Session;
@@ -71,4 +74,14 @@ public class CopyStockDAOImpl implements CopyStockDAO {
         copyToUpdate.setStatus(newValue.getStatus());
         return copyToUpdate;
     }
+
+    @Override
+    public List<RentRequest> checkForRentRequestOnCurrentBook(Book book) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(MyQuery.HIBERNATE_QUERY_CHECK_IF_RENT_REQUEST_EXIST_WAC).setMaxResults(1);
+        query.setParameter(MyTable.BOOK_RENT_REQUEST_BOOK_FK, book);
+        query.setParameter(MyTable.BOOK_RENT_REQUEST_STATUS, RentRequestStatus.WAC.toString());
+        return query.getResultList();
+    }
+
 }
