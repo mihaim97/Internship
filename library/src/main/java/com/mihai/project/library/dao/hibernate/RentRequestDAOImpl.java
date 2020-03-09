@@ -2,7 +2,6 @@ package com.mihai.project.library.dao.hibernate;
 
 import com.mihai.project.library.dao.RentRequestDAO;
 import com.mihai.project.library.entity.book.Book;
-import com.mihai.project.library.entity.interntable.Pending;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.request.RentRequest;
 import com.mihai.project.library.entity.user.User;
@@ -85,7 +84,9 @@ public class RentRequestDAOImpl implements RentRequestDAO {
     @Override
     public List<RentRequest> queryRentRequestWithStatusWFC(int rentRequestId) {
         Session session = sessionFactory.getCurrentSession();
-        Query<RentRequest> query = session.createQuery("");
+        Query<RentRequest> query = session.createQuery(MyQuery.HIBERNATE_QUERY_RENT_REQUEST_WFC);
+        query.setParameter(MyTable.BOOK_RENT_REQUEST_ID, rentRequestId);
+        query.setParameter(MyTable.BOOK_RENT_REQUEST_STATUS, RentRequestStatus.WFC.toString());
         return query.getResultList();
     }
 

@@ -54,6 +54,7 @@ public class MyTable {
     public static String BOOK_RENT_STATUS2 = "status2";
 
     //@@RentRequest
+    public static String BOOK_RENT_REQUEST_ID = "id";
     public static String BOOK_RENT_REQUEST_STATUS = "status";
     public static String BOOK_RENT_REQUEST_STATUS2 = "status2";
     public static String BOOK_RENT_REQUEST_BOOK_FK = "book";

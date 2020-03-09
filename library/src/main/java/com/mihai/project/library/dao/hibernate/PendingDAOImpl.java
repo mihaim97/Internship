@@ -19,4 +19,11 @@ public class PendingDAOImpl implements PendingDAO {
         session.persist(pending);
         return pending;
     }
+
+    @Override
+    public Pending removePending(Pending pending) {
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(pending);
+        return pending;
+    }
 }

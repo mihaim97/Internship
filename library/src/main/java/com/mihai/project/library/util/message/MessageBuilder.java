@@ -30,4 +30,14 @@ public class MessageBuilder {
         return toJson;
     }
 
+    public String asJSON(String message){
+        String toJson = "";
+        try {
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString(message);
+        } catch (JsonProcessingException exc) {
+            logger.error("Fail to parse json in " + MessageBuilder.class + " getCommonMessage() " + message);
+        }
+        return toJson;
+    }
+
 }

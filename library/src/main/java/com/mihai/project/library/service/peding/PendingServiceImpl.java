@@ -19,4 +19,10 @@ public class PendingServiceImpl implements PendingService {
         return pendingDAO.registerPending(pending);
     }
 
+    @Override
+    @Transactional
+    public Pending removePending(Pending pending) {
+        return pendingDAO.removePending(pending);
+    }
+
 }

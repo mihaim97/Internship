@@ -1,7 +1,6 @@
 package com.mihai.project.library.service.request;
 
 import com.mihai.project.library.entity.book.Book;
-import com.mihai.project.library.entity.interntable.Pending;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.request.RentRequest;
 import com.mihai.project.library.entity.user.User;
@@ -24,5 +23,7 @@ public interface RentRequestService {
     RentRequest acceptOrCancelRentRequest(int rentRequestId, RentRequestStatus status);
 
     RentRequest querySingleRentRequestById(int rentRequestId);
+
+    RentRequest queryRentRequestWithStatusWFC(int rentRequestId);
 
 }
