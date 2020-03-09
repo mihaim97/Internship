@@ -1,5 +1,6 @@
 use `library`;
 
+drop table if exists `pending`;
 drop table if exists `book_rent`;
 drop table if exists `rent_request`;
 drop table if exists library.`pending`;

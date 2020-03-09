@@ -1,6 +1,7 @@
 package com.mihai.project.library.entity.request;
 
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.interntable.Pending;
 import com.mihai.project.library.entity.user.User;
 
 import javax.persistence.*;
@@ -28,6 +29,9 @@ public class RentRequest {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private User user;
+
+    @OneToOne(mappedBy = "rentRequestId", fetch = FetchType.LAZY)
+    private Pending pending;
 
     public RentRequest() {
     }
@@ -78,5 +82,13 @@ public class RentRequest {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Pending getPending() {
+        return pending;
+    }
+
+    public void setPending(Pending pending) {
+        this.pending = pending;
     }
 }

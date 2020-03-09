@@ -18,6 +18,13 @@ public interface RentRequestDAO {
 
     List<RentRequest> checkForExistingRequest(Book book);
 
-    Pending registerPending(Pending pending);
+    List<RentRequest> queryUserRentRequest(int userId);
 
+    RentRequest querySingleRentRequestById(int rentRequestId);
+
+    List<RentRequest> queryRentRequestWithStatusWFC(int rentRequestId);
+
+    RentRequest updateRentRequest(RentRequest rentRequest);
+
+    BookRent registerBookRentAfterUserAccept(BookRent bookRent);
 }

@@ -26,18 +26,6 @@ public class HibernateConfig {
         return dataSource;
     }
 
-    /*@Bean(name = "entityManager")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "com.mihai.project.library.entity" });
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(hibernateProperties());
-        return em;
-    }*/
-
-    /** Hibernate**/
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -53,14 +41,6 @@ public class HibernateConfig {
         transactionManagerBean.setSessionFactory(sessionFactory().getObject());
         return transactionManagerBean;
     }
-    /** Hibernate **/
-
-  /*  @Bean(name = "transactionManager")
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        JpaTransactionManager transactionManagerBean = new JpaTransactionManager();
-        transactionManagerBean.setEntityManagerFactory(emf);
-        return transactionManagerBean;
-    }*/
 
     private Properties hibernateProperties(){
         Properties properties = new Properties();

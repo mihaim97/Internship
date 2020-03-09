@@ -68,10 +68,39 @@ public class RentRequestDAOImpl implements RentRequestDAO {
     }
 
     @Override
-    public Pending registerPending(Pending pending) {
+    public List<RentRequest> queryUserRentRequest(int userId) {
         Session session = sessionFactory.getCurrentSession();
-        session.persist(pending);
-        return pending;
+        Query query = session.createQuery(MyQuery.HIBERNATE_QUERY_USER_RENT_REQUEST);
+        query.setParameter(MyTable.BOOK_RENT_REQUEST_BOOK_FK, userId);
+        query.setParameter(MyTable.BOOK_RENT_STATUS, RentRequestStatus.WFC.toString());
+        return query.getResultList();
+    }
+
+    @Override
+    public RentRequest querySingleRentRequestById(int rentRequestId) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.find(RentRequest.class, rentRequestId);
+    }
+
+    @Override
+    public List<RentRequest> queryRentRequestWithStatusWFC(int rentRequestId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<RentRequest> query = session.createQuery("");
+        return query.getResultList();
+    }
+
+    @Override
+    public RentRequest updateRentRequest(RentRequest rentRequest) {
+        Session session = sessionFactory.getCurrentSession();
+        session.merge(rentRequest);
+        return rentRequest;
+    }
+
+    @Override
+    public BookRent registerBookRentAfterUserAccept(BookRent bookRent) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(bookRent);
+        return bookRent;
     }
 
 }

@@ -53,12 +53,9 @@ public class BookRentServiceImpl implements BookRentService {
             throw new BookRentOrRequestException(bookRentMessageBuilder.getMessageOnNoCopyAvailable());
         }
         if (user != null) {
-            /** If user has a rent on current book and status is ON or LA he can't make a book rent
-             *  If there is a rent made by current user with status RE he can make one. No matter how many they are.
-             *  The second condition check a case when a new copy book is added and user has a rent request and he try to rent this book (When add a new copy book, i need to check for current request).
-             **/
             System.out.println(rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user));
-            if (checkIfUserAlreadyHasARentForCurrentBook(copyStock.getBookId(), user) == null && rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user) == null) {
+            if (checkIfUserAlreadyHasARentForCurrentBook(copyStock.getBookId(), user) == null
+                    && rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user) == null) {
                 BookRent bookRent = LibraryFactoryManager.getInstance().getBookRentInstance();
                 return bookRentDAO.registerBookRent(bookRent, copyStock, user, period);
             } else {
