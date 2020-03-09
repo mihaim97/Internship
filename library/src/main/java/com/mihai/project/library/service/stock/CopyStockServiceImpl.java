@@ -41,7 +41,7 @@ public class CopyStockServiceImpl implements CopyStockService {
     public CopyStock addSingleCopy(Book book, String flag, String status) {
         RentRequest rentRequest = checkForRentRequestOnCurrentBook(book);
         CopyStock copyStock = copyStockDAO.addBookCopy(createCopyStock(book, flag, status));
-        if(rentRequest != null){
+        if(rentRequest != null && copyStock.getFlag().equals(Status.AV.toString())){
             copyStock.setStatus(Status.PE.toString());
             rentRequest.setStatus(RentRequestStatus.WFC.toString());
             Pending pending = LibraryFactoryManager.getInstance().getPendingInstance();

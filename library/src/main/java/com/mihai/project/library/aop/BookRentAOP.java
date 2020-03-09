@@ -47,7 +47,6 @@ public class BookRentAOP {
                 RentRequest rentRequest = rentRequestService.checkForExistingRequest(bookRent.getBook());
                 /** If there is a request for this book **/
                 if (rentRequest != null) {
-                    System.out.println(rentRequest.getId() + " " + rentRequest.getStatus() + " " + rentRequest.getDateRequest());
                     rentRequest.setStatus(RentRequestStatus.WFC.toString());
                     bookRent.getCopy().setStatus(Status.PE.toString());
                     Pending pending = LibraryFactoryManager.getInstance().getPendingInstance();

@@ -6,4 +6,6 @@ public interface BookRentMessageBuilder {
 
     String getMessageOnUserAlreadyRentABookWithId(int id);
 
+    String getMessageOnReturnFail();
+
 }

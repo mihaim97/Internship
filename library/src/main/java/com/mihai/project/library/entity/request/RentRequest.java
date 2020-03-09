@@ -14,6 +14,7 @@ public class RentRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_request")
     private Date dateRequest;
 

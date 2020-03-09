@@ -32,5 +32,16 @@ public class BookRentMessageBuilderImpl implements BookRentMessageBuilder {
         }
         return toJson;
     }
+
+    @Override
+    public String getMessageOnReturnFail() {
+        String toJson = "";
+        try {
+            toJson = JsonMapperUtil.getJsonMapper().writeValueAsString("Incorrect rent id or current rent was returned");
+        } catch (JsonProcessingException exc) {
+            logger.error("Fail to parse json in " + BookRentMessageBuilderImpl.class + " getMessageOnReturnFail()");
+        }
+        return toJson;
+    }
 }
 
