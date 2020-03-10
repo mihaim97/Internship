@@ -91,13 +91,6 @@ public class RentRequestDAOImpl implements RentRequestDAO {
     }
 
     @Override
-    public RentRequest updateRentRequest(RentRequest rentRequest) {
-        Session session = sessionFactory.getCurrentSession();
-        session.merge(rentRequest);
-        return rentRequest;
-    }
-
-    @Override
     public BookRent registerBookRentAfterUserAccept(BookRent bookRent) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(bookRent);

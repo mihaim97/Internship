@@ -1,5 +1,6 @@
 package com.mihai.project.library.service.request;
 
+import com.mihai.project.library.annotation.AfterAcceptOrDeclineAOP;
 import com.mihai.project.library.contralleradvice.exception.BookRentOrRequestException;
 import com.mihai.project.library.dao.RentRequestDAO;
 import com.mihai.project.library.entity.book.Book;
@@ -75,9 +76,8 @@ public class RentRequestServiceImpl implements RentRequestService {
             rentRequest = LibraryFactoryManager.getInstance().getRentRequestInstance();
             return rentRequestDAO.registerRentRequest(rentRequest, book, user);
         } else {
-            throwBookRentException(ExceptionMessage.RENT_REQUEST_USER_HAS_RENT_REQUEST);
+            throw new BookRentOrRequestException(ExceptionMessage.RENT_REQUEST_USER_HAS_RENT_REQUEST);
         }
-        return null;
     }
 
     @Override
@@ -112,6 +112,7 @@ public class RentRequestServiceImpl implements RentRequestService {
 
     @Override
     @Transactional
+    @AfterAcceptOrDeclineAOP
     public RentRequest acceptOrCancelRentRequest(int rentRequestId, RentRequestStatus status) {
         RentRequest rentRequest = queryRentRequestWithStatusWFC(rentRequestId);
         if (rentRequest != null) {
@@ -141,7 +142,7 @@ public class RentRequestServiceImpl implements RentRequestService {
             copyStock.setStatus(Status.AV.toString());
             rentRequest.setStatus(RentRequestStatus.DE.toString());
         }
-        pendingService.removePending(rentRequest.getPending());
+        //pendingService.removePending(rentRequest.getPending());
     }
 
     private BookRent setStatusToBookRentAndCreate(RentRequest rentRequest, CopyStock copyStock) {

@@ -14,7 +14,6 @@ public class FiltersConfig {
         registrationBean.setFilter(new SecurityFilter());
         registrationBean.addUrlPatterns("/user/*");
         registrationBean.addUrlPatterns("/book/*");
-        registrationBean.addUrlPatterns("/rent-book/*");
 
         return registrationBean;
     }

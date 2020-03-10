@@ -24,7 +24,5 @@ public interface RentRequestDAO {
 
     List<RentRequest> queryRentRequestWithStatusWFC(int rentRequestId);
 
-    RentRequest updateRentRequest(RentRequest rentRequest);
-
     BookRent registerBookRentAfterUserAccept(BookRent bookRent);
 }

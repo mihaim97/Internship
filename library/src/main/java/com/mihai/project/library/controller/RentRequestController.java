@@ -37,7 +37,7 @@ public class RentRequestController {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         rentRequestService.registerRentRequest(rentRequestDTO.getBookId(), rentRequestDTO.getUserId());
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/user-request")
@@ -52,7 +52,7 @@ public class RentRequestController {
             return new ResponseEntity<>(messageBuilder.getErrorMessageFromResultBinding(bindingResult), HttpStatus.BAD_REQUEST);
         }
         rentRequestService.acceptOrCancelRentRequest(request.getRentRequestId(), request.getResponse());
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

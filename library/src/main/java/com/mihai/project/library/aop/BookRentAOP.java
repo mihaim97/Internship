@@ -1,10 +1,13 @@
 package com.mihai.project.library.aop;
 
+import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.interntable.Pending;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.request.RentRequest;
+import com.mihai.project.library.entity.stock.CopyStock;
 import com.mihai.project.library.service.peding.PendingService;
 import com.mihai.project.library.service.request.RentRequestService;
+import com.mihai.project.library.service.stock.CopyStockService;
 import com.mihai.project.library.util.enumeration.RentRequestStatus;
 import com.mihai.project.library.util.enumeration.Status;
 import com.mihai.project.library.util.factory.LibraryFactoryManager;
@@ -27,6 +30,9 @@ public class BookRentAOP {
 
     @Autowired
     private PendingService pendingService;
+
+    @Autowired
+    private CopyStockService copyStockService;
 
     @AfterReturning(value = "@annotation(com.mihai.project.library.annotation.BookRentAOP)", returning = "bookRent")
     public void afterEmployeeRentABook(JoinPoint joinPoint, Object bookRent) {
@@ -55,6 +61,33 @@ public class BookRentAOP {
                     pendingService.registerPending(pending);
                 }
             }
+        }
+    }
+
+    @AfterReturning(value = "@annotation(com.mihai.project.library.annotation.AfterAcceptOrDeclineAOP)", returning = "bookRentRequestObject")
+    public void afterEmployeeAcceptOrDeclineRequest(Object bookRentRequestObject){
+        if(bookRentRequestObject instanceof RentRequest){
+            RentRequest nextRentRequest;
+            RentRequest rentRequest = (RentRequest) bookRentRequestObject;
+            if(rentRequest.getStatus().equals(RentRequestStatus.DE.toString())){
+                nextRentRequest = rentRequestService.checkForExistingRequest(rentRequest.getBookId());
+                markAsWaitingForConfirmation(nextRentRequest, rentRequest.getPending());
+            }else{
+                pendingService.removePending(rentRequest.getPending());
+            }
+        }
+    }
+
+    private void markAsWaitingForConfirmation(RentRequest nextRentRequest, Pending lastPending){
+        if(nextRentRequest != null){
+            CopyStock copyStock = copyStockService.queryCopyStock(lastPending.getCopyId());
+            copyStock.setStatus(Status.PE.toString());
+            nextRentRequest.setStatus(RentRequestStatus.WFC.toString());
+            Pending pending = LibraryFactoryManager.getInstance().getPendingInstance();
+            pending.setRentRequestId(nextRentRequest);
+            pending.setCopyId(copyStock.getCode());
+            pendingService.registerPending(pending);
+            pendingService.removePending(lastPending);
         }
     }
 

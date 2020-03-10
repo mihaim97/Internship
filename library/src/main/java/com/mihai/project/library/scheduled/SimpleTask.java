@@ -12,7 +12,7 @@ public class SimpleTask {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleTask.class);
 
-    //@Scheduled(fixedRate = 6000)
+   // @Scheduled(fixedRate = 6000)
     public void simpleTask(){
         logger.info("Scheduled message!");
     }
