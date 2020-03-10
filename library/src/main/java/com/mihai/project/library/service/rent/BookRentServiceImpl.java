@@ -14,7 +14,8 @@ import com.mihai.project.library.service.user.UserService;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.enumeration.Status;
 import com.mihai.project.library.util.factory.LibraryFactoryManager;
-import com.mihai.project.library.util.message.rent.BookRentMessageBuilder;
+import com.mihai.project.library.util.message.ExceptionMessage;
+import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.message.user.UserMessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,10 +39,10 @@ public class BookRentServiceImpl implements BookRentService {
     private RentRequestService rentRequestService;
 
     @Autowired
-    private BookRentMessageBuilder bookRentMessageBuilder;
+    private UserMessageBuilder userMessageBuilder;
 
     @Autowired
-    private UserMessageBuilder userMessageBuilder;
+    private MessageBuilder messageBuilder;
 
     @Override
     @Transactional
@@ -50,7 +51,7 @@ public class BookRentServiceImpl implements BookRentService {
         CopyStock copyStock = copyStockService.queryAvailableSingleBookCopyByBookId(bookIdToRent);
         User user = userService.queryUserById(userId);
         if (copyStock == null) {
-            throw new BookRentOrRequestException(bookRentMessageBuilder.getMessageOnNoCopyAvailable());
+            throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_NO_BOOK_AVAILABLE));
         }
         if (user != null) {
             System.out.println(rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user));
@@ -59,7 +60,7 @@ public class BookRentServiceImpl implements BookRentService {
                 BookRent bookRent = LibraryFactoryManager.getInstance().getBookRentInstance();
                 return bookRentDAO.registerBookRent(bookRent, copyStock, user, period);
             } else {
-                throw new BookRentOrRequestException(bookRentMessageBuilder.getMessageOnUserAlreadyRentABookWithId(bookIdToRent));
+                throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_RENT_EXIST));
             }
         } else {
             throw new BookRentOrRequestException(userMessageBuilder.getMessageOnUserNotFind(userId));

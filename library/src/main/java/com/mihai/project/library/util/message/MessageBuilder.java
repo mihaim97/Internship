@@ -35,7 +35,7 @@ public class MessageBuilder {
         try {
             toJson = JsonMapperUtil.getJsonMapper().writeValueAsString(message);
         } catch (JsonProcessingException exc) {
-            logger.error("Fail to parse json in " + MessageBuilder.class + " getCommonMessage() " + message);
+            logger.error("Fail to parse json in " + MessageBuilder.class + " asJSON() " + message);
         }
         return toJson;
     }

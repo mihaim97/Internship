@@ -7,9 +7,8 @@ import com.mihai.project.library.dto.rent.BookRentReturnedDTO;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.service.rent.BookRentService;
 import com.mihai.project.library.util.dtoentity.rent.BookRentDTOEntityConverter;
+import com.mihai.project.library.util.message.ExceptionMessage;
 import com.mihai.project.library.util.message.MessageBuilder;
-import com.mihai.project.library.util.message.rent.BookRentMessageBuilder;
-import com.mihai.project.library.util.message.user.UserMessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,8 +31,6 @@ public class BookRentController {
     @Autowired
     private MessageBuilder messageBuilder;
 
-    @Autowired
-    private BookRentMessageBuilder bookRentMessageBuilder;
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BookRentDTOOut> registerRentBook(@RequestBody @Valid BookRentDTO bookRentDTO, BindingResult bindingResult){
@@ -51,7 +48,7 @@ public class BookRentController {
         }
         BookRent bookRent = bookRentService.returnARentedBook(bookRentReturnedDTO.getRentId(), bookRentReturnedDTO.getNote());
         if(bookRent == null){
-            return new ResponseEntity(bookRentMessageBuilder.getMessageOnReturnFail(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_FAIL), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(convert.fromBookRentToDtoOut(bookRent), HttpStatus.OK);
     }

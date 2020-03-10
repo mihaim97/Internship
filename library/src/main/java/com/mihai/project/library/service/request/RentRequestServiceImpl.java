@@ -47,12 +47,6 @@ public class RentRequestServiceImpl implements RentRequestService {
     private PendingService pendingService;
 
     @Autowired
-    private UserMessageBuilder userMessageBuilder;
-
-    @Autowired
-    private BookMessageBuilder bookMessageBuilder;
-
-    @Autowired
     private MessageBuilder messageBuilder;
 
 
@@ -61,28 +55,29 @@ public class RentRequestServiceImpl implements RentRequestService {
     public RentRequest registerRentRequest(int bookId, int userId) {
         User user = userService.queryUserById(userId);
         Book book = bookService.queryBook(bookId);
-        RentRequest rentRequest = null;
+        RentRequest rentRequest;
         /** When copy are available, no need for request **/
         if (copyStockService.queryAvailableSingleBookCopyByBookId(bookId) != null) {
-            throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.RENT_REQUEST_COPY_AVAILABLE));
+            throwBookRentException(ExceptionMessage.RENT_REQUEST_COPY_AVAILABLE);
         }
         if (book == null) {
-            throw new BookRentOrRequestException(bookMessageBuilder.getMessageOnIncorrectBookId(bookId));
+            throwBookRentException(ExceptionMessage.BOOK_INCORRECT_ID);
         }
         if (user == null) {
-            throw new BookRentOrRequestException(userMessageBuilder.getMessageOnUserNotFind(userId));
+            throwBookRentException(ExceptionMessage.USER_NOT_FIND);
         }
         /** Prevent user for making a request if he already has a rent with status ON (on going) or LA (late) **/
         if (checkIfUserAlreadyHasAvailableBookRent(book, user) != null) {
-            throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.RENT_REQUEST_USER_HAS_A_RENT));
+            throwBookRentException(ExceptionMessage.RENT_REQUEST_USER_HAS_A_RENT);
         }
         /** Prevent user for making more than one request for a book **/
         if (checkIfUserHasARequestForCurrentBook(book, user) == null) {
             rentRequest = LibraryFactoryManager.getInstance().getRentRequestInstance();
             return rentRequestDAO.registerRentRequest(rentRequest, book, user);
         } else {
-            throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.RENT_REQUEST_USER_HAS_RENT_REQUEST));
+            throwBookRentException(ExceptionMessage.RENT_REQUEST_USER_HAS_RENT_REQUEST);
         }
+        return null;
     }
 
     @Override
@@ -158,6 +153,10 @@ public class RentRequestServiceImpl implements RentRequestService {
         bookRent.setBook(rentRequest.getBookId());
         bookRent.setCopy(copyStock);
         return bookRent;
+    }
+
+    private void throwBookRentException(String message) throws BookRentOrRequestException{
+        throw new BookRentOrRequestException(messageBuilder.asJSON(message));
     }
 
 }
