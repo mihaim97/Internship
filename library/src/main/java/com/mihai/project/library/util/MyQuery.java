@@ -68,6 +68,7 @@ public class MyQuery {
 
     //@@BookRent
     public static String HIBERNATE_QUERY_BOOK_RENT_BY_USER_BOOK_ID = "from BookRent br where br.book = :book and br.user = :emp_id and (br.status = :status or br.status = :status2)";
+    public static String HIBERNATE_QUERY_ALL_BOOK_RENT = "from BookRent br where br.status = :status";
 
     //@@RentRequest
     public static String HIBERNATE_QUERY_CHECK_IF_RENT_REQUEST_EXIST = "from RentRequest re where re.bookId = :book and re.user = :user and (re.status = :status or re.status = :status2)";

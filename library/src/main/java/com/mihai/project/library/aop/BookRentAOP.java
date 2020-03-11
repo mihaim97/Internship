@@ -1,6 +1,5 @@
 package com.mihai.project.library.aop;
 
-import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.interntable.Pending;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.request.RentRequest;
@@ -65,21 +64,21 @@ public class BookRentAOP {
     }
 
     @AfterReturning(value = "@annotation(com.mihai.project.library.annotation.AfterAcceptOrDeclineAOP)", returning = "bookRentRequestObject")
-    public void afterEmployeeAcceptOrDeclineRequest(Object bookRentRequestObject){
-        if(bookRentRequestObject instanceof RentRequest){
+    public void afterEmployeeAcceptOrDeclineRequest(Object bookRentRequestObject) {
+        if (bookRentRequestObject instanceof RentRequest) {
             RentRequest nextRentRequest;
             RentRequest rentRequest = (RentRequest) bookRentRequestObject;
-            if(rentRequest.getStatus().equals(RentRequestStatus.DE.toString())){
+            if (rentRequest.getStatus().equals(RentRequestStatus.DE.toString())) {
                 nextRentRequest = rentRequestService.checkForExistingRequest(rentRequest.getBookId());
                 markAsWaitingForConfirmation(nextRentRequest, rentRequest.getPending());
-            }else{
+            } else {
                 pendingService.removePending(rentRequest.getPending());
             }
         }
     }
 
-    private void markAsWaitingForConfirmation(RentRequest nextRentRequest, Pending lastPending){
-        if(nextRentRequest != null){
+    private void markAsWaitingForConfirmation(RentRequest nextRentRequest, Pending lastPending) {
+        if (nextRentRequest != null) {
             CopyStock copyStock = copyStockService.queryCopyStock(lastPending.getCopyId());
             copyStock.setStatus(Status.PE.toString());
             nextRentRequest.setStatus(RentRequestStatus.WFC.toString());
@@ -87,8 +86,8 @@ public class BookRentAOP {
             pending.setRentRequestId(nextRentRequest);
             pending.setCopyId(copyStock.getCode());
             pendingService.registerPending(pending);
-            pendingService.removePending(lastPending);
         }
+        pendingService.removePending(lastPending);
     }
 
 }

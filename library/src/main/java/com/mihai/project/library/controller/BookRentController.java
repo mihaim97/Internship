@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("rent-book")
@@ -51,6 +52,11 @@ public class BookRentController {
             return new ResponseEntity(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_FAIL), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(convert.fromBookRentToDtoOut(bookRent), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/mark-late", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BookRent>> markAsLate(){
+        return new ResponseEntity<>(bookRentService.markBookRentAsLateIfExist(), HttpStatus.OK);
     }
 
 

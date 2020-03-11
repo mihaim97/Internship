@@ -16,5 +16,8 @@ public interface BookRentService {
 
     BookRent queryBookRent(int id);
 
+    List<BookRent> markBookRentAsLateIfExist();
+
     List<BookRent> queryAllBookRent();
+
 }

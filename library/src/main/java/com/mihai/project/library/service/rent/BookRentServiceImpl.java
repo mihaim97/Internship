@@ -12,15 +12,20 @@ import com.mihai.project.library.service.request.RentRequestService;
 import com.mihai.project.library.service.stock.CopyStockService;
 import com.mihai.project.library.service.user.UserService;
 import com.mihai.project.library.util.HibernateUtil;
+import com.mihai.project.library.util.enumeration.RentStatus;
 import com.mihai.project.library.util.enumeration.Status;
 import com.mihai.project.library.util.factory.LibraryFactoryManager;
 import com.mihai.project.library.util.message.ExceptionMessage;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.message.user.UserMessageBuilder;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -91,7 +96,23 @@ public class BookRentServiceImpl implements BookRentService {
     }
 
     @Override
-    public List<BookRent> queryAllBookRent() {
-        return null;
+    @Transactional
+    public List<BookRent> markBookRentAsLateIfExist() {
+        List<BookRent> affectedBookRent = new ArrayList<>();
+        List<BookRent> bookRents = queryAllBookRent();
+        bookRents.stream().forEach(bookRent -> {
+            if(new Date().compareTo(bookRent.getEndDateRent()) > 0){
+                affectedBookRent.add(bookRent);
+                bookRent.setStatus(RentStatus.LA.toString());
+            }
+        });
+        return affectedBookRent;
     }
+
+    @Override
+    @Transactional
+    public List<BookRent> queryAllBookRent() {
+        return bookRentDAO.queryAllBookRent();
+    }
+
 }
