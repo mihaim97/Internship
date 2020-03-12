@@ -17,13 +17,13 @@ public class SecurityFilter implements Filter {
         String username = httpServletRequest.getHeader("username");
         String password = httpServletRequest.getHeader("password");
 
-        if(username.equals("mihai")){
+     /*   if(username.equals("mihai")){
             System.out.println("Log in");
             filterChain.doFilter(servletRequest, servletResponse);
         }else{
            httpServletResponse.sendError(403, "Invalid credentials");
-        }
-
+        }*/
+        filterChain.doFilter(servletRequest,servletResponse);
     }
 
 }

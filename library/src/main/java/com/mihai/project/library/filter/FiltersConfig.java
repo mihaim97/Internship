@@ -12,7 +12,7 @@ public class FiltersConfig {
     public FilterRegistrationBean<SecurityFilter> securityFilter(){
         FilterRegistrationBean<SecurityFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new SecurityFilter());
-        registrationBean.addUrlPatterns("/user/*");
+        //registrationBean.addUrlPatterns("/user/*");
         //registrationBean.addUrlPatterns("/book/*");
 
         return registrationBean;

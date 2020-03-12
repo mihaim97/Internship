@@ -34,7 +34,10 @@ public class UserDTO {
 
     public UserDTO() { }
 
-    public UserDTO(@NotBlank @Size(min = 5, max = 50) String username, @NotBlank @Size(min = 6) String password, @NotBlank @Size(min = 3, max = 50) String firstName, @NotBlank @Size(min = 3, max = 50) String lastName, @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email") @NotBlank String email, @NotBlank @Pattern(regexp = "ADMIN|REGULAR", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Incorrect role") String role) {
+    public UserDTO(@NotBlank @Size(min = 5, max = 50) String username,
+                   @NotBlank @Size(min = 6) String password, @NotBlank @Size(min = 3, max = 50) String firstName,
+                   @NotBlank @Size(min = 3, max = 50) String lastName, @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email")
+                   @NotBlank String email, @NotBlank @Pattern(regexp = "ADMIN|REGULAR", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Incorrect role") String role) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;

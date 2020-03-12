@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "user")
+@RequestMapping(path = "/user")
 public class UserController {
 
     @Autowired
@@ -33,6 +33,8 @@ public class UserController {
 
     @Autowired
     private UserMessageBuilder userMessageBuilder;
+
+    public UserController(){}
 
     @PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult) {
