@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -34,8 +35,8 @@ public class BookRentController {
 
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookRentDTOOut> registerRentBook(@RequestBody @Valid BookRentDTO bookRentDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public ResponseEntity<BookRentDTOOut> registerRentBook(@RequestBody @Valid BookRentDTO bookRentDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         BookRent bookRent = bookRentService.registerBookRent(bookRentDTO.getBookToRentId(), bookRentDTO.getUserId(), bookRentDTO.getPeriod());
@@ -43,20 +44,27 @@ public class BookRentController {
     }
 
     @PutMapping(value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> returnBookRent(@RequestBody @Valid BookRentReturnedDTO bookRentReturnedDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public ResponseEntity<Object> returnBookRent(@RequestBody @Valid BookRentReturnedDTO bookRentReturnedDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         BookRent bookRent = bookRentService.returnARentedBook(bookRentReturnedDTO.getRentId(), bookRentReturnedDTO.getNote());
-        if(bookRent == null){
+        if (bookRent == null) {
             return new ResponseEntity(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_FAIL), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(convert.fromBookRentToDtoOut(bookRent), HttpStatus.OK);
     }
 
     @PutMapping(value = "/mark-late", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BookRent>> markAsLate(){
-        return new ResponseEntity<>(bookRentService.markBookRentAsLateIfExist(), HttpStatus.OK);
+    public ResponseEntity<List<BookRentDTOOut>> markAsLate() {
+        List<BookRent> bookRentDTO = bookRentService.markBookRentAsLateIfExist();
+        return new ResponseEntity<>(convert.fromBookRentListToDtoOutList(bookRentDTO), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/extend-rent", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BookRentDTOOut> extendRent(@RequestParam @Valid @Min(1) int rentId) {
+        BookRent bookRent = bookRentService.extendRent(rentId);
+        return new ResponseEntity<BookRentDTOOut>(convert.fromBookRentToDtoOut(bookRent), HttpStatus.OK);
     }
 
 

@@ -17,6 +17,8 @@ public interface BookRentDAO {
 
     BookRent queryBookRent(int id);
 
+    List<BookRent> queryBookRentWithAVStatus(int id);
+
     List<BookRent> queryAllBookRent();
 
 }

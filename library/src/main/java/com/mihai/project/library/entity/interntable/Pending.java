@@ -3,6 +3,7 @@ package com.mihai.project.library.entity.interntable;
 import com.mihai.project.library.entity.request.RentRequest;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "pending")
@@ -19,13 +20,18 @@ public class Pending {
     @Column(name = "copy_stock_id")
     private int copyId;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_date")
+    private Date endDate;
+
     public Pending() {
     }
 
-    public Pending(int id, RentRequest rentRequestId, int copyId) {
+    public Pending(int id, RentRequest rentRequestId, int copyId, Date endDate) {
         this.id = id;
         this.rentRequestId = rentRequestId;
         this.copyId = copyId;
+        this.endDate = endDate;
     }
 
     public int getId() {
@@ -50,5 +56,13 @@ public class Pending {
 
     public void setCopyId(int copyId) {
         this.copyId = copyId;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

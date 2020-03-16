@@ -15,12 +15,12 @@ public class BookRentReturnedDTO {
     @Max(5)
     private float note;
 
-    public BookRentReturnedDTO(@NotNull @Min(1) int rentId, @NotNull @Min(1) @Max(5) float note) {
-        this.rentId = rentId;
-        this.note = note;
+    public BookRentReturnedDTO() {
     }
 
-    public BookRentReturnedDTO() {
+    public BookRentReturnedDTO(@NotNull @Min(1) int rentId, @NotNull @Min(1) @Max(5) float note, boolean extensionDays) {
+        this.rentId = rentId;
+        this.note = note;
     }
 
     public int getRentId() {
@@ -38,4 +38,5 @@ public class BookRentReturnedDTO {
     public void setNote(float note) {
         this.note = note;
     }
+
 }

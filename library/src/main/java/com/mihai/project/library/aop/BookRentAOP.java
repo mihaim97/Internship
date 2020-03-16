@@ -10,6 +10,7 @@ import com.mihai.project.library.service.stock.CopyStockService;
 import com.mihai.project.library.util.enumeration.RentRequestStatus;
 import com.mihai.project.library.util.enumeration.Status;
 import com.mihai.project.library.util.factory.LibraryFactoryManager;
+import org.apache.commons.lang3.time.DateUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -17,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 @Aspect
@@ -45,7 +48,7 @@ public class BookRentAOP {
     }
 
     @AfterReturning(value = "@annotation(com.mihai.project.library.annotation.AfterReturningBookAOP)", returning = "bookRentObject")
-    public void afterEmployeeReturnARentedBook(JoinPoint joinPoint, Object bookRentObject) {
+    public void afterEmployeeReturnARentedBook(Object bookRentObject) {
         if (bookRentObject != null) {
             if (bookRentObject instanceof BookRent) {
                 BookRent bookRent = (BookRent) bookRentObject;
@@ -57,6 +60,7 @@ public class BookRentAOP {
                     Pending pending = LibraryFactoryManager.getInstance().getPendingInstance();
                     pending.setRentRequestId(rentRequest);
                     pending.setCopyId(bookRent.getCopy().getCode());
+                    pending.setEndDate(DateUtils.addDays(new Date(), 1));
                     pendingService.registerPending(pending);
                 }
             }

@@ -4,6 +4,9 @@ import com.mihai.project.library.dto.rent.BookRentDTOOut;
 import com.mihai.project.library.entity.rent.BookRent;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class BookRentDTOEntityConverterImpl implements BookRentDTOEntityConverter {
 
@@ -19,6 +22,15 @@ public class BookRentDTOEntityConverterImpl implements BookRentDTOEntityConverte
         bookRentDTOOut.setUser(bookRent.getUser().getId());
         bookRentDTOOut.setStatus(bookRent.getStatus());
         return bookRentDTOOut;
+    }
+
+    @Override
+    public List<BookRentDTOOut> fromBookRentListToDtoOutList(List<BookRent> bookRents) {
+        List<BookRentDTOOut> bookRentDTOOuts = new ArrayList<>();
+        bookRents.stream().forEach(bookRent -> {
+            bookRentDTOOuts.add(fromBookRentToDtoOut(bookRent));
+        });
+        return bookRentDTOOuts;
     }
 
 }

@@ -4,6 +4,7 @@ drop table if exists `pending`;
 drop table if exists `book_rent`;
 drop table if exists `rent_request`;
 drop table if exists library.`pending`;
+drop table if exists library.`user_banned`;
 drop table if exists `book_request`;
 
 create table `book_rent`(
@@ -35,8 +36,16 @@ create table library.`pending`(
 `id` int primary key auto_increment not null,
 `rent_request_id` int not null,
 `copy_stock_id` int not null,
+`end_date` datetime not null,
 constraint `Pending_Rent_FK` foreign key (`rent_request_id`) references `rent_request` (`id`),
 constraint `Unique_Pending_Rent` unique(`rent_request_id`)
+);
+
+create table library.`user_banned`(
+`id` int primary key auto_increment not null,
+`user_id` int not null unique,
+`days` int not null,
+constraint `Banned_User_User_FK` foreign key (`user_id`) references `appusers` (`id`)
 );
 
 create table `book_request`(

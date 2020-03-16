@@ -1,0 +1,7 @@
+package com.mihai.project.library.util;
+
+public class UtilConstant {
+    public static final int MINIMUM_DAYS_BAN = 10;
+    public static final int BANNED_MULTIPLIER = 2;
+    public static final int MAX_EXTENSION_DAYS = 15;
+}

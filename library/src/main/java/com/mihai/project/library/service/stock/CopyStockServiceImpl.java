@@ -12,10 +12,12 @@ import com.mihai.project.library.util.enumeration.Flag;
 import com.mihai.project.library.util.enumeration.RentRequestStatus;
 import com.mihai.project.library.util.enumeration.Status;
 import com.mihai.project.library.util.factory.LibraryFactoryManager;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,6 +49,7 @@ public class CopyStockServiceImpl implements CopyStockService {
             Pending pending = LibraryFactoryManager.getInstance().getPendingInstance();
             pending.setRentRequestId(rentRequest);
             pending.setCopyId(copyStock.getCode());
+            pending.setEndDate(DateUtils.addDays(new Date(), 1));
             pendingService.registerPending(pending);
         }
         return copyStock;
