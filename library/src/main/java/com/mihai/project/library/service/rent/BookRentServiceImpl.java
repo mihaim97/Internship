@@ -182,4 +182,8 @@ public class BookRentServiceImpl implements BookRentService {
         return (int) monthDiff;
     }
 
+    public void setMessageBuilder(MessageBuilder messageBuilder){
+        this.messageBuilder = messageBuilder;
+    }
+
 }
