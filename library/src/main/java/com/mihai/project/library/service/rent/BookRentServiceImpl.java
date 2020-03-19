@@ -15,26 +15,23 @@ import com.mihai.project.library.service.user.UserService;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.UtilConstant;
 import com.mihai.project.library.util.enumeration.RentStatus;
-import com.mihai.project.library.util.enumeration.Status;
 import com.mihai.project.library.util.factory.LibraryFactoryManager;
 import com.mihai.project.library.util.message.ExceptionMessage;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.message.user.UserMessageBuilder;
-import jdk.jshell.execution.Util;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class BookRentServiceImpl implements BookRentService {
@@ -138,7 +135,7 @@ public class BookRentServiceImpl implements BookRentService {
         if (bookRent != null) {
             return extendUserBookRent(bookRent);
         } else {
-            throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_FAIL));
+            throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_FAIL_ON_EXTEND));
         }
     }
 
@@ -167,11 +164,28 @@ public class BookRentServiceImpl implements BookRentService {
         /**Total month - initial rent**/
         int monthDiffRented = getDifference(bookRent.getDateRent(), bookRent.getEndDateRent(), ChronoUnit.MONTHS);
         if (monthDiffRented < 3) {
-            bookRent.setEndDateRent(DateUtils.addDays(bookRent.getEndDateRent(), UtilConstant.MAX_EXTENSION_DAYS));
+            int daysToExtend = calculateDaysAllowedToExtendRent(bookRent);
+            bookRent.setEndDateRent(DateUtils.addDays(bookRent.getEndDateRent(), daysToExtend));
         } else {
             throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_EXTEND_MAX_MONTH));
         }
         return bookRent;
+    }
+
+    private int calculateDaysAllowedToExtendRent(BookRent bookRent) {
+        Date endDate = DateUtils.addMonths(bookRent.getDateRent(), UtilConstant.MAX_RENT_MONTH);
+        Date nextRentDate = DateUtils.addDays(bookRent.getEndDateRent(), UtilConstant.MAX_EXTENSION_DAYS);
+        if (nextRentDate.before(endDate)) {
+            return UtilConstant.MAX_EXTENSION_DAYS;
+        } else {
+            return getDifference(bookRent.getEndDateRent(), endDate, ChronoUnit.DAYS);
+        }
+    }
+
+    private int compareDateToCurrentDate(Date date1) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        LocalDateTime date1Formatted = LocalDateTime.parse(date1.toString(), formatter);
+        return date1Formatted.toLocalDate().compareTo(LocalDateTime.now().toLocalDate());
     }
 
     private int getDifference(Date from, Date to, ChronoUnit unit) {
@@ -182,7 +196,7 @@ public class BookRentServiceImpl implements BookRentService {
         return (int) monthDiff;
     }
 
-    public void setMessageBuilder(MessageBuilder messageBuilder){
+    public void setMessageBuilder(MessageBuilder messageBuilder) {
         this.messageBuilder = messageBuilder;
     }
 
