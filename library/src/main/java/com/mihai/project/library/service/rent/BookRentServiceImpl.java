@@ -58,26 +58,22 @@ public class BookRentServiceImpl implements BookRentService {
     @Override
     @Transactional
     @BookRentAOP
-    public BookRent registerBookRent(int bookIdToRent, int userId, int period) {
+    public BookRent registerBookRent(int bookIdToRent, User user, int period) {
         CopyStock copyStock = copyStockService.queryAvailableSingleBookCopyByBookId(bookIdToRent);
-        User user = userService.queryUserById(userId);
         if (copyStock == null) {
             throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_NO_BOOK_AVAILABLE));
         }
-        if (user != null) {
-            if(checkIfUserIsBanned(user)){
-                throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BANNED_USER));
-            }
-            if (checkIfUserAlreadyHasARentForCurrentBook(copyStock.getBookId(), user) == null
-                    && rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user) == null) {
-                BookRent bookRent = LibraryFactoryManager.getInstance().getBookRentInstance();
-                return bookRentDAO.registerBookRent(bookRent, copyStock, user, period);
-            } else {
-                throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_RENT_EXIST));
-            }
-        } else {
-            throw new BookRentOrRequestException(userMessageBuilder.getMessageOnUserNotFind(userId));
+        if (checkIfUserIsBanned(user)) {
+            throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BANNED_USER));
         }
+        if (checkIfUserAlreadyHasARentForCurrentBook(copyStock.getBookId(), user) == null
+                && rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user) == null) {
+            BookRent bookRent = LibraryFactoryManager.getInstance().getBookRentInstance();
+            return bookRentDAO.registerBookRent(bookRent, copyStock, user, period);
+        } else {
+            throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_RENT_EXIST));
+        }
+
     }
 
     @Override
@@ -89,9 +85,12 @@ public class BookRentServiceImpl implements BookRentService {
     @Override
     @Transactional
     @AfterReturningBookAOP
-    public BookRent returnARentedBook(int bookRentId, float note) {
+    public BookRent returnARentedBook(int bookRentId, float note, User user) {
         BookRent bookRent = queryBookRent(bookRentId);
         if (bookRent != null) {
+            if(bookRent.getUser().getId() != user.getId()){
+              return null;
+            }
             if (bookRent.getStatus().equals(RentStatus.LA.toString())) {
                 int daysForBanned = bannedUserFromRenting(bookRent.getEndDateRent());
                 bannedUserService.registerBannedUser(bookRent.getUser(), daysForBanned);
@@ -149,7 +148,7 @@ public class BookRentServiceImpl implements BookRentService {
     private boolean checkIfUserIsBanned(User user) {
         BannedUser bannedUser = bannedUserService.checkIfUserIsBanned(user);
         if (bannedUser != null) {
-            if(bannedUser.getEndDate().after(new Date())){
+            if (bannedUser.getEndDate().after(new Date())) {
                 return true;
             }
         }

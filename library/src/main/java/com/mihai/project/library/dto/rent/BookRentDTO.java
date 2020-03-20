@@ -12,10 +12,6 @@ public class BookRentDTO {
 
     @NotNull
     @Min(1)
-    private int userId;
-
-    @NotNull
-    @Min(1)
     @Max(3)
     private int period;
 
@@ -24,7 +20,6 @@ public class BookRentDTO {
 
     public BookRentDTO(@NotNull @Min(1) int bookToRentId, @NotNull @Min(1) int userId, @NotNull @Min(1) @Max(3) int period) {
         this.bookToRentId = bookToRentId;
-        this.userId = userId;
         this.period = period;
     }
 
@@ -34,14 +29,6 @@ public class BookRentDTO {
 
     public void setBookToRentId(int bookToRentId) {
         this.bookToRentId = bookToRentId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public int getPeriod() {

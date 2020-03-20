@@ -23,5 +23,8 @@ public class ExceptionMessage {
     public static String BANNED_USER = "User is banned for renting books";
     /**Authentication message**/
     public static String BAD_CREDENTIALS = "Bad credentials or you don't have permission to access this resource";
+    public static String BAD_CREDENTIALS_REGULAR = "Bad credentials";
+    /**DataIntegrity**/
+    public static String INTEGRITY_VIOLATION = "You can't delete this resource because it has other resource attached to it";
 
 }

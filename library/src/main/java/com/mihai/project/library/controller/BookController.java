@@ -41,7 +41,7 @@ public class BookController {
     @Autowired
     private BookMessageBuilder bookMessageBuilder;
 
-    @PostMapping("/add")
+    @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BookDTOQuery> addBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
         Book book;
         if (bindingResult.hasErrors()) {

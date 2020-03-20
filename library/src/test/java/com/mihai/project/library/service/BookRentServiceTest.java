@@ -64,11 +64,12 @@ public class BookRentServiceTest {
     @Test
     public void given_whenReturnARentedBook_returnBookRent() {
         BookRent bookRent = new BookRent();
+        User user  = new User();
         bookRent.setStatus(RentStatus.RE.toString());
         bookRent.setId(1);
         bookRent.setNote(4.5f);
-        when(bookRentResource.returnARentedBook(1, 4.5f)).thenReturn(bookRent);
-        BookRent bookRentReturned = bookRentResource.returnARentedBook(1, 4.5f);
+        when(bookRentResource.returnARentedBook(1, 4.5f, user)).thenReturn(bookRent);
+        BookRent bookRentReturned = bookRentResource.returnARentedBook(1, 4.5f, user);
         Assertions.assertEquals(bookRent.getStatus(), bookRentReturned.getStatus());
     }
 

@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface BookRentService {
 
-    BookRent registerBookRent(int bookIdToRent, int userId, int period);
+    BookRent registerBookRent(int bookIdToRent, User user, int period);
 
     BookRent checkIfUserAlreadyHasARentForCurrentBook(Book book, User user);
 
-    BookRent returnARentedBook(int bookRentId, float note);
+    BookRent returnARentedBook(int bookRentId, float note, User user);
 
     BookRent queryBookRent(int id);
 

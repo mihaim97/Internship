@@ -5,6 +5,8 @@ import com.mihai.project.library.dto.rent.BookRentDTO;
 import com.mihai.project.library.dto.rent.BookRentDTOOut;
 import com.mihai.project.library.dto.rent.BookRentReturnedDTO;
 import com.mihai.project.library.entity.rent.BookRent;
+import com.mihai.project.library.entity.user.User;
+import com.mihai.project.library.filter.AuthenticationWrapperServletRequest;
 import com.mihai.project.library.service.rent.BookRentService;
 import com.mihai.project.library.util.dtoentity.rent.BookRentDTOEntityConverter;
 import com.mihai.project.library.util.message.ExceptionMessage;
@@ -15,7 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
@@ -35,20 +39,22 @@ public class BookRentController {
 
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookRentDTOOut> registerRentBook(@RequestBody @Valid BookRentDTO bookRentDTO, BindingResult bindingResult) {
+    public ResponseEntity<BookRentDTOOut> registerRentBook(@RequestBody @Valid BookRentDTO bookRentDTO,
+                                                           BindingResult bindingResult, @ApiIgnore AuthenticationWrapperServletRequest request) {
         if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
-        BookRent bookRent = bookRentService.registerBookRent(bookRentDTO.getBookToRentId(), bookRentDTO.getUserId(), bookRentDTO.getPeriod());
+        BookRent bookRent = bookRentService.registerBookRent(bookRentDTO.getBookToRentId(), request.getAuthenticateUser(), bookRentDTO.getPeriod());
         return new ResponseEntity(convert.fromBookRentToDtoOut(bookRent), HttpStatus.OK);
     }
 
     @PutMapping(value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> returnBookRent(@RequestBody @Valid BookRentReturnedDTO bookRentReturnedDTO, BindingResult bindingResult) {
+    public ResponseEntity<Object> returnBookRent(@RequestBody @Valid BookRentReturnedDTO bookRentReturnedDTO,
+                                                 BindingResult bindingResult, @ApiIgnore AuthenticationWrapperServletRequest request) {
         if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
-        BookRent bookRent = bookRentService.returnARentedBook(bookRentReturnedDTO.getRentId(), bookRentReturnedDTO.getNote());
+        BookRent bookRent = bookRentService.returnARentedBook(bookRentReturnedDTO.getRentId(), bookRentReturnedDTO.getNote(), request.getAuthenticateUser());
         if (bookRent == null) {
             return new ResponseEntity(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_FAIL), HttpStatus.BAD_REQUEST);
         }
