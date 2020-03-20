@@ -4,6 +4,7 @@ import com.mihai.project.library.contralleradvice.exception.ResultBindingValidat
 import com.mihai.project.library.dto.user.UserDTO;
 import com.mihai.project.library.dto.user.UserDTOOut;
 import com.mihai.project.library.entity.user.User;
+import com.mihai.project.library.filter.AuthenticationWrapperServletRequest;
 import com.mihai.project.library.service.user.UserService;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.dtoentity.user.UserDTOEntityConverter;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class UserController {
     public UserController(){}
 
     @PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult) {
+    public ResponseEntity addUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult, AuthenticationWrapperServletRequest request) {
         if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }

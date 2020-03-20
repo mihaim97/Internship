@@ -19,5 +19,9 @@ public class ExceptionMessage {
     public static String BOOK_RENT_INCORRECT_EXTEND_DATE = "You can't extend your rent because your end date is less than current date";
     public static String BOOK_RENT_ONE_MONTH_NOT_PASS = "You can't extend your rent because a month hasn't passed";
     public static String BOOK_RENT_EXTEND_MAX_MONTH = "You rent this book for three month, you can't extend anymore";
+    /** BannedUser **/
+    public static String BANNED_USER = "User is banned for renting books";
+    /**Authentication message**/
+    public static String BAD_CREDENTIALS = "Bad credentials or you don't have permission to access this resource";
 
 }

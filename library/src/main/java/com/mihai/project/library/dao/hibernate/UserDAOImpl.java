@@ -101,4 +101,5 @@ public class UserDAOImpl implements UserDAO {
         user.setRole(newUserData.getRole());
         return user;
     }
+
 }

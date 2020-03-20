@@ -1,6 +1,7 @@
 package com.mihai.project.library.entity.user;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "user_banned")
@@ -14,16 +15,25 @@ public class BannedUser {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "days")
-    private int days;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_end")
+    private Date endDate;
 
     public BannedUser() {
     }
 
-    public BannedUser(int id, User user, int days) {
+    public BannedUser(int id, User user, Date endDate) {
         this.id = id;
         this.user = user;
-        this.days = days;
+        this.endDate = endDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public int getId() {
@@ -42,11 +52,5 @@ public class BannedUser {
         this.user = user;
     }
 
-    public int getDays() {
-        return days;
-    }
 
-    public void setDays(int days) {
-        this.days = days;
-    }
 }

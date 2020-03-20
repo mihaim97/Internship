@@ -24,4 +24,6 @@ public interface UserService {
     boolean deleteUser(String username);
 
     User updateUser(User user, String username);
+
+    User performLogIn(String username, String password);
 }

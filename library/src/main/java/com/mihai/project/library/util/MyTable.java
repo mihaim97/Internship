@@ -61,5 +61,8 @@ public class MyTable {
     public static String BOOK_RENT_REQUEST_BOOK_FK = "book";
     public static String BOOK_RENT_REQUEST_USER_FK = "user";
 
+    //@@BannedUser
+    public static String BANNED_USER_USER_ID = "user";
+
 
 }

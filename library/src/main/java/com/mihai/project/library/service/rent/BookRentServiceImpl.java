@@ -7,6 +7,7 @@ import com.mihai.project.library.dao.BookRentDAO;
 import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.stock.CopyStock;
+import com.mihai.project.library.entity.user.BannedUser;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.service.request.RentRequestService;
 import com.mihai.project.library.service.stock.CopyStockService;
@@ -28,10 +29,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 @Service
 public class BookRentServiceImpl implements BookRentService {
@@ -67,6 +65,9 @@ public class BookRentServiceImpl implements BookRentService {
             throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_NO_BOOK_AVAILABLE));
         }
         if (user != null) {
+            if(checkIfUserIsBanned(user)){
+                throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BANNED_USER));
+            }
             if (checkIfUserAlreadyHasARentForCurrentBook(copyStock.getBookId(), user) == null
                     && rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user) == null) {
                 BookRent bookRent = LibraryFactoryManager.getInstance().getBookRentInstance();
@@ -143,6 +144,16 @@ public class BookRentServiceImpl implements BookRentService {
     @Transactional
     public BookRent queryBookRentWithAVStatus(int id) {
         return HibernateUtil.getUniqueResult(bookRentDAO.queryBookRentWithAVStatus(id));
+    }
+
+    private boolean checkIfUserIsBanned(User user) {
+        BannedUser bannedUser = bannedUserService.checkIfUserIsBanned(user);
+        if (bannedUser != null) {
+            if(bannedUser.getEndDate().after(new Date())){
+                return true;
+            }
+        }
+        return false;
     }
 
     private int bannedUserFromRenting(Date endDate) {

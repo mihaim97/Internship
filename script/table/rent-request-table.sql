@@ -44,7 +44,7 @@ constraint `Unique_Pending_Rent` unique(`rent_request_id`)
 create table library.`user_banned`(
 `id` int primary key auto_increment not null,
 `user_id` int not null unique,
-`days` int not null,
+`date_end` date not null,
 constraint `Banned_User_User_FK` foreign key (`user_id`) references `appusers` (`id`)
 );
 

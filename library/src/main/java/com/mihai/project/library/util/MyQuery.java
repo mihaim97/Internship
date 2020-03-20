@@ -77,4 +77,7 @@ public class MyQuery {
     public static String HIBERNATE_QUERY_CHECK_IF_RENT_REQUEST_EXIST_WAC = "from RentRequest re where re.bookId = :book and re.status = :status order by re.dateRequest asc";
     public static String HIBERNATE_QUERY_USER_RENT_REQUEST = "from RentRequest re where re.user.id = :book and re.status = :status";
     public static String HIBERNATE_QUERY_RENT_REQUEST_WFC = "from RentRequest re where re.id = :id and re.status = :status";
+
+    //@@BannedUser
+    public static String HIBERNATE_QUERY_BANNED_USER_BY_USER_ID = "from BannedUser where user = :user";
 }

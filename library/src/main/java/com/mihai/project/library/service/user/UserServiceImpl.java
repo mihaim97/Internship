@@ -5,6 +5,7 @@ import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.enumeration.FieldType;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,20 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUser(User userNewData, String username) {
         return userDAO.updateUser(username, userNewData);
+    }
+
+    @Override
+    @Transactional
+    public User performLogIn(String username, String password) {
+        User user = queryUser(username);
+        String passwordToCompare;
+        if (user != null) {
+            passwordToCompare = DigestUtils.md5Hex(password.getBytes());
+            if (passwordToCompare.equals(user.getPassword())) {
+                return user;
+            }
+        }
+        return null;
     }
 
     private boolean checkForUsernameOrEmail(String value, FieldType operation) {
