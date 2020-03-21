@@ -31,7 +31,7 @@ public class UserServiceTest {
     @BeforeAll
     public static void init(){
         user = new User(0,"tomas", "password", "fName", "lName", "email@email", 0, "admin");
-        userDTO = new UserDTO("tomas", "password", "fName", "lName", "emailemail","ADMIN");
+        userDTO = new UserDTO(1, "tomas", "password", "fName", "lName", "emailemail","ADMIN");
     }
 
     @Test

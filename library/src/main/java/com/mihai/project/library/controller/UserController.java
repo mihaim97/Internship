@@ -78,18 +78,12 @@ public class UserController {
         }
     }
 
-    @PutMapping(path = "update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult, @RequestParam String username) {
+    @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTOOut> updateUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
-        if (userService.usernameAlreadyExistOnDifferentUser(username, user.getUsername())) {
-            return userExist(user);
-        }
-        if (userService.emailAlreadyExistOnDifferentUser(username, user.getEmail())) {
-            return emailExist(user);
-        }
-        User userReturned = userService.updateUser(convert.fromDTOToUser(user), username);
+        User userReturned = userService.updateUser(convert.fromDTOToUser(user), user.getId());
         return new ResponseEntity<>(convert.fromUserToUserDTOOut(userReturned), HttpStatus.OK);
     }
 

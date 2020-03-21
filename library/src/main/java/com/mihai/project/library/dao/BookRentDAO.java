@@ -21,4 +21,6 @@ public interface BookRentDAO {
 
     List<BookRent> queryAllBookRent();
 
+    List<BookRent> queryAllBookRentView();
+
 }

@@ -1,12 +1,12 @@
 package com.mihai.project.library.dto.user;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class UserDTO {
+
+    @NotNull
+    @Min(1)
+    private int id;
 
     @NotBlank
     @Size(min = 5, max = 50)
@@ -34,16 +34,22 @@ public class UserDTO {
 
     public UserDTO() { }
 
-    public UserDTO(@NotBlank @Size(min = 5, max = 50) String username,
-                   @NotBlank @Size(min = 6) String password, @NotBlank @Size(min = 3, max = 50) String firstName,
-                   @NotBlank @Size(min = 3, max = 50) String lastName, @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email")
-                   @NotBlank String email, @NotBlank @Pattern(regexp = "ADMIN|REGULAR", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Incorrect role") String role) {
+    public UserDTO(@NotNull @Min(1) int id, @NotBlank @Size(min = 5, max = 50) String username, @NotBlank @Size(min = 6) String password, @NotBlank @Size(min = 3, max = 50) String firstName, @NotBlank @Size(min = 3, max = 50) String lastName, @Email(regexp = "^(.+)@(.+)$", message = "Please provide a valid email") @NotBlank String email, @NotBlank @Pattern(regexp = "ADMIN|REGULAR", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Incorrect role") String role) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.role = role;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {

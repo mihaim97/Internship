@@ -24,8 +24,8 @@ public class CustomExceptionHandlerController extends ResponseEntityExceptionHan
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({BookRentOrRequestException.class})
-    public ResponseEntity<String> noCopyAvailable(Exception exc){
+    @ExceptionHandler({BookRentOrRequestException.class, UserServiceException.class})
+    public ResponseEntity<String> serviceExceptionHandler(Exception exc){
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.NOT_FOUND);
     }
 

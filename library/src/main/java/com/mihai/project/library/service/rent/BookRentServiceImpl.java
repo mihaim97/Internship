@@ -15,6 +15,7 @@ import com.mihai.project.library.service.user.BannedUserService;
 import com.mihai.project.library.service.user.UserService;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.UtilConstant;
+import com.mihai.project.library.util.enumeration.BookRentQueryType;
 import com.mihai.project.library.util.enumeration.RentStatus;
 import com.mihai.project.library.util.factory.LibraryFactoryManager;
 import com.mihai.project.library.util.message.ExceptionMessage;
@@ -88,8 +89,8 @@ public class BookRentServiceImpl implements BookRentService {
     public BookRent returnARentedBook(int bookRentId, float note, User user) {
         BookRent bookRent = queryBookRent(bookRentId);
         if (bookRent != null) {
-            if(bookRent.getUser().getId() != user.getId()){
-              return null;
+            if (bookRent.getUser().getId() != user.getId()) {
+                return null;
             }
             if (bookRent.getStatus().equals(RentStatus.LA.toString())) {
                 int daysForBanned = bannedUserFromRenting(bookRent.getEndDateRent());
@@ -112,7 +113,7 @@ public class BookRentServiceImpl implements BookRentService {
     @Transactional
     public List<BookRent> markBookRentAsLateIfExist() {
         List<BookRent> affectedBookRent = new ArrayList<>();
-        List<BookRent> bookRents = queryAllBookRent();
+        List<BookRent> bookRents = queryAllBookRent(BookRentQueryType.NO_FETCH);
         bookRents.stream().forEach(bookRent -> {
             if (new Date().compareTo(bookRent.getEndDateRent()) > 0) {
                 affectedBookRent.add(bookRent);
@@ -124,15 +125,22 @@ public class BookRentServiceImpl implements BookRentService {
 
     @Override
     @Transactional
-    public List<BookRent> queryAllBookRent() {
-        return bookRentDAO.queryAllBookRent();
+    public List<BookRent> queryAllBookRent(BookRentQueryType type) {
+        if (type.equals(BookRentQueryType.NO_FETCH)) {
+            return bookRentDAO.queryAllBookRent();
+        } else {
+            return bookRentDAO.queryAllBookRentView();
+        }
     }
 
     @Override
     @Transactional
-    public BookRent extendRent(int bookRentId) {
+    public BookRent extendRent(int bookRentId, User user) {
         BookRent bookRent = queryBookRentWithAVStatus(bookRentId);
         if (bookRent != null) {
+            if (bookRent.getUser().getId() != user.getId()) {
+                throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_FAIL));
+            }
             return extendUserBookRent(bookRent);
         } else {
             throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_FAIL_ON_EXTEND));

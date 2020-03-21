@@ -1,6 +1,7 @@
 package com.mihai.project.library.controller;
 
 import com.mihai.project.library.contralleradvice.exception.ResultBindingValidationException;
+import com.mihai.project.library.dto.rent.BookRentAdminDTO;
 import com.mihai.project.library.dto.rent.BookRentDTO;
 import com.mihai.project.library.dto.rent.BookRentDTOOut;
 import com.mihai.project.library.dto.rent.BookRentReturnedDTO;
@@ -9,6 +10,7 @@ import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.filter.AuthenticationWrapperServletRequest;
 import com.mihai.project.library.service.rent.BookRentService;
 import com.mihai.project.library.util.dtoentity.rent.BookRentDTOEntityConverter;
+import com.mihai.project.library.util.enumeration.BookRentQueryType;
 import com.mihai.project.library.util.message.ExceptionMessage;
 import com.mihai.project.library.util.message.MessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,9 +70,15 @@ public class BookRentController {
     }
 
     @PutMapping(value = "/extend-rent", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookRentDTOOut> extendRent(@RequestParam @Valid @Min(1) int rentId) {
-        BookRent bookRent = bookRentService.extendRent(rentId);
+    public ResponseEntity<BookRentDTOOut> extendRent(@RequestParam @Valid @Min(1) int rentId, @ApiIgnore AuthenticationWrapperServletRequest request) {
+        BookRent bookRent = bookRentService.extendRent(rentId, request.getAuthenticateUser());
         return new ResponseEntity<BookRentDTOOut>(convert.fromBookRentToDtoOut(bookRent), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BookRentAdminDTO> queryAllBookRent() {
+        List<BookRent> bookRents = bookRentService.queryAllBookRent(BookRentQueryType.FETCH_COPY_STOCK);
+        return new ResponseEntity(convert.fromBookRentListToAdminDto(bookRents), HttpStatus.OK);
     }
 
 

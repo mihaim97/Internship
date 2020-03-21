@@ -24,6 +24,6 @@ public interface UserDAO {
 
     boolean deleteUser(String user);
 
-    User updateUser(String username, User newUserData);
+    User updateUser(User user, User newUserData);
 
 }

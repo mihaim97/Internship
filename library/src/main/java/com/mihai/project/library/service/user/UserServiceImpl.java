@@ -1,10 +1,12 @@
 package com.mihai.project.library.service.user;
 
+import com.mihai.project.library.contralleradvice.exception.UserServiceException;
 import com.mihai.project.library.dao.UserDAO;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.enumeration.FieldType;
+import com.mihai.project.library.util.message.user.UserMessageBuilder;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +21,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     @Qualifier("UserDaoHibernate")
     private UserDAO userDAO;
+
+    @Autowired
+    private UserMessageBuilder userMessageBuilder;
 
     @Override
     @Transactional
@@ -76,8 +81,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateUser(User userNewData, String username) {
-        return userDAO.updateUser(username, userNewData);
+    public User updateUser(User userNewData, int userId) {
+        User user = queryUserById(userId);
+        if(user == null){
+           throw new UserServiceException(userMessageBuilder.getMessageOnUserNotFind(userId));
+        }
+        if(usernameAlreadyExistOnDifferentUser(user.getUsername(), userNewData.getUsername())){
+            throw new UserServiceException(userMessageBuilder.getMessageOnUserExistException(userNewData.getUsername()));
+        }
+        if(emailAlreadyExistOnDifferentUser(user.getUsername(), userNewData.getEmail())){
+            throw new UserServiceException(userMessageBuilder.getMessageOnEmailAlreadyExist(userNewData.getEmail()));
+        }
+        return userDAO.updateUser(user, userNewData);
     }
 
     @Override

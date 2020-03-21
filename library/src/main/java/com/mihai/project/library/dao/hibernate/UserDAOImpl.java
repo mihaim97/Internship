@@ -93,8 +93,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User updateUser(String username, User newUserData) {
-        User user = queryUser(username).get(0);
+    public User updateUser(User user, User newUserData) {
         user.setUsername(newUserData.getUsername());
         user.setPassword(DigestUtils.md5Hex(newUserData.getPassword().getBytes()));
         user.setEmail(newUserData.getEmail());

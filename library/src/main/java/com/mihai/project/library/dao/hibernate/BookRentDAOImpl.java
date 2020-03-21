@@ -81,4 +81,13 @@ public class BookRentDAOImpl implements BookRentDAO {
         query.setParameter(MyTable.BOOK_RENT_STATUS, RentStatus.ON.toString());
         return query.getResultList();
     }
+
+    @Override
+    public List<BookRent> queryAllBookRentView() {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_BOOK_RENT_VIEW);
+        query.setParameter(MyTable.BOOK_RENT_STATUS, RentStatus.ON.toString());
+        query.setParameter(MyTable.BOOK_RENT_STATUS2, RentStatus.LA.toString());
+        return query.getResultList();
+    }
 }

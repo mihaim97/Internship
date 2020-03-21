@@ -15,6 +15,8 @@ public class FiltersConfig {
         registrationBean.setFilter(new AdminSecurityFilter());
         registrationBean.addUrlPatterns("/user/*");
         registrationBean.addUrlPatterns("/book/*");
+        registrationBean.addUrlPatterns("/rent-book/mark-late");
+        registrationBean.addUrlPatterns("/rent-book/list");
         return registrationBean;
     }
 
@@ -24,6 +26,7 @@ public class FiltersConfig {
         registrationBean.setFilter(new RegularSecurityFilter());
         registrationBean.addUrlPatterns("/rent-book/register");
         registrationBean.addUrlPatterns("/rent-book/return");
+        registrationBean.addUrlPatterns("/rent-book/extend-rent");
         return  registrationBean;
     }
 }

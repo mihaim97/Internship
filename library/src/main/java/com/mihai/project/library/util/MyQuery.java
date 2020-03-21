@@ -69,6 +69,13 @@ public class MyQuery {
     //@@BookRent
     public static String HIBERNATE_QUERY_BOOK_RENT_BY_USER_BOOK_ID = "from BookRent br where br.book = :book and br.user = :emp_id and (br.status = :status or br.status = :status2)";
     public static String HIBERNATE_QUERY_ALL_BOOK_RENT = "from BookRent br where br.status = :status";
+    public static String HIBERNATE_QUERY_ALL_BOOK_RENT_VIEW = "select distinct br from BookRent br " +
+                                                            "join fetch br.copy cp " +
+                                                            "join fetch br.user us " +
+                                                            "join fetch cp.bookId book " +
+                                                            "left join fetch book.authors aut " +
+                                                            "left join fetch book.tags tags " +
+                                                            "where br.status = :status or br.status = :status2";
     public static String HIBERNATE_QUERY_BOOK_RENT_WITH_ON_STATUS = "from BookRent br where br.id = :id and br.status = :status";
 
     //@@RentRequest
