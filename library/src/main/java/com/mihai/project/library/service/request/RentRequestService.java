@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface RentRequestService {
 
-    RentRequest registerRentRequest(int bookId, int userId);
+    RentRequest registerRentRequest(int bookId, User user);
 
     RentRequest checkIfUserHasARequestForCurrentBook(Book book, User user);
 
@@ -20,7 +20,7 @@ public interface RentRequestService {
 
     List<RentRequest> queryUserRentRequest(int userId);
 
-    RentRequest acceptOrCancelRentRequest(int rentRequestId, RentRequestStatus status);
+    RentRequest acceptOrCancelRentRequest(int rentRequestId, RentRequestStatus status, User user);
 
     RentRequest querySingleRentRequestById(int rentRequestId);
 

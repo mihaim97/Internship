@@ -7,25 +7,12 @@ public class RentRequestDTO {
 
     @NotNull
     @Min(1)
-    private int userId;
-
-    @NotNull
-    @Min(1)
     private int bookId;
 
     public RentRequestDTO() { }
 
     public RentRequestDTO(int userId, int bookId) {
-        this.userId = userId;
         this.bookId = bookId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public int getBookId() {

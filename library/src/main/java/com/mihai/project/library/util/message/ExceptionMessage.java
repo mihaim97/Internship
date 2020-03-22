@@ -26,5 +26,7 @@ public class ExceptionMessage {
     public static String BAD_CREDENTIALS_REGULAR = "Bad credentials";
     /**DataIntegrity**/
     public static String INTEGRITY_VIOLATION = "You can't delete this resource because it has other resource attached to it";
+    /**BookRequest**/
+    public static String BOOK_REQUEST_NOT_FIND = "No book request was find with id %s";
 
 }

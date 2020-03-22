@@ -87,4 +87,9 @@ public class MyQuery {
 
     //@@BannedUser
     public static String HIBERNATE_QUERY_BANNED_USER_BY_USER_ID = "from BannedUser where user = :user";
+
+    //@@BookRequest
+    public static String HIBERNATE_QUERY_ALL_BOOK_REQUEST = "from BookRequest";
+    public static String HIBERNATE_QUERY_ALL_BOOK_REQUEST_WITH_STATUS = "from BookRequest br where br.status = :status";
+
 }

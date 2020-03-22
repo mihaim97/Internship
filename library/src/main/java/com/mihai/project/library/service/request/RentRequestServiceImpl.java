@@ -11,6 +11,7 @@ import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.service.book.BookService;
 import com.mihai.project.library.service.peding.PendingService;
 import com.mihai.project.library.service.stock.CopyStockService;
+import com.mihai.project.library.service.user.BannedUserService;
 import com.mihai.project.library.service.user.UserService;
 import com.mihai.project.library.util.HibernateUtil;
 import com.mihai.project.library.util.enumeration.RentRequestStatus;
@@ -48,24 +49,26 @@ public class RentRequestServiceImpl implements RentRequestService {
     private PendingService pendingService;
 
     @Autowired
+    private BannedUserService bannedUserService;
+
+    @Autowired
     private MessageBuilder messageBuilder;
 
 
     @Override
     @Transactional
-    public RentRequest registerRentRequest(int bookId, int userId) {
-        User user = userService.queryUserById(userId);
+    public RentRequest registerRentRequest(int bookId, User user) {
         Book book = bookService.queryBook(bookId);
         RentRequest rentRequest;
+        if(bannedUserService.checkIfUserIsBanned(user) != null){
+            throwBookRentException(ExceptionMessage.BANNED_USER);
+        }
         /** When copy are available, no need for request **/
         if (copyStockService.queryAvailableSingleBookCopyByBookId(bookId) != null) {
             throwBookRentException(ExceptionMessage.RENT_REQUEST_COPY_AVAILABLE);
         }
         if (book == null) {
             throwBookRentException(ExceptionMessage.BOOK_INCORRECT_ID);
-        }
-        if (user == null) {
-            throwBookRentException(ExceptionMessage.USER_NOT_FIND);
         }
         /** Prevent user for making a request if he already has a rent with status ON (on going) or LA (late) **/
         if (checkIfUserAlreadyHasAvailableBookRent(book, user) != null) {
@@ -113,9 +116,12 @@ public class RentRequestServiceImpl implements RentRequestService {
     @Override
     @Transactional
     @AfterAcceptOrDeclineAOP
-    public RentRequest acceptOrCancelRentRequest(int rentRequestId, RentRequestStatus status) {
+    public RentRequest acceptOrCancelRentRequest(int rentRequestId, RentRequestStatus status, User user) {
         RentRequest rentRequest = queryRentRequestWithStatusWFC(rentRequestId);
         if (rentRequest != null) {
+            if(rentRequest.getUser().getId() != user.getId()){
+                throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.RENT_REQUEST_INCORRECT_ID));
+            }
             updateDataBaseOnStatus(rentRequest, status);
             return rentRequest;
         } else {

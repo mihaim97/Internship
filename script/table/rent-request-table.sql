@@ -5,6 +5,7 @@ drop table if exists `book_rent`;
 drop table if exists `rent_request`;
 drop table if exists library.`pending`;
 drop table if exists library.`user_banned`;
+drop table if exists library.`book_request`;
 drop table if exists `book_request`;
 
 create table `book_rent`(
@@ -48,7 +49,7 @@ create table library.`user_banned`(
 constraint `Banned_User_User_FK` foreign key (`user_id`) references `appusers` (`id`)
 );
 
-create table `book_request`(
+create table library.`book_request`(
 `id` int primary key auto_increment not null,
 `title` varchar(50) not null,
 `author` varchar(50) not null,
@@ -56,7 +57,7 @@ create table `book_request`(
 `link` varchar(200),
 `copyNum` int default 1,
 `cost` float not null,
-`status` varchar(3) not null check (`status` in ('P', 'A', 'R'))
+`status` varchar(3) not null check (`status` in ('PE', 'AC', 'RJ'))
 );
 
 

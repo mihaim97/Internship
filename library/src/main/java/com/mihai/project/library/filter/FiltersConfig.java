@@ -17,6 +17,12 @@ public class FiltersConfig {
         registrationBean.addUrlPatterns("/book/*");
         registrationBean.addUrlPatterns("/rent-book/mark-late");
         registrationBean.addUrlPatterns("/rent-book/list");
+        registrationBean.addUrlPatterns("/book-copy/*");
+        registrationBean.addUrlPatterns("/book-request/list");
+        registrationBean.addUrlPatterns("/book-request/delete");
+        registrationBean.addUrlPatterns("/book-request/accept");
+        registrationBean.addUrlPatterns("/book-request/list/for-confirmation");
+        registrationBean.addUrlPatterns("/book-request/list/to-buy");
         return registrationBean;
     }
 
@@ -27,6 +33,10 @@ public class FiltersConfig {
         registrationBean.addUrlPatterns("/rent-book/register");
         registrationBean.addUrlPatterns("/rent-book/return");
         registrationBean.addUrlPatterns("/rent-book/extend-rent");
+        registrationBean.addUrlPatterns("/request/register");
+        registrationBean.addUrlPatterns("/request/accept");
+        registrationBean.addUrlPatterns("/request/user-request");
+        registrationBean.addUrlPatterns("/book-request/add");
         return  registrationBean;
     }
 }

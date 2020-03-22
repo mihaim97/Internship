@@ -64,5 +64,8 @@ public class MyTable {
     //@@BannedUser
     public static String BANNED_USER_USER_ID = "user";
 
+    //@BookRequest
+    public static String BOOK_REQUEST_STATUS = "status";
+
 
 }
