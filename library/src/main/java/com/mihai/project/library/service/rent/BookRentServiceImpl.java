@@ -200,12 +200,6 @@ public class BookRentServiceImpl implements BookRentService {
         }
     }
 
-    private int compareDateToCurrentDate(Date date1) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        LocalDateTime date1Formatted = LocalDateTime.parse(date1.toString(), formatter);
-        return date1Formatted.toLocalDate().compareTo(LocalDateTime.now().toLocalDate());
-    }
-
     private int getDifference(Date from, Date to, ChronoUnit unit) {
         LocalDateTime startRentDate = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         LocalDateTime nowDate = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();

@@ -27,4 +27,10 @@ public class BannedUserServiceImpl implements BannedUserService {
         return HibernateUtil.getUniqueResult(bannedUserDAO.checkIfUserIsBanned(user));
     }
 
+    @Override
+    @Transactional
+    public void checkIfBannedExpiredAndDelete() {
+        bannedUserDAO.checkIfBannedExpiredAndDelete();
+    }
+
 }

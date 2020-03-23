@@ -26,4 +26,5 @@ public interface UserService {
     User updateUser(User userNewData, int userId);
 
     User performLogIn(String username, String password);
+
 }

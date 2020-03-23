@@ -87,9 +87,19 @@ public class MyQuery {
 
     //@@BannedUser
     public static String HIBERNATE_QUERY_BANNED_USER_BY_USER_ID = "from BannedUser where user = :user";
+    public static String HIBERNATE_DELETE_BANNED_USER = "delete from BannedUser bu where bu.endDate < now()";
 
     //@@BookRequest
     public static String HIBERNATE_QUERY_ALL_BOOK_REQUEST = "from BookRequest";
     public static String HIBERNATE_QUERY_ALL_BOOK_REQUEST_WITH_STATUS = "from BookRequest br where br.status = :status";
+
+    //@@Statistics
+    public static String HIBERNATE_QUERY_STAT_EMPLOYEES_LATE = "select distinct user " +
+                                                         "from BookRent br join br.user user " +
+                                                         "where br.status = :status ";
+
+    //@@Pending
+    public static String HIBERNATE_QUERY_ALL_PENDING = "select pd from Pending pd " +
+                                                        "join fetch pd.rentRequestId re ";
 
 }

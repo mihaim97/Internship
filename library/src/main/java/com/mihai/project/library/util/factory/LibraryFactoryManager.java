@@ -1,6 +1,7 @@
 package com.mihai.project.library.util.factory;
 
 import com.mihai.project.library.entity.interntable.Pending;
+import com.mihai.project.library.entity.nativequery.TopBookEntity;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.request.BookRequest;
 import com.mihai.project.library.entity.request.RentRequest;
@@ -37,5 +38,7 @@ public class LibraryFactoryManager {
     }
 
     public BookRequest getBookRequestInstance(){return new BookRequest();}
+
+    public TopBookEntity getTopBookEntityInstance(){return new TopBookEntity();}
 
 }

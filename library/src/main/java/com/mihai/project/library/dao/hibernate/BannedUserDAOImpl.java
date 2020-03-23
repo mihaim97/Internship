@@ -39,4 +39,11 @@ public class BannedUserDAOImpl implements BannedUserDAO {
         return query.getResultList();
     }
 
+    @Override
+    public void checkIfBannedExpiredAndDelete() {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(MyQuery.HIBERNATE_DELETE_BANNED_USER);
+        query.executeUpdate();
+    }
+
 }

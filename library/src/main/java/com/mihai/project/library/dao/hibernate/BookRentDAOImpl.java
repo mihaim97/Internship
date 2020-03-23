@@ -1,12 +1,15 @@
 package com.mihai.project.library.dao.hibernate;
 
 import com.mihai.project.library.dao.BookRentDAO;
+import com.mihai.project.library.entity.nativequery.TopBookRented;
 import com.mihai.project.library.entity.book.Book;
+import com.mihai.project.library.entity.nativequery.TopEmployees;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.stock.CopyStock;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
+import com.mihai.project.library.util.NamedNativeQuery;
 import com.mihai.project.library.util.enumeration.RentStatus;
 import com.mihai.project.library.util.enumeration.Status;
 import org.apache.commons.lang3.time.DateUtils;
@@ -85,9 +88,38 @@ public class BookRentDAOImpl implements BookRentDAO {
     @Override
     public List<BookRent> queryAllBookRentView() {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_BOOK_RENT_VIEW);
+        Query<BookRent> query = session.createQuery(MyQuery.HIBERNATE_QUERY_ALL_BOOK_RENT_VIEW);
         query.setParameter(MyTable.BOOK_RENT_STATUS, RentStatus.ON.toString());
         query.setParameter(MyTable.BOOK_RENT_STATUS2, RentStatus.LA.toString());
         return query.getResultList();
     }
+
+    @Override
+    public List<TopBookRented> statisticsTopBookRent(int topNum, String startDate, String endDate) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createNamedQuery(NamedNativeQuery.TOP_BOOK).setMaxResults(topNum);
+        query.setParameter(MyTable.STATISTICS_START_DATE, startDate);
+        query.setParameter(MyTable.STATISTICS_END_DATE, endDate);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<TopBookRented> statisticsTopBookRent(String startDate, String endDate) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createNamedQuery(NamedNativeQuery.TOP_BOOK);
+        query.setParameter(MyTable.STATISTICS_START_DATE, startDate);
+        query.setParameter(MyTable.STATISTICS_END_DATE, endDate);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<TopEmployees> statisticsTopEmployees(String startDate, String endDate) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createNamedQuery(NamedNativeQuery.TOP_EMPLOYEES);
+        query.setParameter(MyTable.STATISTICS_START_DATE, startDate);
+        query.setParameter(MyTable.STATISTICS_END_DATE, endDate);
+        return query.getResultList();
+    }
+
+
 }

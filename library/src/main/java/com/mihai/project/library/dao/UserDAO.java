@@ -26,4 +26,6 @@ public interface UserDAO {
 
     User updateUser(User user, User newUserData);
 
+    List<User> statisticsAllUserThatAreLate();
+
 }

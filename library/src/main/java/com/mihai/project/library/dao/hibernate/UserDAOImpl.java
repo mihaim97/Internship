@@ -4,6 +4,7 @@ import com.mihai.project.library.dao.UserDAO;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.MyQuery;
 import com.mihai.project.library.util.MyTable;
+import com.mihai.project.library.util.enumeration.RentStatus;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -99,6 +100,14 @@ public class UserDAOImpl implements UserDAO {
         user.setEmail(newUserData.getEmail());
         user.setRole(newUserData.getRole());
         return user;
+    }
+
+    @Override
+    public List<User> statisticsAllUserThatAreLate() {
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery(MyQuery.HIBERNATE_QUERY_STAT_EMPLOYEES_LATE);
+        query.setParameter(MyTable.BOOK_RENT_STATUS, RentStatus.LA.toString());
+        return query.getResultList();
     }
 
 }

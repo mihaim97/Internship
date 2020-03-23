@@ -79,7 +79,7 @@ public class RentRequestServiceImpl implements RentRequestService {
             rentRequest = LibraryFactoryManager.getInstance().getRentRequestInstance();
             return rentRequestDAO.registerRentRequest(rentRequest, book, user);
         } else {
-            throw new BookRentOrRequestException(ExceptionMessage.RENT_REQUEST_USER_HAS_RENT_REQUEST);
+            throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.RENT_REQUEST_USER_HAS_RENT_REQUEST));
         }
     }
 

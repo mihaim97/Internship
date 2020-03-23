@@ -23,6 +23,7 @@ public class FiltersConfig {
         registrationBean.addUrlPatterns("/book-request/accept");
         registrationBean.addUrlPatterns("/book-request/list/for-confirmation");
         registrationBean.addUrlPatterns("/book-request/list/to-buy");
+        registrationBean.addUrlPatterns("/statistics/*");
         return registrationBean;
     }
 

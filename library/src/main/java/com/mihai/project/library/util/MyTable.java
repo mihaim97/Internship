@@ -67,5 +67,9 @@ public class MyTable {
     //@BookRequest
     public static String BOOK_REQUEST_STATUS = "status";
 
+    //@@QueryStatistics
+    public static String STATISTICS_START_DATE = "startDate";
+    public static String STATISTICS_END_DATE = "endDate";
+
 
 }
