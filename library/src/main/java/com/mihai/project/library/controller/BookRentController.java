@@ -47,7 +47,7 @@ public class BookRentController {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         BookRent bookRent = bookRentService.registerBookRent(bookRentDTO.getBookToRentId(), request.getAuthenticateUser(), bookRentDTO.getPeriod());
-        return new ResponseEntity(convert.fromBookRentToDtoOut(bookRent), HttpStatus.OK);
+       return ResponseEntity.ok(convert.fromBookRentToDtoOut(bookRent));
     }
 
     @PutMapping(value = "/return", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,25 +60,25 @@ public class BookRentController {
         if (bookRent == null) {
             return new ResponseEntity(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_FAIL), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(convert.fromBookRentToDtoOut(bookRent), HttpStatus.OK);
+        return ResponseEntity.ok(convert.fromBookRentToDtoOut(bookRent));
     }
 
     @PutMapping(value = "/mark-late", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BookRentDTOOut>> markAsLate() {
         List<BookRent> bookRentDTO = bookRentService.markBookRentAsLateIfExist();
-        return new ResponseEntity<>(convert.fromBookRentListToDtoOutList(bookRentDTO), HttpStatus.OK);
+        return ResponseEntity.ok(convert.fromBookRentListToDtoOutList(bookRentDTO));
     }
 
     @PutMapping(value = "/extend-rent", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BookRentDTOOut> extendRent(@RequestParam @Valid @Min(1) int rentId, @ApiIgnore AuthenticationWrapperServletRequest request) {
         BookRent bookRent = bookRentService.extendRent(rentId, request.getAuthenticateUser());
-        return new ResponseEntity<BookRentDTOOut>(convert.fromBookRentToDtoOut(bookRent), HttpStatus.OK);
+        return ResponseEntity.ok(convert.fromBookRentToDtoOut(bookRent));
     }
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BookRentAdminDTO> queryAllBookRent() {
+    public ResponseEntity<List<BookRentAdminDTO>> queryAllBookRent() {
         List<BookRent> bookRents = bookRentService.queryAllBookRent(BookRentQueryType.FETCH_COPY_STOCK);
-        return new ResponseEntity(convert.fromBookRentListToAdminDto(bookRents), HttpStatus.OK);
+        return ResponseEntity.ok(convert.fromBookRentListToAdminDto(bookRents));
     }
 
 

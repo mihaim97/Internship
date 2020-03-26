@@ -2,6 +2,7 @@ package com.mihai.project.library.controller;
 
 import com.mihai.project.library.contralleradvice.exception.ResultBindingValidationException;
 import com.mihai.project.library.dto.user.UserDTO;
+import com.mihai.project.library.dto.user.UserDTOAdd;
 import com.mihai.project.library.dto.user.UserDTOOut;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.filter.AuthenticationWrapperServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -40,18 +42,18 @@ public class UserController {
     public UserController(){}
 
     @PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult, AuthenticationWrapperServletRequest request) {
+    public ResponseEntity addUser(@RequestBody @Valid UserDTOAdd user, BindingResult bindingResult, @ApiIgnore AuthenticationWrapperServletRequest request) {
         if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         if (userService.emailAlreadyExist(user.getEmail())) {
-            return emailExist(user);
+            return emailExist(user.getEmail());
         }
         if (userService.userAlreadyExist(user.getUsername())) {
-            return userExist(user);
+            return userExist(user.getUsername());
         }
-        User userReturned = userService.addUser(convert.fromDTOToUser(user));
-        return new ResponseEntity(convert.fromUserToUserDTOOut(userReturned), HttpStatus.OK);
+        User userReturned = userService.addUser(convert.fromDTOAddToUser(user));
+        return ResponseEntity.ok(convert.fromUserToUserDTOOut(userReturned));
     }
 
     @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -87,12 +89,12 @@ public class UserController {
         return new ResponseEntity<>(convert.fromUserToUserDTOOut(userReturned), HttpStatus.OK);
     }
 
-    public ResponseEntity userExist(UserDTO user) {
-        return new ResponseEntity(userMessageBuilder.getMessageOnUserExistException(user.getUsername()), HttpStatus.BAD_REQUEST);
+    public ResponseEntity userExist(String user) {
+        return new ResponseEntity(userMessageBuilder.getMessageOnUserExistException(user), HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity emailExist(UserDTO user) {
-        return new ResponseEntity(userMessageBuilder.getMessageOnEmailAlreadyExist(user.getEmail()), HttpStatus.BAD_REQUEST);
+    public ResponseEntity emailExist(String mail) {
+        return new ResponseEntity(userMessageBuilder.getMessageOnEmailAlreadyExist(mail), HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity noUserWithId(String username) {

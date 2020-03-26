@@ -12,9 +12,9 @@ public interface RentRequestService {
 
     RentRequest registerRentRequest(int bookId, User user);
 
-    RentRequest checkIfUserHasARequestForCurrentBook(Book book, User user);
+    boolean checkIfUserHasARequestForCurrentBook(Book book, User user);
 
-    BookRent checkIfUserAlreadyHasAvailableBookRent(Book book, User user);
+    boolean checkIfUserAlreadyHasAvailableBookRent(Book book, User user);
 
     RentRequest checkForExistingRequest(Book book);
 

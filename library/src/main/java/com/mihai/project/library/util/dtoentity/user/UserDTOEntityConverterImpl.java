@@ -1,6 +1,7 @@
 package com.mihai.project.library.util.dtoentity.user;
 
 import com.mihai.project.library.dto.user.UserDTO;
+import com.mihai.project.library.dto.user.UserDTOAdd;
 import com.mihai.project.library.dto.user.UserDTOOut;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.util.mapper.ModelMapperUtil;
@@ -21,6 +22,11 @@ public class UserDTOEntityConverterImpl implements UserDTOEntityConverter {
     @Override
     public UserDTO fromUserTODTO(User user) {
         return ModelMapperUtil.getMapper().map(user, UserDTO.class);
+    }
+
+    @Override
+    public User fromDTOAddToUser(UserDTOAdd user) {
+        return ModelMapperUtil.getMapper().map(user, User.class);
     }
 
     @Override

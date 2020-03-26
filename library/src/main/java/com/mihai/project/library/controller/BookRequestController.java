@@ -38,25 +38,25 @@ public class BookRequestController {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         BookRequest bookRequest = bookRequestService.registerBookRequest(converter.fromBookRequestDTOToBookRequest(bookRequestDTO));
-        return new ResponseEntity<>(converter.fromBookRequestToBookRequestDTOOut(bookRequest), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromBookRequestToBookRequestDTOOut(bookRequest));
     }
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BookRequestDTOOut>> queryAllBookRequest() {
         List<BookRequest> bookRequests = bookRequestService.queryAllBookRequest(BookRequestQuery.ALL);
-        return new ResponseEntity<>(converter.fromListBookRequestToListOut(bookRequests), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromListBookRequestToListOut(bookRequests));
     }
 
     @GetMapping(value = "/list/for-confirmation", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BookRequestDTOOut>> queryAllBookRequestForConfirmation() {
         List<BookRequest> bookRequests = bookRequestService.queryAllBookRequest(BookRequestQuery.FOR_CONFIRMATION);
-        return new ResponseEntity<>(converter.fromListBookRequestToListOut(bookRequests), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromListBookRequestToListOut(bookRequests));
     }
 
     @GetMapping(value = "/list/to-buy", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BookRequestDTOOut>> queryAllBookRequestToBuy() {
         List<BookRequest> bookRequests = bookRequestService.queryAllBookRequest(BookRequestQuery.TO_BUY);
-        return new ResponseEntity<>(converter.fromListBookRequestToListOut(bookRequests), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromListBookRequestToListOut(bookRequests));
     }
 
     @PutMapping(value = "/accept", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,7 +66,7 @@ public class BookRequestController {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         BookRequest bookRequest = bookRequestService.acceptOrDeclineBookRequest(answer.getId(), answer.getAnswerStatus());
-        return new ResponseEntity<>(converter.fromBookRequestToBookRequestDTOOut(bookRequest), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromBookRequestToBookRequestDTOOut(bookRequest));
     }
 
     @DeleteMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)

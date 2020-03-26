@@ -7,6 +7,7 @@ import com.mihai.project.library.entity.book.Book;
 import com.mihai.project.library.entity.rent.BookRent;
 import com.mihai.project.library.entity.request.RentRequest;
 import com.mihai.project.library.entity.stock.CopyStock;
+import com.mihai.project.library.entity.user.BannedUser;
 import com.mihai.project.library.entity.user.User;
 import com.mihai.project.library.service.book.BookService;
 import com.mihai.project.library.service.peding.PendingService;
@@ -54,30 +55,30 @@ public class RentRequestServiceImpl implements RentRequestService {
     @Autowired
     private MessageBuilder messageBuilder;
 
-
     @Override
     @Transactional
     public RentRequest registerRentRequest(int bookId, User user) {
         Book book = bookService.queryBook(bookId);
         RentRequest rentRequest;
-        if(bannedUserService.checkIfUserIsBanned(user) != null){
+        if (checkIfUserIsBanned(user)) {
             throwBookRentException(ExceptionMessage.BANNED_USER);
         }
         /** When copy are available, no need for request **/
-        if (copyStockService.queryAvailableSingleBookCopyByBookId(bookId) != null) {
+        if (queryAvailableCopy(bookId)) {
             throwBookRentException(ExceptionMessage.RENT_REQUEST_COPY_AVAILABLE);
         }
         if (book == null) {
             throwBookRentException(ExceptionMessage.BOOK_INCORRECT_ID);
         }
         /** Prevent user for making a request if he already has a rent with status ON (on going) or LA (late) **/
-        if (checkIfUserAlreadyHasAvailableBookRent(book, user) != null) {
+        if (checkIfUserAlreadyHasAvailableBookRent(book, user)) {
             throwBookRentException(ExceptionMessage.RENT_REQUEST_USER_HAS_A_RENT);
         }
         /** Prevent user for making more than one request for a book **/
-        if (checkIfUserHasARequestForCurrentBook(book, user) == null) {
+        if (checkIfUserHasARequestForCurrentBook(book, user)) {
             rentRequest = LibraryFactoryManager.getInstance().getRentRequestInstance();
-            return rentRequestDAO.registerRentRequest(rentRequest, book, user);
+            populateRentRequest(rentRequest, book, user);
+            return rentRequestDAO.registerRentRequest(rentRequest);
         } else {
             throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.RENT_REQUEST_USER_HAS_RENT_REQUEST));
         }
@@ -85,14 +86,16 @@ public class RentRequestServiceImpl implements RentRequestService {
 
     @Override
     @Transactional(value = Transactional.TxType.MANDATORY)
-    public RentRequest checkIfUserHasARequestForCurrentBook(Book book, User user) {
-        return HibernateUtil.getUniqueResult(rentRequestDAO.checkIfUserHasARequestForCurrentBook(book, user));
+    public boolean checkIfUserHasARequestForCurrentBook(Book book, User user) {
+        RentRequest rentRequest = HibernateUtil.getUniqueResult(rentRequestDAO.checkIfUserHasARequestForCurrentBook(book, user));
+        return rentRequest == null ? true : false;
     }
 
     @Override
     @Transactional(value = Transactional.TxType.MANDATORY)
-    public BookRent checkIfUserAlreadyHasAvailableBookRent(Book book, User user) {
-        return HibernateUtil.getUniqueResult(rentRequestDAO.checkIfUserAlreadyHasAvailableBookRent(book, user));
+    public boolean checkIfUserAlreadyHasAvailableBookRent(Book book, User user) {
+        BookRent bookRent = HibernateUtil.getUniqueResult(rentRequestDAO.checkIfUserAlreadyHasAvailableBookRent(book, user));
+        return bookRent == null ? false : true;
     }
 
     @Override
@@ -119,7 +122,7 @@ public class RentRequestServiceImpl implements RentRequestService {
     public RentRequest acceptOrCancelRentRequest(int rentRequestId, RentRequestStatus status, User user) {
         RentRequest rentRequest = queryRentRequestWithStatusWFC(rentRequestId);
         if (rentRequest != null) {
-            if(rentRequest.getUser().getId() != user.getId()){
+            if (rentRequest.getUser().getId() != user.getId()) {
                 throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.RENT_REQUEST_INCORRECT_ID));
             }
             updateDataBaseOnStatus(rentRequest, status);
@@ -148,7 +151,6 @@ public class RentRequestServiceImpl implements RentRequestService {
             copyStock.setStatus(Status.AV.toString());
             rentRequest.setStatus(RentRequestStatus.DE.toString());
         }
-        //pendingService.removePending(rentRequest.getPending());
     }
 
     private BookRent setStatusToBookRentAndCreate(RentRequest rentRequest, CopyStock copyStock) {
@@ -162,8 +164,23 @@ public class RentRequestServiceImpl implements RentRequestService {
         return bookRent;
     }
 
-    private void throwBookRentException(String message) throws BookRentOrRequestException{
+    private void throwBookRentException(String message) throws BookRentOrRequestException {
         throw new BookRentOrRequestException(messageBuilder.asJSON(message));
+    }
+
+    private void populateRentRequest(RentRequest rentRequest, Book book, User user) {
+        rentRequest.setBookId(book);
+        rentRequest.setUser(user);
+        rentRequest.setStatus(RentRequestStatus.WAC.toString());
+        rentRequest.setDateRequest(new Date());
+    }
+
+    private boolean checkIfUserIsBanned(User user) {
+        return bannedUserService.checkIfUserIsBanned(user) == null ? false : true;
+    }
+
+    private boolean queryAvailableCopy(int bookId) {
+        return copyStockService.queryAvailableSingleBookCopyByBookId(bookId) == null ? false : true;
     }
 
 }

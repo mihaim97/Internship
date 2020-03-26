@@ -47,53 +47,55 @@ public class CopyBookController {
 
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addCopyBook(@RequestBody @Valid CopyStockDTO copyStockDTO, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         Book book = bookService.queryBook(copyStockDTO.getBookId());
         if (book != null) {
             CopyStock copyStock = copyStockService.addSingleCopy(book, copyStockDTO.getFlag(), copyStockDTO.getStatus());
-            return new ResponseEntity<>(convert.fromCopyStockToDto(copyStock), HttpStatus.OK);
+            return ResponseEntity.ok(convert.fromCopyStockToDto(copyStock));
         }
         return new ResponseEntity<>(bookMessageBuilder.getMessageOnIncorrectBookId(copyStockDTO.getBookId()), HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value = "query-copy", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/query-copy", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity queryCopyBook(@RequestParam @Valid @Min(1) int code) {
         CopyStock copyStock = copyStockService.queryCopyStock(code);
         if (copyStock != null) {
-            return new ResponseEntity<>(convert.fromCopyStockToDto(copyStock), HttpStatus.OK);
+            return ResponseEntity.ok(convert.fromCopyStockToDto(copyStock));
         }
         return new ResponseEntity<>(copyMessageBuilder.getMessageOnNoCopyWithCode(code), HttpStatus.BAD_REQUEST);
     }
 
-    /** All copy of a book **/
-    @GetMapping(value = "book-all-copy", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CopyStockDTOOut> queryAllCopyOfSpecificBook(@RequestParam @Valid @Min(1) int bookId){
+    /**
+     * All copy of a book
+     **/
+    @GetMapping(value = "/book-all-copy", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CopyStockDTOOut> queryAllCopyOfSpecificBook(@RequestParam @Valid @Min(1) int bookId) {
         return convert.fromCopyStockListToDtoOutList(copyStockService.queryAllBookCopy(bookId));
     }
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CopyStockDTOOut> queryAllCopy(){
+    public List<CopyStockDTOOut> queryAllCopy() {
         return convert.fromCopyStockListToDtoOutList(copyStockService.queryAllCopy());
     }
 
-    @DeleteMapping(value = "/delete" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteCopy(@RequestParam @Valid @Min(1) int copyCode){
-        if(copyStockService.deleteCopy(copyCode)){
-            return new ResponseEntity<>(copyMessageBuilder.getMessageOnCopySuccessfullyDeleted(copyCode), HttpStatus.OK);
+    @DeleteMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteCopy(@RequestParam @Valid @Min(1) int copyCode) {
+        if (copyStockService.deleteCopy(copyCode)) {
+            return ResponseEntity.ok(copyMessageBuilder.getMessageOnCopySuccessfullyDeleted(copyCode));
         }
         return new ResponseEntity<>(copyMessageBuilder.getMessageOnNoCopyWithCode(copyCode), HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateCopy(@RequestBody @Valid CopyStockDTOUpdate copyStockDTOUpdate, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateCopy(@RequestBody @Valid CopyStockDTOUpdate copyStockDTOUpdate, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         CopyStock copyStock = copyStockService.updateCopy(convert.fromCopyStockUpdateToCopyStock(copyStockDTOUpdate));
-        if(copyStock != null){
-            return new ResponseEntity<>(convert.fromCopyStockToDto(copyStock), HttpStatus.OK);
+        if (copyStock != null) {
+            return ResponseEntity.ok(convert.fromCopyStockToDto(copyStock));
         }
         return new ResponseEntity<>(copyMessageBuilder.getMessageOnNoCopyWithCode(copyStockDTOUpdate.getCode()), HttpStatus.BAD_REQUEST);
     }

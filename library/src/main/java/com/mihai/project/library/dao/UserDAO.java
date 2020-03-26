@@ -24,8 +24,6 @@ public interface UserDAO {
 
     boolean deleteUser(String user);
 
-    User updateUser(User user, User newUserData);
-
     List<User> statisticsAllUserThatAreLate();
 
 }

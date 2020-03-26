@@ -11,7 +11,7 @@ public interface BookRentService {
 
     BookRent registerBookRent(int bookIdToRent, User user, int period);
 
-    BookRent checkIfUserAlreadyHasARentForCurrentBook(Book book, User user);
+    boolean checkIfUserAlreadyHasARentForCurrentBook(Book book, User user);
 
     BookRent returnARentedBook(int bookRentId, float note, User user);
 

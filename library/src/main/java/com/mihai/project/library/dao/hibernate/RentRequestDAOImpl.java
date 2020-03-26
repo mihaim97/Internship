@@ -25,12 +25,8 @@ public class RentRequestDAOImpl implements RentRequestDAO {
     private SessionFactory sessionFactory;
 
     @Override
-    public RentRequest registerRentRequest(RentRequest rentRequest, Book book, User user) {
+    public RentRequest registerRentRequest(RentRequest rentRequest) {
         Session session = sessionFactory.getCurrentSession();
-        rentRequest.setBookId(book);
-        rentRequest.setUser(user);
-        rentRequest.setStatus(RentRequestStatus.WAC.toString());
-        rentRequest.setDateRequest(new Date());
         session.persist(rentRequest);
         return rentRequest;
     }

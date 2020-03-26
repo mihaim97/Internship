@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User addUser(User user) {
+        user.setPassword(DigestUtils.md5Hex(user.getPassword().getBytes()));
         return userDAO.addUser(user);
     }
 
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
         if(emailAlreadyExistOnDifferentUser(user.getUsername(), userNewData.getEmail())){
             throw new UserServiceException(userMessageBuilder.getMessageOnEmailAlreadyExist(userNewData.getEmail()));
         }
-        return userDAO.updateUser(user, userNewData);
+       return copyUserData(user, userNewData);
     }
 
     @Override
@@ -133,6 +134,16 @@ public class UserServiceImpl implements UserService {
             }
         }
         return true;
+    }
+
+    private User copyUserData(User user, User newUserData){
+        user.setUsername(newUserData.getUsername());
+        user.setPassword(DigestUtils.md5Hex(newUserData.getPassword().getBytes()));
+        user.setEmail(newUserData.getEmail());
+        user.setRole(newUserData.getRole());
+        user.setLastName(newUserData.getLastName());
+        user.setFirstName(newUserData.getFirstName());
+        return user;
     }
 
 }

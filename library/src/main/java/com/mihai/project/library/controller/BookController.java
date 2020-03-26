@@ -48,7 +48,7 @@ public class BookController {
             throw new ResultBindingValidationException(errorBuilder.getErrorMessageFromResultBinding(bindingResult));
         } else {
             book = convert.fromDTOToBook(bookDTO);
-            return new ResponseEntity<>(convert.fromBookToDTO(bookService.addBook(book)), HttpStatus.OK);
+            return ResponseEntity.ok(convert.fromBookToDTO(bookService.addBook(book)));
         }
     }
 
@@ -63,7 +63,7 @@ public class BookController {
         if (book == null) {
             return noBookWasFind(id);
         }
-        return new ResponseEntity(convert.fromBookToDTO(book), HttpStatus.OK);
+        return ResponseEntity.ok(convert.fromBookToDTO(book));
     }
 
     @DeleteMapping(value = "/delete-book", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -97,12 +97,12 @@ public class BookController {
             return noBookWasFind(book.getId());
         }
         Book updateBook = bookService.updateBookUsingTagAndAuthorId(convert.fromDTOIDToBook(book));
-        return new ResponseEntity<>(convert.fromBookToDTO(updateBook), HttpStatus.OK);
+        return ResponseEntity.ok(convert.fromBookToDTO(updateBook));
     }
 
 
     public ResponseEntity noBookWasFind(int id) {
-        return new ResponseEntity(bookMessageBuilder.getMessageOnIncorrectBookId(id), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.ok(bookMessageBuilder.getMessageOnIncorrectBookId(id));
     }
 }
 

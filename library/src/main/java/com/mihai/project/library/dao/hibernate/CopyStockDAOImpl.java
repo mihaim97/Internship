@@ -69,13 +69,6 @@ public class CopyStockDAOImpl implements CopyStockDAO {
     }
 
     @Override
-    public CopyStock updateCopy(CopyStock copyToUpdate, CopyStock newValue) {
-        copyToUpdate.setFlag(newValue.getFlag());
-        copyToUpdate.setStatus(newValue.getStatus());
-        return copyToUpdate;
-    }
-
-    @Override
     public List<RentRequest> checkForRentRequestOnCurrentBook(Book book) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(MyQuery.HIBERNATE_QUERY_CHECK_IF_RENT_REQUEST_EXIST_WAC).setMaxResults(1);

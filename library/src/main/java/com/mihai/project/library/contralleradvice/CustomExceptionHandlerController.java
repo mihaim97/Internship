@@ -16,23 +16,29 @@ import java.sql.SQLIntegrityConstraintViolationException;
 @ControllerAdvice
 public class CustomExceptionHandlerController extends ResponseEntityExceptionHandler {
 
+    //Exception si 500
     @Autowired
     private MessageBuilder messageBuilder;
 
     @ExceptionHandler({ResultBindingValidationException.class})
-    public ResponseEntity<String> handleResponseBindingError(Exception exc){
+    public ResponseEntity<String> handleResponseBindingError(Exception exc) {
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({BookRentOrRequestException.class, UserServiceException.class})
-    public ResponseEntity<String> serviceExceptionHandler(Exception exc){
+    public ResponseEntity<String> serviceExceptionHandler(Exception exc) {
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> failToDeleteResource(){
+    public ResponseEntity<String> failToDeleteResource(DataIntegrityViolationException exc) {
         String message = messageBuilder.asJSON(ExceptionMessage.INTEGRITY_VIOLATION);
         return new ResponseEntity<>(message, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> otherException() {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

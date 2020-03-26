@@ -34,13 +34,13 @@ public class TagController {
         if (tag == null) {
             return new ResponseEntity<>(messageBuilder.getMessageOnTagExist(tagDTO.getName()), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(converter.fromTagToDTOID(tag), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromTagToDTOID(tag));
     }
 
     @DeleteMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity removeTag(@RequestParam int id) {
         if (tagService.removeTag(id)) {
-            return new ResponseEntity<>(messageBuilder.getMessageOnSuccessfullyDeleted(id), HttpStatus.OK);
+            return ResponseEntity.ok(messageBuilder.getMessageOnSuccessfullyDeleted(id));
         }
         return noTagWithId(id);
     }
@@ -51,12 +51,12 @@ public class TagController {
         if (tag == null) {
            return new ResponseEntity(messageBuilder.getMessageOnUpdateError(tagDTOID.getId()), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(tagDTOID, HttpStatus.OK);
+        return ResponseEntity.ok(tagDTOID);
     }
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TagDTOID>> queryTags() {
-        return new ResponseEntity<>(converter.fromTagsToDTOID(tagService.queryTags()), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromTagsToDTOID(tagService.queryTags()));
     }
 
     @GetMapping(value = "/single-tag-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,7 +65,7 @@ public class TagController {
         if (tag == null) {
             return new ResponseEntity<>(messageBuilder.getMessageOnNoTagWithName(name), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(converter.fromTagToDTOID(tag), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromTagToDTOID(tag));
     }
 
     @GetMapping(value = "/single-tag-by-id", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,12 +74,12 @@ public class TagController {
         if (tag == null) {
             return noTagWithId(id);
         }
-        return new ResponseEntity<>(converter.fromTagToDTOID(tag), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromTagToDTOID(tag));
     }
 
     @GetMapping(value = "/search-tags", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity searchTags(@RequestParam String characters) {
-        return new ResponseEntity<>(converter.fromTagsToDTOID(tagService.queryTagsLike(characters)), HttpStatus.OK);
+        return ResponseEntity.ok(converter.fromTagsToDTOID(tagService.queryTagsLike(characters)));
     }
 
     private ResponseEntity<Object> noTagWithId(int id) {

@@ -20,8 +20,6 @@ public interface CopyStockDAO {
 
     boolean deleteCopy(CopyStock copyStock);
 
-    CopyStock updateCopy(CopyStock copyToUpdate, CopyStock newValue);
-
     List<RentRequest> checkForRentRequestOnCurrentBook(Book book);
 
 }

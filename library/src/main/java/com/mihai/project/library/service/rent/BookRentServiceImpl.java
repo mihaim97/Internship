@@ -22,6 +22,7 @@ import com.mihai.project.library.util.message.ExceptionMessage;
 import com.mihai.project.library.util.message.MessageBuilder;
 import com.mihai.project.library.util.message.user.UserMessageBuilder;
 import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,20 +68,21 @@ public class BookRentServiceImpl implements BookRentService {
         if (checkIfUserIsBanned(user)) {
             throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BANNED_USER));
         }
-        if (checkIfUserAlreadyHasARentForCurrentBook(copyStock.getBookId(), user) == null
-                && rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user) == null) {
+        if (checkIfUserAlreadyHasARentForCurrentBook(copyStock.getBookId(), user)
+                && rentRequestService.checkIfUserHasARequestForCurrentBook(copyStock.getBookId(), user)) {
             BookRent bookRent = LibraryFactoryManager.getInstance().getBookRentInstance();
-            return bookRentDAO.registerBookRent(bookRent, copyStock, user, period);
+            populateBookRent(bookRent, copyStock, user, period);
+            return bookRentDAO.registerBookRent(bookRent);
         } else {
             throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_RENT_EXIST));
         }
-
     }
 
     @Override
     @Transactional
-    public BookRent checkIfUserAlreadyHasARentForCurrentBook(Book book, User user) {
-        return HibernateUtil.getUniqueResult(bookRentDAO.checkIfUserAlreadyHasARentForCurrentBook(book, user));
+    public boolean checkIfUserAlreadyHasARentForCurrentBook(Book book, User user) {
+        BookRent bookRent =  HibernateUtil.getUniqueResult(bookRentDAO.checkIfUserAlreadyHasARentForCurrentBook(book, user));
+        return bookRent == null ? true : false;
     }
 
     @Override
@@ -176,12 +178,12 @@ public class BookRentServiceImpl implements BookRentService {
         }
         /**check if user has a month **/
         int monthDiff = getDifference(bookRent.getDateRent(), new Date(), ChronoUnit.MONTHS);
-        if (monthDiff < 1) {
+        if (monthDiff < UtilConstant.MIN_MONTH_EXTEND) {
             throw new BookRentOrRequestException(messageBuilder.asJSON(ExceptionMessage.BOOK_RENT_ONE_MONTH_NOT_PASS));
         }
         /**Total month - initial rent**/
         int monthDiffRented = getDifference(bookRent.getDateRent(), bookRent.getEndDateRent(), ChronoUnit.MONTHS);
-        if (monthDiffRented < 3) {
+        if (monthDiffRented < UtilConstant.MAX_RENT_MONTH) {
             int daysToExtend = calculateDaysAllowedToExtendRent(bookRent);
             bookRent.setEndDateRent(DateUtils.addDays(bookRent.getEndDateRent(), daysToExtend));
         } else {
@@ -208,6 +210,15 @@ public class BookRentServiceImpl implements BookRentService {
         return (int) monthDiff;
     }
 
+    public void populateBookRent(BookRent bookRent, CopyStock copyStock, User user, int period) {
+        copyStock.setStatus(RentStatus.RE.toString());
+        bookRent.setBook(copyStock.getBookId());
+        bookRent.setCopy(copyStock);
+        bookRent.setUser(user);
+        bookRent.setStatus(RentStatus.ON.toString());
+        bookRent.setDateRent(new Date());
+        bookRent.setEndDateRent(DateUtils.addMonths(new Date(), period));
+    }
     public void setMessageBuilder(MessageBuilder messageBuilder) {
         this.messageBuilder = messageBuilder;
     }

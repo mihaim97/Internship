@@ -40,7 +40,7 @@ public class StatisticsController {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
         List<TopBookRented> bookRents = statisticsService.topBooksRented(topBookDTO);
-        return new ResponseEntity(bookRents, HttpStatus.OK);
+        return ResponseEntity.ok(bookRents);
     }
 
     @GetMapping(value = "/top-employees", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,13 +48,13 @@ public class StatisticsController {
         if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
-        return new ResponseEntity<>(statisticsService.topEmployees(topEmployeesDTO), HttpStatus.OK);
+        return ResponseEntity.ok(statisticsService.topEmployees(topEmployeesDTO));
     }
 
     @GetMapping(value = "/employees-late", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTOOut>> queryAllEmployeesThatAreLate() {
         List<UserDTOOut> userDTOOuts = converter.fromUsersToDTOOut(statisticsService.allUserThatAreLate());
-        return new ResponseEntity<>(userDTOOuts, HttpStatus.OK);
+        return ResponseEntity.ok(userDTOOuts);
     }
 
 }

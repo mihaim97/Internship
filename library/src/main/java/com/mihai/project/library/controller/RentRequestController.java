@@ -34,19 +34,19 @@ public class RentRequestController {
     private MessageBuilder messageBuilder;
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RentRequest> registerRentRequest(@RequestBody @Valid RentRequestDTO rentRequestDTO, BindingResult bindingResult,
-                                                           @ApiIgnore AuthenticationWrapperServletRequest request) {
+    public ResponseEntity<RentRequestDTOOut> registerRentRequest(@RequestBody @Valid RentRequestDTO rentRequestDTO, BindingResult bindingResult,
+                                                                 @ApiIgnore AuthenticationWrapperServletRequest request) {
         if (bindingResult.hasErrors()) {
             throw new ResultBindingValidationException(messageBuilder.getErrorMessageFromResultBinding(bindingResult));
         }
-        rentRequestService.registerRentRequest(rentRequestDTO.getBookId(), request.getAuthenticateUser());
-        return new ResponseEntity<>(HttpStatus.OK);
+        RentRequest rentRequest = rentRequestService.registerRentRequest(rentRequestDTO.getBookId(), request.getAuthenticateUser());
+        return ResponseEntity.ok(convert.fromRentRequestToDtoOut(rentRequest));
     }
 
     @GetMapping(value = "/user-request")
     public ResponseEntity<List<RentRequestDTOOut>> queryUserRequest(@ApiIgnore AuthenticationWrapperServletRequest request) {
         List<RentRequest> rentRequests = rentRequestService.queryUserRentRequest(request.getAuthenticateUser().getId());
-        return new ResponseEntity<>(convert.fromListRentRequestToListDtoOut(rentRequests), HttpStatus.OK);
+        return ResponseEntity.ok(convert.fromListRentRequestToListDtoOut(rentRequests));
     }
 
     @PatchMapping(value = "/accept")
@@ -55,8 +55,8 @@ public class RentRequestController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(messageBuilder.getErrorMessageFromResultBinding(bindingResult), HttpStatus.BAD_REQUEST);
         }
-        rentRequestService.acceptOrCancelRentRequest(rentDto.getRentRequestId(), rentDto.getResponse(), request.getAuthenticateUser());
-        return new ResponseEntity<>(HttpStatus.OK);
+        RentRequest rentRequest = rentRequestService.acceptOrCancelRentRequest(rentDto.getRentRequestId(), rentDto.getResponse(), request.getAuthenticateUser());
+        return ResponseEntity.ok(convert.fromRentRequestToDtoOut(rentRequest));
     }
 
 

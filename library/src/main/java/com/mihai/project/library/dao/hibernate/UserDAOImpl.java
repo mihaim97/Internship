@@ -26,7 +26,6 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User addUser(User user) {
         Session session = sessionFactory.getCurrentSession();
-        user.setPassword(DigestUtils.md5Hex(user.getPassword().getBytes()));
         session.persist(user);
         return user;
     }
@@ -91,15 +90,6 @@ public class UserDAOImpl implements UserDAO {
         Query query = session.createQuery(MyQuery.HIBERNATE_DELETE_USER);
         query.setParameter(MyTable.USER_ID, username);
         return query.executeUpdate() == 1;
-    }
-
-    @Override
-    public User updateUser(User user, User newUserData) {
-        user.setUsername(newUserData.getUsername());
-        user.setPassword(DigestUtils.md5Hex(newUserData.getPassword().getBytes()));
-        user.setEmail(newUserData.getEmail());
-        user.setRole(newUserData.getRole());
-        return user;
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface BookRentDAO {
 
-    BookRent registerBookRent(BookRent bookRent, CopyStock copyStock, User user, int period);
+    BookRent registerBookRent(BookRent bookRent);
 
     List<BookRent> checkIfUserAlreadyHasARentForCurrentBook(Book book, User user);
 

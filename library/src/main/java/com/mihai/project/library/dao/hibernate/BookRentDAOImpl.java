@@ -29,15 +29,8 @@ public class BookRentDAOImpl implements BookRentDAO {
     private SessionFactory sessionFactory;
 
     @Override
-    public BookRent registerBookRent(BookRent bookRent, CopyStock copyStock, User user, int period) {
+    public BookRent registerBookRent(BookRent bookRent) {
         Session session = sessionFactory.getCurrentSession();
-        copyStock.setStatus(RentStatus.RE.toString());
-        bookRent.setBook(copyStock.getBookId());
-        bookRent.setCopy(copyStock);
-        bookRent.setUser(user);
-        bookRent.setStatus(RentStatus.ON.toString());
-        bookRent.setDateRent(new Date());
-        bookRent.setEndDateRent(DateUtils.addMonths(new Date(), period));
         session.persist(bookRent);
         return bookRent;
     }

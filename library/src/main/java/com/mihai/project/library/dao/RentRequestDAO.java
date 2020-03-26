@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface RentRequestDAO {
 
-    RentRequest registerRentRequest(RentRequest rentRequest, Book book, User user);
+    RentRequest registerRentRequest(RentRequest rentRequest);
 
     List<RentRequest> checkIfUserHasARequestForCurrentBook(Book book, User user);
 

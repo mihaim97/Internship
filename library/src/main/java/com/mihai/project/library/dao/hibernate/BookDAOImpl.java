@@ -74,10 +74,6 @@ public class BookDAOImpl implements BookDAO {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(MyQuery.HIBERNATE_DELETE_BOOK_BY_ID);
         query.setParameter(MyTable.BOOK_ID, id);
-       /* Book book = session.find(Book.class, id);
-        book.setAuthors(null);
-        book.setTags(null);
-        session.delete(book);*/
         return query.executeUpdate() == 1;
     }
 
